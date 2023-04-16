@@ -7,11 +7,19 @@ import 'package:museum_search/state/app_param/app_param_notifier.dart';
 
 import '../extensions/extensions.dart';
 import '../state/art_facility/art_facility_notifier.dart';
-import '../state/genre/genre_notifier.dart';
+
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
+
 import '../state/prefecture/prefecture_notifier.dart';
 import 'map_screen.dart';
+
+//
+//
+// import '../state/genre/genre_notifier.dart';
+// import '../state/prefecture/prefecture_notifier.dart';
+//
+//
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -27,13 +35,19 @@ class HomeScreen extends ConsumerWidget {
 
     final appParamState = ref.watch(appParamProvider);
 
-    final selectPref = ref.watch(
-      prefectureProvider.select((value) => value.selectPref),
-    );
-
-    final selectGenre = ref.watch(
-      genreProvider.select((value) => value.selectGenre),
-    );
+    //
+    //
+    //
+    // final selectPref = ref.watch(
+    //   prefectureProvider.select((value) => value.selectPref),
+    // );
+    //
+    // final selectGenre = ref.watch(
+    //   genreProvider.select((value) => value.selectGenre),
+    // );
+    //
+    //
+    //
 
     return Scaffold(
       body: Column(
@@ -62,16 +76,22 @@ class HomeScreen extends ConsumerWidget {
                           .watch(appParamProvider.notifier)
                           .setSearchFlag(searchFlag: true);
 
-                      //---// 片方が空の場合、処理を中断する
-                      if ((selectPref != '' && selectGenre == '') ||
-                          (selectPref == '' && selectGenre != '')) {
-                        ref
-                            .read(appParamProvider.notifier)
-                            .setGenreSearchStop(genreSearchStop: true);
-
-                        return;
-                      }
-                      //---// 片方が空の場合、処理を中断する
+                      //
+                      //
+                      //
+                      // //---// 片方が空の場合、処理を中断する
+                      // if ((selectPref != '' && selectGenre == '') ||
+                      //     (selectPref == '' && selectGenre != '')) {
+                      //   ref
+                      //       .read(appParamProvider.notifier)
+                      //       .setGenreSearchStop(genreSearchStop: true);
+                      //
+                      //   return;
+                      // }
+                      // //---// 片方が空の場合、処理を中断する
+                      //
+                      //
+                      //
 
                       ref
                           .watch(artFacilityProvider.notifier)
@@ -271,8 +291,14 @@ class HomeScreen extends ConsumerWidget {
   Widget displaySearchBlock() {
     final latLngState = _ref.watch(latLngProvider);
 
-    final genreSearchStop =
-        _ref.watch(appParamProvider.select((value) => value.genreSearchStop));
+    //
+    //
+    //
+    // final genreSearchStop =
+    //     _ref.watch(appParamProvider.select((value) => value.genreSearchStop));
+    //
+    //
+    //
 
     ///
     final prefectureState = _ref.watch(prefectureProvider);
@@ -281,33 +307,41 @@ class HomeScreen extends ConsumerWidget {
       iconEnabledColor: Colors.white,
       items: prefectureState.prefList.map((e) {
         return DropdownMenuItem(
-          value: e.prefName,
+          value: e.prefCode,
           child: Text(e.prefName),
         );
       }).toList(),
-      value: prefectureState.selectPref,
+      value: prefectureState.selectPrefCode,
       onChanged: (value) async {
         await setSearchFlagFalse();
 
-        await _ref.watch(prefectureProvider.notifier).selectPref(pref: value!);
+        await _ref
+            .watch(prefectureProvider.notifier)
+            .selectPref(prefCode: value!);
       },
     );
 
-    ///
-    final genreState = _ref.watch(genreProvider);
-    final genreDropDown = DropdownButton(
-      dropdownColor: Colors.pinkAccent.withOpacity(0.1),
-      iconEnabledColor: Colors.white,
-      items: genreState.genreList.map((e) {
-        return DropdownMenuItem(value: e, child: Text(e));
-      }).toList(),
-      value: genreState.selectGenre,
-      onChanged: (value) async {
-        await setSearchFlagFalse();
-
-        await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
-      },
-    );
+    //
+    // ///
+    // final genreState = _ref.watch(genreProvider);
+    // final genreDropDown = DropdownButton(
+    //   dropdownColor: Colors.pinkAccent.withOpacity(0.1),
+    //   iconEnabledColor: Colors.white,
+    //   items: genreState.genreList.map((e) {
+    //     return DropdownMenuItem(value: e, child: Text(e));
+    //   }).toList(),
+    //   value: genreState.selectGenre,
+    //   onChanged: (value) async {
+    //     await setSearchFlagFalse();
+    //
+    //     await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
+    //   },
+    // );
+    //
+    //
+    //
+    //
+    //
 
     return Container(
       padding: const EdgeInsets.all(5),
@@ -325,11 +359,18 @@ class HomeScreen extends ConsumerWidget {
                     onPressed: () async {
                       await setSearchFlagFalse();
 
-                      await _ref.watch(prefectureProvider.notifier).clearPref();
+                      //
+                      //
+                      //
+                      //
+                      // await _ref.watch(prefectureProvider.notifier).clearPref();
+                      //
+                      // await _ref.watch(genreProvider.notifier).clearGenre();
+                      //
+                      //
+                      //
 
-                      await _ref.watch(genreProvider.notifier).clearGenre();
-
-                      getLocation();
+                      await getLocation();
                     },
                     icon: const Icon(Icons.location_on),
                   ),
@@ -339,9 +380,15 @@ class HomeScreen extends ConsumerWidget {
 
                       await _ref.watch(latLngProvider.notifier).clearLatLng();
 
-                      await _ref.watch(prefectureProvider.notifier).clearPref();
-
-                      await _ref.watch(genreProvider.notifier).clearGenre();
+                      //
+                      //
+                      //
+                      // await _ref.watch(prefectureProvider.notifier).clearPref();
+                      //
+                      // await _ref.watch(genreProvider.notifier).clearGenre();
+                      //
+                      //
+                      //
                     },
                     icon: const Icon(Icons.location_off),
                   ),
@@ -373,20 +420,33 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   prefDropDown,
                   const SizedBox(width: 20),
-                  genreDropDown,
+                  // genreDropDown,
+                  //
+                  //
+                  //
                 ],
               ),
               Container(
-                child: genreSearchStop
-                    ? const Text(
-                        '両方選択してください。',
-                        style: TextStyle(
-                          color: Colors.yellowAccent,
-                          fontSize: 10,
-                        ),
-                      )
-                    : const Text(''),
-              ),
+
+                  //
+                  //
+                  //
+                  //
+                  // child: genreSearchStop
+                  //     ? const Text(
+                  //         '両方選択してください。',
+                  //         style: TextStyle(
+                  //           color: Colors.yellowAccent,
+                  //           fontSize: 10,
+                  //         ),
+                  //       )
+                  //     : const Text(''),
+                  //
+                  //
+                  //
+                  //
+
+                  ),
             ],
           ),
         ],

@@ -1,10 +1,17 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/genre/genre_notifier.dart';
-import 'package:museum_search/state/genre/genre_state.dart';
-import 'package:museum_search/state/prefecture/prefecture_notifier.dart';
-import 'package:museum_search/state/prefecture/prefecture_state.dart';
+
+//
+//
+//
+// import 'package:museum_search/state/genre/genre_notifier.dart';
+// import 'package:museum_search/state/genre/genre_state.dart';
+// import 'package:museum_search/state/prefecture/prefecture_notifier.dart';
+// import 'package:museum_search/state/prefecture/prefecture_state.dart';
+//
+//
+//
 
 import '../../data/http/client.dart';
 import '../../data/http/path.dart';
@@ -24,39 +31,81 @@ final artFacilityProvider = StateNotifierProvider.autoDispose<
 
   final latLngState = ref.watch(latLngProvider);
 
-  final prefectureState = ref.watch(prefectureProvider);
-
-  final genreState = ref.watch(genreProvider);
+  //
+  //
+  //
+  //
+  // final prefectureState = ref.watch(prefectureProvider);
+  //
+  // final genreState = ref.watch(genreProvider);
+  //
+  //
+  //
+  //
+  //
 
   return ArtFacilityNotifier(
     const ArtFacilityResultState(),
     client,
     utility,
     latLngState,
-    prefectureState,
-    genreState,
+
+    //
+    //
+    //
+    // prefectureState,
+    // genreState,
+    //
+    //
+    //
+    //
   );
 });
 
 class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
-  ArtFacilityNotifier(super.state, this.client, this.utility, this.latLngState,
-      this.prefectureState, this.genreState);
+  ArtFacilityNotifier(
+    super.state,
+    this.client,
+    this.utility,
+    this.latLngState,
+  );
 
   final HttpClient client;
   final Utility utility;
 
   final LatLngResponseState latLngState;
 
-  final PrefectureState prefectureState;
-
-  final GenreState genreState;
+  //
+  //
+  //
+  // ArtFacilityNotifier(super.state, this.client, this.utility, this.latLngState,
+  //     this.prefectureState, this.genreState);
+  //
+  // final HttpClient client;
+  // final Utility utility;
+  //
+  // final LatLngResponseState latLngState;
+  //
+  // final PrefectureState prefectureState;
+  //
+  // final GenreState genreState;
+  //
+  //
+  //
 
   ///
   Future<void> getArtFacilities() async {
     final uploadData = <String, dynamic>{};
 
-    uploadData['prefecture'] = prefectureState.selectPref;
-    uploadData['genre'] = genreState.selectGenre;
+    //
+    //
+    //
+    //
+    // uploadData['prefecture'] = prefectureState.selectPref;
+    // uploadData['genre'] = genreState.selectGenre;
+    //
+    //
+    //
 
     uploadData['latitude'] = latLngState.lat;
     uploadData['longitude'] = latLngState.lng;

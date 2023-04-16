@@ -1,6 +1,13 @@
 enum APIPath {
   getNearArtFacilities,
-  getArtGenre,
+
+  //
+  //
+  // getArtGenre,
+  //
+  //
+
+  getArtCity,
 }
 
 extension APIPathExtension on APIPath {
@@ -8,8 +15,16 @@ extension APIPathExtension on APIPath {
     switch (this) {
       case APIPath.getNearArtFacilities:
         return 'getNearArtFacilities';
-      case APIPath.getArtGenre:
-        return 'getArtGenre';
+
+      //
+      //
+      // case APIPath.getArtGenre:
+      //   return 'getArtGenre';
+      //
+      //
+
+      case APIPath.getArtCity:
+        return 'getArtCity';
     }
   }
 }

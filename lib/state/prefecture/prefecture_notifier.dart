@@ -42,13 +42,13 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
   }
 
   ///
-  Future<void> selectPref({required String pref}) async {
-    state = state.copyWith(selectPref: pref);
+  Future<void> selectPref({required int prefCode}) async {
+    state = state.copyWith(selectPrefCode: prefCode);
   }
 
   ///
   Future<void> clearPref() async {
-    state = state.copyWith(selectPref: '');
+    state = state.copyWith(selectPrefCode: 0);
   }
 }
 
