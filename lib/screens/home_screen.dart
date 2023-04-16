@@ -307,7 +307,7 @@ class HomeScreen extends ConsumerWidget {
 
     //------------------------//
 
-    var cityState = CityState();
+    var cityState = const CityState();
 
     var selectPref = Pref(prefCode: 0, prefName: '');
 
@@ -342,7 +342,7 @@ class HomeScreen extends ConsumerWidget {
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
 
-        _ref.watch(cityProvider(selectPref).notifier).clearCity();
+        await _ref.watch(cityProvider(selectPref).notifier).clearCity();
 
         await MuseumSearchDialog(
           context: _context,
