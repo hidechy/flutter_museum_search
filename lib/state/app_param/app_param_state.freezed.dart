@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AppParamState {
+  bool get citySelectFlag => throw _privateConstructorUsedError;
   bool get searchDisp => throw _privateConstructorUsedError;
-  bool get genreSearchStop => throw _privateConstructorUsedError;
   bool get searchFlag => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +31,7 @@ abstract class $AppParamStateCopyWith<$Res> {
           AppParamState value, $Res Function(AppParamState) then) =
       _$AppParamStateCopyWithImpl<$Res, AppParamState>;
   @useResult
-  $Res call({bool searchDisp, bool genreSearchStop, bool searchFlag});
+  $Res call({bool citySelectFlag, bool searchDisp, bool searchFlag});
 }
 
 /// @nodoc
@@ -47,18 +47,18 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? citySelectFlag = null,
     Object? searchDisp = null,
-    Object? genreSearchStop = null,
     Object? searchFlag = null,
   }) {
     return _then(_value.copyWith(
+      citySelectFlag: null == citySelectFlag
+          ? _value.citySelectFlag
+          : citySelectFlag // ignore: cast_nullable_to_non_nullable
+              as bool,
       searchDisp: null == searchDisp
           ? _value.searchDisp
           : searchDisp // ignore: cast_nullable_to_non_nullable
-              as bool,
-      genreSearchStop: null == genreSearchStop
-          ? _value.genreSearchStop
-          : genreSearchStop // ignore: cast_nullable_to_non_nullable
               as bool,
       searchFlag: null == searchFlag
           ? _value.searchFlag
@@ -76,7 +76,7 @@ abstract class _$$_AppParamStateCopyWith<$Res>
       __$$_AppParamStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool searchDisp, bool genreSearchStop, bool searchFlag});
+  $Res call({bool citySelectFlag, bool searchDisp, bool searchFlag});
 }
 
 /// @nodoc
@@ -90,18 +90,18 @@ class __$$_AppParamStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? citySelectFlag = null,
     Object? searchDisp = null,
-    Object? genreSearchStop = null,
     Object? searchFlag = null,
   }) {
     return _then(_$_AppParamState(
+      citySelectFlag: null == citySelectFlag
+          ? _value.citySelectFlag
+          : citySelectFlag // ignore: cast_nullable_to_non_nullable
+              as bool,
       searchDisp: null == searchDisp
           ? _value.searchDisp
           : searchDisp // ignore: cast_nullable_to_non_nullable
-              as bool,
-      genreSearchStop: null == genreSearchStop
-          ? _value.genreSearchStop
-          : genreSearchStop // ignore: cast_nullable_to_non_nullable
               as bool,
       searchFlag: null == searchFlag
           ? _value.searchFlag
@@ -115,23 +115,23 @@ class __$$_AppParamStateCopyWithImpl<$Res>
 
 class _$_AppParamState implements _AppParamState {
   const _$_AppParamState(
-      {this.searchDisp = false,
-      this.genreSearchStop = false,
+      {this.citySelectFlag = false,
+      this.searchDisp = false,
       this.searchFlag = false});
 
   @override
   @JsonKey()
-  final bool searchDisp;
+  final bool citySelectFlag;
   @override
   @JsonKey()
-  final bool genreSearchStop;
+  final bool searchDisp;
   @override
   @JsonKey()
   final bool searchFlag;
 
   @override
   String toString() {
-    return 'AppParamState(searchDisp: $searchDisp, genreSearchStop: $genreSearchStop, searchFlag: $searchFlag)';
+    return 'AppParamState(citySelectFlag: $citySelectFlag, searchDisp: $searchDisp, searchFlag: $searchFlag)';
   }
 
   @override
@@ -139,17 +139,17 @@ class _$_AppParamState implements _AppParamState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AppParamState &&
+            (identical(other.citySelectFlag, citySelectFlag) ||
+                other.citySelectFlag == citySelectFlag) &&
             (identical(other.searchDisp, searchDisp) ||
                 other.searchDisp == searchDisp) &&
-            (identical(other.genreSearchStop, genreSearchStop) ||
-                other.genreSearchStop == genreSearchStop) &&
             (identical(other.searchFlag, searchFlag) ||
                 other.searchFlag == searchFlag));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, searchDisp, genreSearchStop, searchFlag);
+      Object.hash(runtimeType, citySelectFlag, searchDisp, searchFlag);
 
   @JsonKey(ignore: true)
   @override
@@ -160,14 +160,14 @@ class _$_AppParamState implements _AppParamState {
 
 abstract class _AppParamState implements AppParamState {
   const factory _AppParamState(
-      {final bool searchDisp,
-      final bool genreSearchStop,
+      {final bool citySelectFlag,
+      final bool searchDisp,
       final bool searchFlag}) = _$_AppParamState;
 
   @override
-  bool get searchDisp;
+  bool get citySelectFlag;
   @override
-  bool get genreSearchStop;
+  bool get searchDisp;
   @override
   bool get searchFlag;
   @override

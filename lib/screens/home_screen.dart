@@ -3,28 +3,19 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/screens/alert/city_select_alert.dart';
-import 'package:museum_search/screens/alert/museum_search_dialog.dart';
-import 'package:museum_search/state/app_param/app_param_notifier.dart';
-import 'package:museum_search/state/city/city_notifier.dart';
-import 'package:museum_search/state/city/city_state.dart';
 
 import '../extensions/extensions.dart';
 import '../models/prefecture.dart';
+import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
-
+import '../state/city/city_notifier.dart';
+import '../state/genre/genre_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
-
 import '../state/prefecture/prefecture_notifier.dart';
+import 'alert/city_select_alert.dart';
+import 'alert/museum_search_dialog.dart';
 import 'map_screen.dart';
-
-//
-//
-// import '../state/genre/genre_notifier.dart';
-// import '../state/prefecture/prefecture_notifier.dart';
-//
-//
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -40,19 +31,7 @@ class HomeScreen extends ConsumerWidget {
 
     final appParamState = ref.watch(appParamProvider);
 
-    //
-    //
-    //
-    // final selectPref = ref.watch(
-    //   prefectureProvider.select((value) => value.selectPref),
-    // );
-    //
-    // final selectGenre = ref.watch(
-    //   genreProvider.select((value) => value.selectGenre),
-    // );
-    //
-    //
-    //
+    final latLngState = ref.watch(latLngProvider);
 
     return Scaffold(
       body: Column(
@@ -61,42 +40,67 @@ class HomeScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                onPressed: () async {
-                  await setSearchFlagFalse();
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  (latLngState.lat == 0 || latLngState.lng == 0)
+                      ? IconButton(
+                          onPressed: () async {
+                            await setSearchFlagFalse();
 
-                  await ref
-                      .read(appParamProvider.notifier)
-                      .setSearchDisp(searchDisp: !appParamState.searchDisp);
-                },
-                icon: (appParamState.searchDisp)
-                    ? const Icon(Icons.arrow_drop_up_outlined)
-                    : const Icon(Icons.arrow_drop_down_outlined),
+                            await getLocation();
+                          },
+                          icon: const Icon(Icons.location_on),
+                        )
+                      : IconButton(
+                          onPressed: () async {
+                            await setSearchFlagFalse();
+
+                            await _ref
+                                .watch(latLngProvider.notifier)
+                                .clearLatLng();
+                          },
+                          icon: const Icon(Icons.location_off),
+                        ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(latLngState.lat.toString()),
+                        Text(latLngState.lng.toString()),
+                      ],
+                    ),
+                  ),
+                ],
               ),
               Row(
                 children: [
+                  IconButton(
+                    onPressed: () async {
+                      await setSearchFlagFalse();
+
+                      await ref
+                          .read(appParamProvider.notifier)
+                          .setSearchDisp(searchDisp: !appParamState.searchDisp);
+
+                      await ref
+                          .read(appParamProvider.notifier)
+                          .setCitySelectFlag(citySelectFlag: false);
+
+                      await ref
+                          .watch(genreProvider.notifier)
+                          .getGenre(selectPref: '', selectCity: '');
+                    },
+                    icon: (appParamState.searchDisp)
+                        ? const Icon(Icons.arrow_drop_up_outlined)
+                        : const Icon(Icons.arrow_drop_down_outlined),
+                  ),
                   IconButton(
                     onPressed: () {
                       ref
                           .watch(appParamProvider.notifier)
                           .setSearchFlag(searchFlag: true);
-
-                      //
-                      //
-                      //
-                      // //---// 片方が空の場合、処理を中断する
-                      // if ((selectPref != '' && selectGenre == '') ||
-                      //     (selectPref == '' && selectGenre != '')) {
-                      //   ref
-                      //       .read(appParamProvider.notifier)
-                      //       .setGenreSearchStop(genreSearchStop: true);
-                      //
-                      //   return;
-                      // }
-                      // //---// 片方が空の場合、処理を中断する
-                      //
-                      //
-                      //
 
                       ref
                           .watch(artFacilityProvider.notifier)
@@ -294,34 +298,23 @@ class HomeScreen extends ConsumerWidget {
 
   ///
   Widget displaySearchBlock() {
-    final latLngState = _ref.watch(latLngProvider);
-
-    //
-    //
-    //
-    // final genreSearchStop =
-    //     _ref.watch(appParamProvider.select((value) => value.genreSearchStop));
-    //
-    //
-    //
+    var selectCityName = '';
 
     //------------------------//
-
-    var cityState = const CityState();
 
     var selectPref = Pref(prefCode: 0, prefName: '');
 
     final prefectureState = _ref.watch(prefectureProvider);
 
-    if (prefectureState.selectPrefCode != '') {
-      prefectureState.prefList.forEach((element) {
-        if (element.prefCode == prefectureState.selectPrefCode) {
-          selectPref = element;
-        }
-      });
+    prefectureState.prefList.forEach((element) {
+      if (element.prefCode == prefectureState.selectPrefCode) {
+        selectPref = element;
+      }
+    });
 
-      cityState = _ref.watch(cityProvider(selectPref));
-    }
+    selectCityName = _ref.watch(
+        cityProvider(selectPref).select((value) => value.selectCityName));
+
     //------------------------//
 
     ///
@@ -342,8 +335,6 @@ class HomeScreen extends ConsumerWidget {
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
 
-        await _ref.watch(cityProvider(selectPref).notifier).clearCity();
-
         await MuseumSearchDialog(
           context: _context,
           widget: CitySelectAlert(),
@@ -351,27 +342,21 @@ class HomeScreen extends ConsumerWidget {
       },
     );
 
-    //
-    // ///
-    // final genreState = _ref.watch(genreProvider);
-    // final genreDropDown = DropdownButton(
-    //   dropdownColor: Colors.pinkAccent.withOpacity(0.1),
-    //   iconEnabledColor: Colors.white,
-    //   items: genreState.genreList.map((e) {
-    //     return DropdownMenuItem(value: e, child: Text(e));
-    //   }).toList(),
-    //   value: genreState.selectGenre,
-    //   onChanged: (value) async {
-    //     await setSearchFlagFalse();
-    //
-    //     await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
-    //   },
-    // );
-    //
-    //
-    //
-    //
-    //
+    ///
+    final genreState = _ref.watch(genreProvider);
+    final genreDropDown = DropdownButton(
+      dropdownColor: Colors.pinkAccent.withOpacity(0.1),
+      iconEnabledColor: Colors.white,
+      items: genreState.genreList.map((e) {
+        return DropdownMenuItem(value: e, child: Text(e));
+      }).toList(),
+      value: genreState.selectGenre,
+      onChanged: (value) async {
+        await setSearchFlagFalse();
+
+        await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
+      },
+    );
 
     return Container(
       padding: const EdgeInsets.all(5),
@@ -385,101 +370,19 @@ class HomeScreen extends ConsumerWidget {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () async {
-                      await setSearchFlagFalse();
-
-                      //
-                      //
-                      //
-                      //
-                      // await _ref.watch(prefectureProvider.notifier).clearPref();
-                      //
-                      // await _ref.watch(genreProvider.notifier).clearGenre();
-                      //
-                      //
-                      //
-
-                      await getLocation();
-                    },
-                    icon: const Icon(Icons.location_on),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await setSearchFlagFalse();
-
-                      await _ref.watch(latLngProvider.notifier).clearLatLng();
-
-                      //
-                      //
-                      //
-                      // await _ref.watch(prefectureProvider.notifier).clearPref();
-                      //
-                      // await _ref.watch(genreProvider.notifier).clearGenre();
-                      //
-                      //
-                      //
-                    },
-                    icon: const Icon(Icons.location_off),
-                  ),
+                  prefDropDown,
+                  const SizedBox(width: 20),
+                  Text(selectCityName),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.only(right: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(latLngState.lat.toString()),
-                    const Text(' / '),
-                    Text(latLngState.lng.toString()),
-                  ],
-                ),
-              ),
+              Container(),
             ],
-          ),
-          Divider(
-            color: Colors.white.withOpacity(0.2),
-            thickness: 2,
-            indent: 20,
-            endIndent: 20,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  prefDropDown,
-                  const SizedBox(width: 20),
-
-                  Text(cityState.selectCityName),
-
-                  // genreDropDown,
-                  //
-                  //
-                  //
-                ],
-              ),
-              Container(
-
-                  //
-                  //
-                  //
-                  //
-                  // child: genreSearchStop
-                  //     ? const Text(
-                  //         '両方選択してください。',
-                  //         style: TextStyle(
-                  //           color: Colors.yellowAccent,
-                  //           fontSize: 10,
-                  //         ),
-                  //       )
-                  //     : const Text(''),
-                  //
-                  //
-                  //
-                  //
-
-                  ),
+              genreDropDown,
+              Container(),
             ],
           ),
         ],

@@ -1,11 +1,13 @@
-// ignore_for_file: must_be_immutable, unnecessary_null_comparison
+// ignore_for_file: must_be_immutable, unnecessary_null_comparison, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../extensions/extensions.dart';
 import '../../models/prefecture.dart';
+import '../../state/app_param/app_param_notifier.dart';
 import '../../state/city/city_notifier.dart';
+import '../../state/genre/genre_notifier.dart';
 import '../../state/prefecture/prefecture_notifier.dart';
 
 class CitySelectAlert extends ConsumerWidget {
@@ -71,18 +73,6 @@ class CitySelectAlert extends ConsumerWidget {
       );
     });
 
-    /*
-
-
-      int prefCode;
-  String cityCode;
-  String cityName;
-  String bigCityFlag;
-  int count;
-
-
-    */
-
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,10 +92,19 @@ class CitySelectAlert extends ConsumerWidget {
       padding: const EdgeInsets.only(bottom: 20),
       child: (count > 0)
           ? GestureDetector(
-              onTap: () {
-                _ref
+              onTap: () async {
+                await _ref
+                    .read(appParamProvider.notifier)
+                    .setCitySelectFlag(citySelectFlag: true);
+
+                await _ref
                     .watch(cityProvider(selectPref).notifier)
                     .selectCity(cityCode: cityCode, cityName: cityName);
+
+                await _ref.watch(genreProvider.notifier).getGenre(
+                      selectPref: selectPref.prefName,
+                      selectCity: cityName,
+                    );
 
                 Navigator.pop(_context);
               },

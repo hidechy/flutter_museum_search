@@ -1,13 +1,14 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/extensions/extensions.dart';
-import 'package:museum_search/models/city.dart';
-import 'package:museum_search/models/prefecture.dart';
 
 import '../../data/http/client.dart';
 import '../../data/http/path.dart';
+import '../../extensions/extensions.dart';
+import '../../models/city.dart';
+import '../../models/prefecture.dart';
 import '../../utility/utility.dart';
+import '../app_param/app_param_notifier.dart';
 import 'city_state.dart';
 
 ////////////////////////////////////////////////
@@ -17,7 +18,14 @@ final cityProvider = StateNotifierProvider.autoDispose
 
   final utility = Utility();
 
-  return CityNotifier(const CityState(), client, utility)..getCity(pref: pref);
+  final appParamState = ref.watch(appParamProvider);
+
+  if (appParamState.citySelectFlag) {
+    return CityNotifier(const CityState(), client, utility);
+  } else {
+    return CityNotifier(const CityState(), client, utility)
+      ..getCity(pref: pref);
+  }
 });
 
 class CityNotifier extends StateNotifier<CityState> {
@@ -38,7 +46,15 @@ class CityNotifier extends StateNotifier<CityState> {
       final list = <CityData>[];
 
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
-        list.add(CityData.fromJson(value['data'][i] as Map<String, dynamic>));
+        list.add(
+          CityData(
+            prefCode: value['data'][i]['prefCode'].toString().toInt(),
+            cityCode: value['data'][i]['cityCode'].toString(),
+            cityName: value['data'][i]['cityName'].toString(),
+            bigCityFlag: value['data'][i]['bigCityFlag'].toString(),
+            count: value['data'][i]['count'].toString().toInt(),
+          ),
+        );
       }
 
       state = state.copyWith(cityList: list);
