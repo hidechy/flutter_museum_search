@@ -106,6 +106,8 @@ class CitySelectAlert extends ConsumerWidget {
                 _ref
                     .watch(cityProvider(selectPref).notifier)
                     .selectCity(cityCode: cityCode, cityName: cityName);
+
+                Navigator.pop(_context);
               },
               child: Text('$cityName（$count）'),
             )

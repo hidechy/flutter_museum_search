@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, use_build_context_synchronously
+// ignore_for_file: must_be_immutable, use_build_context_synchronously, unrelated_type_equality_checks
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -6,8 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:museum_search/screens/alert/city_select_alert.dart';
 import 'package:museum_search/screens/alert/museum_search_dialog.dart';
 import 'package:museum_search/state/app_param/app_param_notifier.dart';
+import 'package:museum_search/state/city/city_notifier.dart';
+import 'package:museum_search/state/city/city_state.dart';
 
 import '../extensions/extensions.dart';
+import '../models/prefecture.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 
 import '../state/lat_lng/lat_lng_notifier.dart';
@@ -302,8 +305,26 @@ class HomeScreen extends ConsumerWidget {
     //
     //
 
-    ///
+    //------------------------//
+
+    var cityState = CityState();
+
+    var selectPref = Pref(prefCode: 0, prefName: '');
+
     final prefectureState = _ref.watch(prefectureProvider);
+
+    if (prefectureState.selectPrefCode != '') {
+      prefectureState.prefList.forEach((element) {
+        if (element.prefCode == prefectureState.selectPrefCode) {
+          selectPref = element;
+        }
+      });
+
+      cityState = _ref.watch(cityProvider(selectPref));
+    }
+    //------------------------//
+
+    ///
     final prefDropDown = DropdownButton(
       dropdownColor: Colors.pinkAccent.withOpacity(0.1),
       iconEnabledColor: Colors.white,
@@ -320,6 +341,8 @@ class HomeScreen extends ConsumerWidget {
         await _ref
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
+
+        _ref.watch(cityProvider(selectPref).notifier).clearCity();
 
         await MuseumSearchDialog(
           context: _context,
@@ -427,6 +450,9 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   prefDropDown,
                   const SizedBox(width: 20),
+
+                  Text(cityState.selectCityName),
+
                   // genreDropDown,
                   //
                   //
