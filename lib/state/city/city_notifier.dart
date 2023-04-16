@@ -3,6 +3,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:museum_search/extensions/extensions.dart';
 import 'package:museum_search/models/city.dart';
+import 'package:museum_search/models/prefecture.dart';
 
 import '../../data/http/client.dart';
 import '../../data/http/path.dart';
@@ -10,13 +11,13 @@ import '../../utility/utility.dart';
 import 'city_state.dart';
 
 ////////////////////////////////////////////////
-final cityProvider =
-    StateNotifierProvider.autoDispose<CityNotifier, CityState>((ref) {
+final cityProvider = StateNotifierProvider.autoDispose
+    .family<CityNotifier, CityState, Pref>((ref, pref) {
   final client = ref.read(httpClientProvider);
 
   final utility = Utility();
 
-  return CityNotifier(const CityState(), client, utility);
+  return CityNotifier(const CityState(), client, utility)..getCity(pref: pref);
 });
 
 class CityNotifier extends StateNotifier<CityState> {
@@ -26,11 +27,13 @@ class CityNotifier extends StateNotifier<CityState> {
   final Utility utility;
 
   ///
-  Future<void> getCity(
-      {required int prefCode, required String prefecture}) async {
+  Future<void> getCity({required Pref pref}) async {
     await client.post(
       path: APIPath.getArtCity,
-      body: {'prefCode': prefCode, 'prefecture': prefecture},
+      body: {
+        'prefCode': pref.prefCode,
+        'prefecture': pref.prefName,
+      },
     ).then((value) {
       final list = <CityData>[];
 
@@ -42,6 +45,17 @@ class CityNotifier extends StateNotifier<CityState> {
     }).catchError((error, _) {
       utility.showError('予期せぬエラーが発生しました');
     });
+  }
+
+  ///
+  Future<void> selectCity(
+      {required String cityCode, required String cityName}) async {
+    state = state.copyWith(selectCityCode: cityCode, selectCityName: cityName);
+  }
+
+  ///
+  Future<void> clearCity() async {
+    state = state.copyWith(selectCityCode: '', selectCityName: '');
   }
 }
 

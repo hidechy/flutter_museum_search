@@ -1,8 +1,10 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/screens/alert/city_select_alert.dart';
+import 'package:museum_search/screens/alert/museum_search_dialog.dart';
 import 'package:museum_search/state/app_param/app_param_notifier.dart';
 
 import '../extensions/extensions.dart';
@@ -318,6 +320,11 @@ class HomeScreen extends ConsumerWidget {
         await _ref
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
+
+        await MuseumSearchDialog(
+          context: _context,
+          widget: CitySelectAlert(),
+        );
       },
     );
 
