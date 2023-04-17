@@ -38,6 +38,8 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(height: 50),
           Row(
             children: [
+              //
+
               IconButton(
                 onPressed: () async {
                   await setSearchFlagFalse();
@@ -60,33 +62,9 @@ class HomeScreen extends ConsumerWidget {
                         color: Colors.lightBlueAccent,
                       ),
               ),
-              IconButton(
-                onPressed: () {
-                  //都道府県選択時
-                  if (prefectureState.selectPrefCode > 0) {
-                    if (latLngState.lat > 0 || latLngState.lng > 0) {
-                      ref.watch(appParamProvider.notifier).setSearchErrorFlag(
-                            searchErrorMessage: '都道府県での検索を\n優先します。',
-                          );
-                    }
 
-                    if (cityState.selectCityCode == '') {
-                      ref.watch(appParamProvider.notifier).setSearchErrorFlag(
-                            searchErrorMessage: '都道府県設定時は\n市区町村も\n入力してください。',
-                          );
+              //
 
-                      return;
-                    }
-                  }
-
-                  ref
-                      .watch(appParamProvider.notifier)
-                      .setSearchFlag(searchFlag: true);
-
-                  ref.watch(artFacilityProvider.notifier).getArtFacilities();
-                },
-                icon: const Icon(Icons.search, color: Colors.yellowAccent),
-              ),
               Expanded(
                 child: Row(
                   children: [
@@ -122,17 +100,60 @@ class HomeScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MapScreen(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.map),
+
+              //
+
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      //都道府県選択時
+                      if (prefectureState.selectPrefCode > 0) {
+                        if (latLngState.lat > 0 || latLngState.lng > 0) {
+                          ref
+                              .watch(appParamProvider.notifier)
+                              .setSearchErrorFlag(
+                                searchErrorMessage: '都道府県での検索を\n優先します。',
+                              );
+                        }
+
+                        if (cityState.selectCityCode == '') {
+                          ref
+                              .watch(appParamProvider.notifier)
+                              .setSearchErrorFlag(
+                                searchErrorMessage:
+                                    '都道府県設定時は\n市区町村も\n入力してください。',
+                              );
+
+                          return;
+                        }
+                      }
+
+                      ref
+                          .watch(appParamProvider.notifier)
+                          .setSearchFlag(searchFlag: true);
+
+                      ref
+                          .watch(artFacilityProvider.notifier)
+                          .getArtFacilities();
+                    },
+                    icon: const Icon(Icons.search),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MapScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.map),
+                  ),
+                ],
               ),
+
+              //
             ],
           ),
           const Divider(color: Colors.black, thickness: 2),
