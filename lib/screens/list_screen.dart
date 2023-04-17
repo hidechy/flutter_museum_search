@@ -1,5 +1,6 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
+import 'package:museum_search/extensions/extensions.dart';
 
 import '../models/art_facility.dart';
 import 'component/facility_card.dart';
@@ -17,6 +18,8 @@ class _ListScreenState extends State<ListScreen> {
   List<DragAndDropItem> selectedArtFacilities = [];
   List<DragAndDropList> ddList = [];
 
+  List<int> orderList = [];
+
   ///
   @override
   void initState() {
@@ -26,6 +29,7 @@ class _ListScreenState extends State<ListScreen> {
       selectedArtFacilities.add(
         DragAndDropItem(
           child: FacilityCard(
+            key: Key(element.id.toString()),
             dist: element.dist,
             latitude: element.latitude,
             longitude: element.longitude,
@@ -94,8 +98,28 @@ class _ListScreenState extends State<ListScreen> {
 
       ddList[newListIndex].children.insert(newItemIndex, movedItem);
     });
+
+    settingReorderIds();
   }
 
   ///
   void listReorder(int oldListIndex, int newListIndex) {}
+
+  ///
+  void settingReorderIds() {
+    orderList = [];
+
+    for (final value in ddList) {
+      for (final child in value.children) {
+        orderList.add(child.child.key
+            .toString()
+            .replaceAll('[', '')
+            .replaceAll('<', '')
+            .replaceAll("'", "")
+            .replaceAll('>', '')
+            .replaceAll(']', '')
+            .toInt());
+      }
+    }
+  }
 }
