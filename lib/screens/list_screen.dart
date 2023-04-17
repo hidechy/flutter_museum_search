@@ -1,24 +1,27 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/state/lat_lng/lat_lng_notifier.dart';
+import 'package:museum_search/state/lat_lng_address/lat_lng_address_notifier.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 import 'component/facility_card.dart';
 
-class ListScreen extends StatefulWidget {
+class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key, required this.list});
 
   final List<Facility> list;
 
   @override
-  State<ListScreen> createState() => _ListScreenState();
+  ConsumerState<ListScreen> createState() => _ListScreenState();
 }
 
-class _ListScreenState extends State<ListScreen> {
+class _ListScreenState extends ConsumerState<ListScreen> {
   List<DragAndDropItem> selectedArtFacilities = [];
   List<DragAndDropList> ddList = [];
 
-  List<int> orderList = [];
+  List<int> orderedIdList = [];
 
   ///
   @override
@@ -51,6 +54,10 @@ class _ListScreenState extends State<ListScreen> {
   ///
   @override
   Widget build(BuildContext context) {
+    final latLngState = ref.watch(latLngProvider);
+
+    final latLngAddressState = ref.watch(latLngAddressProvider);
+
     return Scaffold(
       body: Column(
         children: [
@@ -66,6 +73,40 @@ class _ListScreenState extends State<ListScreen> {
                 icon: const Icon(Icons.close),
               ),
             ],
+          ),
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.blueAccent.withOpacity(0.1),
+            ),
+            child: DefaultTextStyle(
+              style: const TextStyle(fontSize: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        '現在地',
+                        style: TextStyle(color: Colors.yellowAccent),
+                      ),
+                      Text('${latLngState.lat} / ${latLngState.lng}'),
+                    ],
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      '${latLngAddressState.city}${latLngAddressState.town}',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: Colors.black,
+            thickness: 2,
           ),
           Expanded(
             child: MediaQuery.removePadding(
@@ -111,11 +152,11 @@ class _ListScreenState extends State<ListScreen> {
 
   ///
   void settingReorderIds() {
-    orderList = [];
+    orderedIdList = [];
 
     for (final value in ddList) {
       for (final child in value.children) {
-        orderList.add(child.child.key
+        orderedIdList.add(child.child.key
             .toString()
             .replaceAll('[', '')
             .replaceAll('<', '')
@@ -130,5 +171,7 @@ class _ListScreenState extends State<ListScreen> {
   ///
   void routesButtonPress({required int id}) {
     print(id);
+
+    print(orderedIdList);
   }
 }

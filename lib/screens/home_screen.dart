@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/state/lat_lng_address/lat_lng_address_notifier.dart';
+import 'package:museum_search/state/lat_lng_address/lat_lng_address_request_state.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -164,12 +166,21 @@ class HomeScreen extends ConsumerWidget {
                           message: '並び替えるために2つ以上の施設を選択してください。',
                         );
                       } else {
+                        await ref
+                            .watch(latLngAddressProvider.notifier)
+                            .getLatLngAddress(
+                              param: LatLngAddressRequestState(
+                                latitude: latLngState.lat.toString(),
+                                longitude: latLngState.lng.toString(),
+                              ),
+                            );
+
+                        //-------------//
                         final selectedArtFacilities = <Facility>[];
-                        artFacilityState.allList.forEach((element) {
-                          if (artFacilityState.selectIdList
-                              .contains(element.id)) {
-                            selectedArtFacilities.add(element);
-                          }
+                        artFacilityState.selectIdList.forEach((element) {
+                          selectedArtFacilities.add(
+                            artFacilityState.facilityMap[element]!,
+                          );
                         });
 
                         await Navigator.push(
@@ -179,6 +190,7 @@ class HomeScreen extends ConsumerWidget {
                                 ListScreen(list: selectedArtFacilities),
                           ),
                         );
+                        //-------------//
                       }
                     },
                     icon: const Icon(Icons.list),
