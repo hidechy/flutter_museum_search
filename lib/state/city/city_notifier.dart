@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/state/genre/genre_notifier.dart';
+import 'package:museum_search/state/prefecture/prefecture_notifier.dart';
 
 import '../../data/http/client.dart';
 import '../../data/http/path.dart';
@@ -18,17 +20,30 @@ final cityProvider = StateNotifierProvider<CityNotifier, CityState>((ref) {
 
   final utility = Utility();
 
-  return CityNotifier(const CityState(), client, utility);
+  final prefList =
+      ref.watch(prefectureProvider.select((value) => value.prefList));
+
+  return CityNotifier(const CityState(), client, utility, prefList, ref: ref);
 });
 
 class CityNotifier extends StateNotifier<CityState> {
-  CityNotifier(super.state, this.client, this.utility);
+  CityNotifier(super.state, this.client, this.utility, this.prefList,
+      {required this.ref});
 
   final HttpClient client;
   final Utility utility;
+  final List<PrefectureData> prefList;
+
+  final StateNotifierProviderRef<CityNotifier, CityState> ref;
 
   ///
-  Future<void> getCity({required Pref pref}) async {
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  ///
+  Future<void> getCity({required PrefectureData pref}) async {
     await client.post(
       path: APIPath.getArtCity,
       body: {
@@ -64,6 +79,33 @@ class CityNotifier extends StateNotifier<CityState> {
 
   ///
   Future<void> selectCity({required String cityCode}) async {
+    ////////////////////////////////////////////////
+    final cityList = [...state.cityList];
+
+    var cityName = '';
+    var prefCode = 0;
+
+    cityList.forEach((element) {
+      if (element.cityCode == cityCode) {
+        cityName = element.cityName;
+        prefCode = element.prefCode;
+      }
+    });
+    ////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////
+    var prefName = '';
+    prefList.forEach((element) {
+      if (element.prefCode == prefCode) {
+        prefName = element.prefName;
+      }
+    });
+    ////////////////////////////////////////////////
+
+    await ref
+        .watch(genreProvider.notifier)
+        .getGenre(prefName: prefName, cityName: cityName);
+
     state = state.copyWith(selectCityCode: cityCode);
   }
 

@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PrefectureState {
 //
-  List<Pref> get prefList => throw _privateConstructorUsedError; //
+  List<PrefectureData> get prefList => throw _privateConstructorUsedError; //
   int get selectPrefCode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,8 +30,9 @@ abstract class $PrefectureStateCopyWith<$Res> {
   factory $PrefectureStateCopyWith(
           PrefectureState value, $Res Function(PrefectureState) then) =
       _$PrefectureStateCopyWithImpl<$Res, PrefectureState>;
+
   @useResult
-  $Res call({List<Pref> prefList, int selectPrefCode});
+  $Res call({List<PrefectureData> prefList, int selectPrefCode});
 }
 
 /// @nodoc
@@ -41,6 +42,7 @@ class _$PrefectureStateCopyWithImpl<$Res, $Val extends PrefectureState>
 
   // ignore: unused_field
   final $Val _value;
+
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -54,7 +56,7 @@ class _$PrefectureStateCopyWithImpl<$Res, $Val extends PrefectureState>
       prefList: null == prefList
           ? _value.prefList
           : prefList // ignore: cast_nullable_to_non_nullable
-              as List<Pref>,
+              as List<PrefectureData>,
       selectPrefCode: null == selectPrefCode
           ? _value.selectPrefCode
           : selectPrefCode // ignore: cast_nullable_to_non_nullable
@@ -69,9 +71,10 @@ abstract class _$$_PrefectureStateCopyWith<$Res>
   factory _$$_PrefectureStateCopyWith(
           _$_PrefectureState value, $Res Function(_$_PrefectureState) then) =
       __$$_PrefectureStateCopyWithImpl<$Res>;
+
   @override
   @useResult
-  $Res call({List<Pref> prefList, int selectPrefCode});
+  $Res call({List<PrefectureData> prefList, int selectPrefCode});
 }
 
 /// @nodoc
@@ -92,7 +95,7 @@ class __$$_PrefectureStateCopyWithImpl<$Res>
       prefList: null == prefList
           ? _value._prefList
           : prefList // ignore: cast_nullable_to_non_nullable
-              as List<Pref>,
+              as List<PrefectureData>,
       selectPrefCode: null == selectPrefCode
           ? _value.selectPrefCode
           : selectPrefCode // ignore: cast_nullable_to_non_nullable
@@ -105,15 +108,16 @@ class __$$_PrefectureStateCopyWithImpl<$Res>
 
 class _$_PrefectureState implements _PrefectureState {
   const _$_PrefectureState(
-      {final List<Pref> prefList = const [], this.selectPrefCode = 0})
+      {final List<PrefectureData> prefList = const [], this.selectPrefCode = 0})
       : _prefList = prefList;
 
 //
-  final List<Pref> _prefList;
+  final List<PrefectureData> _prefList;
+
 //
   @override
   @JsonKey()
-  List<Pref> get prefList {
+  List<PrefectureData> get prefList {
     if (_prefList is EqualUnmodifiableListView) return _prefList;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_prefList);
@@ -152,13 +156,15 @@ class _$_PrefectureState implements _PrefectureState {
 
 abstract class _PrefectureState implements PrefectureState {
   const factory _PrefectureState(
-      {final List<Pref> prefList,
+      {final List<PrefectureData> prefList,
       final int selectPrefCode}) = _$_PrefectureState;
 
   @override //
-  List<Pref> get prefList;
+  List<PrefectureData> get prefList;
+
   @override //
   int get selectPrefCode;
+
   @override
   @JsonKey(ignore: true)
   _$$_PrefectureStateCopyWith<_$_PrefectureState> get copyWith =>

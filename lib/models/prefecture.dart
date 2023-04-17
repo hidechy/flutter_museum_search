@@ -21,13 +21,13 @@ class Prefecture {
 
   factory Prefecture.fromJson(Map<String, dynamic> json) => Prefecture(
         message: json['message'],
-        result: List<Pref>.from(
-            json['result'].map((x) => Pref.fromJson(x as Map<String, dynamic>))
-                as Iterable<dynamic>),
+        result: List<PrefectureData>.from(json['result']
+                .map((x) => PrefectureData.fromJson(x as Map<String, dynamic>))
+            as Iterable<dynamic>),
       );
 
   dynamic message;
-  List<Pref> result;
+  List<PrefectureData> result;
 
   Map<String, dynamic> toJson() => {
         'message': message,
@@ -35,13 +35,13 @@ class Prefecture {
       };
 }
 
-class Pref {
-  Pref({
+class PrefectureData {
+  PrefectureData({
     required this.prefCode,
     required this.prefName,
   });
 
-  factory Pref.fromJson(Map<String, dynamic> json) => Pref(
+  factory PrefectureData.fromJson(Map<String, dynamic> json) => PrefectureData(
         prefCode: json['prefCode'].toString().toInt(),
         prefName: json['prefName'].toString(),
       );

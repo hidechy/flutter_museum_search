@@ -8,7 +8,7 @@ part 'prefecture_state.freezed.dart';
 class PrefectureState with _$PrefectureState {
   const factory PrefectureState({
     //
-    @Default([]) List<Pref> prefList,
+    @Default([]) List<PrefectureData> prefList,
     //
     @Default(0) int selectPrefCode,
   }) = _PrefectureState;

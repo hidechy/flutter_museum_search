@@ -9,9 +9,9 @@ import 'prefecture_state.dart';
 
 //////////////////////////////////////////////////////
 
+// TODO autoDisposeを外している
 final prefectureProvider =
-    StateNotifierProvider.autoDispose<PrefectureNotifier, PrefectureState>(
-        (ref) {
+    StateNotifierProvider<PrefectureNotifier, PrefectureState>((ref) {
   return PrefectureNotifier(
     const PrefectureState(),
     ref: ref,
@@ -21,8 +21,13 @@ final prefectureProvider =
 class PrefectureNotifier extends StateNotifier<PrefectureState> {
   PrefectureNotifier(super.state, {required this.ref});
 
-  final AutoDisposeStateNotifierProviderRef<PrefectureNotifier, PrefectureState>
-      ref;
+  final StateNotifierProviderRef<PrefectureNotifier, PrefectureState> ref;
+
+  ///
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   ///
   Future<void> getPrefecture() async {
@@ -36,9 +41,9 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
 
       final prefecture = prefectureFromJson(response.body);
 
-      final list = <Pref>[];
+      final list = <PrefectureData>[];
 
-      list.add(Pref(prefCode: 0, prefName: ''));
+      list.add(PrefectureData(prefCode: 0, prefName: ''));
 
       prefecture.result.forEach(list.add);
 
@@ -53,7 +58,7 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
     //-----------------------------------------//
     final prefList = [...state.prefList];
 
-    var selectPref = Pref(prefCode: 0, prefName: '');
+    var selectPref = PrefectureData(prefCode: 0, prefName: '');
     prefList.forEach((element) {
       if (element.prefCode == prefCode) {
         selectPref = element;

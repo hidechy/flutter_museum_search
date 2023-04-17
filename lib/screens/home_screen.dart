@@ -8,18 +8,11 @@ import '../extensions/extensions.dart';
 import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 import '../state/city/city_notifier.dart';
+import '../state/genre/genre_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
 import '../state/prefecture/prefecture_notifier.dart';
 import 'map_screen.dart';
-
-//
-// import '../state/city/city_notifier.dart';
-// import '../state/genre/genre_notifier.dart';
-//
-// import 'alert/city_select_alert.dart';
-// import 'alert/museum_search_dialog.dart';
-//
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -92,14 +85,9 @@ class HomeScreen extends ConsumerWidget {
                           .read(appParamProvider.notifier)
                           .setCitySelectFlag(citySelectFlag: false);
 
-                      //
-                      //
-                      // await ref
-                      //     .watch(genreProvider.notifier)
-                      //     .getGenre(selectPref: '', selectCity: '');
-                      //
-                      //
-                      //
+                      await ref
+                          .watch(genreProvider.notifier)
+                          .getGenre(prefName: '', cityName: '');
                     },
                     icon: (appParamState.searchDisp)
                         ? const Icon(Icons.arrow_drop_up_outlined)
@@ -309,6 +297,7 @@ class HomeScreen extends ConsumerWidget {
   Widget displaySearchBlock() {
     final prefectureState = _ref.watch(prefectureProvider);
     final cityState = _ref.watch(cityProvider);
+    final genreState = _ref.watch(genreProvider);
 
     ///
     final prefDropDown = DropdownButton(
@@ -319,7 +308,7 @@ class HomeScreen extends ConsumerWidget {
           value: e.prefCode,
           child: Text(
             e.prefName,
-            style: TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 12),
           ),
         );
       }).toList(),
@@ -330,13 +319,6 @@ class HomeScreen extends ConsumerWidget {
         await _ref
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
-
-        //
-        // await MuseumSearchDialog(
-        //   context: _context,
-        //   widget: CitySelectAlert(),
-        // );
-        //
       },
     );
 
@@ -349,12 +331,12 @@ class HomeScreen extends ConsumerWidget {
           value: e.cityCode,
           child: (e.cityName == '')
               ? Text(
-                  '${e.cityName}',
-                  style: TextStyle(fontSize: 12),
+                  e.cityName,
+                  style: const TextStyle(fontSize: 12),
                 )
               : Text(
                   '${e.cityName}（${e.count}）',
-                  style: TextStyle(fontSize: 12),
+                  style: const TextStyle(fontSize: 12),
                 ),
         );
       }).toList(),
@@ -364,120 +346,38 @@ class HomeScreen extends ConsumerWidget {
       },
     );
 
+    ///
+    final genreDropDown = DropdownButton(
+      dropdownColor: Colors.pinkAccent.withOpacity(0.1),
+      iconEnabledColor: Colors.white,
+      items: genreState.genreList.map((e) {
+        return DropdownMenuItem(
+          value: e,
+          child: Text(
+            e,
+            style: const TextStyle(fontSize: 12),
+          ),
+        );
+      }).toList(),
+      value: genreState.selectGenre,
+      onChanged: (value) async {
+        await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
+      },
+    );
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             prefDropDown,
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             cityDropDown,
           ],
         ),
+        genreDropDown,
       ],
     );
-
-    //
-    //
-    //
-    //
-    //
-    // var selectCityName = '';
-    //
-    // //------------------------//
-    //
-    // var selectPref = Pref(prefCode: 0, prefName: '');
-    //
-    // final prefectureState = _ref.watch(prefectureProvider);
-    //
-    // prefectureState.prefList.forEach((element) {
-    //   if (element.prefCode == prefectureState.selectPrefCode) {
-    //     selectPref = element;
-    //   }
-    // });
-    //
-    // selectCityName = _ref.watch(
-    //     cityProvider(selectPref).select((value) => value.selectCityName));
-    //
-    // //------------------------//
-    //
-    // ///
-    // final prefDropDown = DropdownButton(
-    //   dropdownColor: Colors.pinkAccent.withOpacity(0.1),
-    //   iconEnabledColor: Colors.white,
-    //   items: prefectureState.prefList.map((e) {
-    //     return DropdownMenuItem(
-    //       value: e.prefCode,
-    //       child: Text(e.prefName),
-    //     );
-    //   }).toList(),
-    //   value: prefectureState.selectPrefCode,
-    //   onChanged: (value) async {
-    //     await setSearchFlagFalse();
-    //
-    //     await _ref
-    //         .watch(prefectureProvider.notifier)
-    //         .selectPref(prefCode: value!);
-    //
-    //     await MuseumSearchDialog(
-    //       context: _context,
-    //       widget: CitySelectAlert(),
-    //     );
-    //   },
-    // );
-    //
-    // ///
-    // final genreState = _ref.watch(genreProvider);
-    // final genreDropDown = DropdownButton(
-    //   dropdownColor: Colors.pinkAccent.withOpacity(0.1),
-    //   iconEnabledColor: Colors.white,
-    //   items: genreState.genreList.map((e) {
-    //     return DropdownMenuItem(value: e, child: Text(e));
-    //   }).toList(),
-    //   value: genreState.selectGenre,
-    //   onChanged: (value) async {
-    //     await setSearchFlagFalse();
-    //
-    //     await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
-    //   },
-    // );
-    //
-    // return Container(
-    //   padding: const EdgeInsets.all(5),
-    //   decoration: BoxDecoration(
-    //     color: Colors.blueAccent.withOpacity(0.1),
-    //   ),
-    //   child: Column(
-    //     children: [
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           Row(
-    //             children: [
-    //               prefDropDown,
-    //               const SizedBox(width: 20),
-    //               Text(selectCityName),
-    //             ],
-    //           ),
-    //           Container(),
-    //         ],
-    //       ),
-    //       Row(
-    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //         children: [
-    //           genreDropDown,
-    //           Container(),
-    //         ],
-    //       ),
-    //     ],
-    //   ),
-    // );
-    //
-    //
-    //
-    //
-    //
-    //
-    //
   }
 
   ///
