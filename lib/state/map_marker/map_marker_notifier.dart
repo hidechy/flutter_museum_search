@@ -1,10 +1,10 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/art_facility/art_facility_result_state.dart';
 
 import '../../extensions/extensions.dart';
 import '../../models/art_facility.dart';
 import '../art_facility/art_facility_notifier.dart';
+import '../art_facility/art_facility_result_state.dart';
 import '../lat_lng/lat_lng_notifier.dart';
 import '../lat_lng/lat_lng_response_state.dart';
 import 'map_marker_state.dart';

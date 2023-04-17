@@ -16,9 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AppParamState {
-  bool get citySelectFlag => throw _privateConstructorUsedError;
-  bool get searchDisp => throw _privateConstructorUsedError;
-  bool get searchFlag => throw _privateConstructorUsedError;
+//
+  bool get searchDisp => throw _privateConstructorUsedError; //
+  bool get searchFlag => throw _privateConstructorUsedError; //
+  bool get searchErrorFlag => throw _privateConstructorUsedError;
+  String get searchErrorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppParamStateCopyWith<AppParamState> get copyWith =>
@@ -31,7 +33,11 @@ abstract class $AppParamStateCopyWith<$Res> {
           AppParamState value, $Res Function(AppParamState) then) =
       _$AppParamStateCopyWithImpl<$Res, AppParamState>;
   @useResult
-  $Res call({bool citySelectFlag, bool searchDisp, bool searchFlag});
+  $Res call(
+      {bool searchDisp,
+      bool searchFlag,
+      bool searchErrorFlag,
+      String searchErrorMessage});
 }
 
 /// @nodoc
@@ -47,15 +53,12 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? citySelectFlag = null,
     Object? searchDisp = null,
     Object? searchFlag = null,
+    Object? searchErrorFlag = null,
+    Object? searchErrorMessage = null,
   }) {
     return _then(_value.copyWith(
-      citySelectFlag: null == citySelectFlag
-          ? _value.citySelectFlag
-          : citySelectFlag // ignore: cast_nullable_to_non_nullable
-              as bool,
       searchDisp: null == searchDisp
           ? _value.searchDisp
           : searchDisp // ignore: cast_nullable_to_non_nullable
@@ -64,6 +67,14 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
           ? _value.searchFlag
           : searchFlag // ignore: cast_nullable_to_non_nullable
               as bool,
+      searchErrorFlag: null == searchErrorFlag
+          ? _value.searchErrorFlag
+          : searchErrorFlag // ignore: cast_nullable_to_non_nullable
+              as bool,
+      searchErrorMessage: null == searchErrorMessage
+          ? _value.searchErrorMessage
+          : searchErrorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -76,7 +87,11 @@ abstract class _$$_AppParamStateCopyWith<$Res>
       __$$_AppParamStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool citySelectFlag, bool searchDisp, bool searchFlag});
+  $Res call(
+      {bool searchDisp,
+      bool searchFlag,
+      bool searchErrorFlag,
+      String searchErrorMessage});
 }
 
 /// @nodoc
@@ -90,15 +105,12 @@ class __$$_AppParamStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? citySelectFlag = null,
     Object? searchDisp = null,
     Object? searchFlag = null,
+    Object? searchErrorFlag = null,
+    Object? searchErrorMessage = null,
   }) {
     return _then(_$_AppParamState(
-      citySelectFlag: null == citySelectFlag
-          ? _value.citySelectFlag
-          : citySelectFlag // ignore: cast_nullable_to_non_nullable
-              as bool,
       searchDisp: null == searchDisp
           ? _value.searchDisp
           : searchDisp // ignore: cast_nullable_to_non_nullable
@@ -107,6 +119,14 @@ class __$$_AppParamStateCopyWithImpl<$Res>
           ? _value.searchFlag
           : searchFlag // ignore: cast_nullable_to_non_nullable
               as bool,
+      searchErrorFlag: null == searchErrorFlag
+          ? _value.searchErrorFlag
+          : searchErrorFlag // ignore: cast_nullable_to_non_nullable
+              as bool,
+      searchErrorMessage: null == searchErrorMessage
+          ? _value.searchErrorMessage
+          : searchErrorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -115,23 +135,30 @@ class __$$_AppParamStateCopyWithImpl<$Res>
 
 class _$_AppParamState implements _AppParamState {
   const _$_AppParamState(
-      {this.citySelectFlag = false,
-      this.searchDisp = false,
-      this.searchFlag = false});
+      {this.searchDisp = false,
+      this.searchFlag = false,
+      this.searchErrorFlag = false,
+      this.searchErrorMessage = ''});
 
-  @override
-  @JsonKey()
-  final bool citySelectFlag;
+//
   @override
   @JsonKey()
   final bool searchDisp;
+//
   @override
   @JsonKey()
   final bool searchFlag;
+//
+  @override
+  @JsonKey()
+  final bool searchErrorFlag;
+  @override
+  @JsonKey()
+  final String searchErrorMessage;
 
   @override
   String toString() {
-    return 'AppParamState(citySelectFlag: $citySelectFlag, searchDisp: $searchDisp, searchFlag: $searchFlag)';
+    return 'AppParamState(searchDisp: $searchDisp, searchFlag: $searchFlag, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage)';
   }
 
   @override
@@ -139,17 +166,19 @@ class _$_AppParamState implements _AppParamState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AppParamState &&
-            (identical(other.citySelectFlag, citySelectFlag) ||
-                other.citySelectFlag == citySelectFlag) &&
             (identical(other.searchDisp, searchDisp) ||
                 other.searchDisp == searchDisp) &&
             (identical(other.searchFlag, searchFlag) ||
-                other.searchFlag == searchFlag));
+                other.searchFlag == searchFlag) &&
+            (identical(other.searchErrorFlag, searchErrorFlag) ||
+                other.searchErrorFlag == searchErrorFlag) &&
+            (identical(other.searchErrorMessage, searchErrorMessage) ||
+                other.searchErrorMessage == searchErrorMessage));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, citySelectFlag, searchDisp, searchFlag);
+  int get hashCode => Object.hash(
+      runtimeType, searchDisp, searchFlag, searchErrorFlag, searchErrorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -160,16 +189,19 @@ class _$_AppParamState implements _AppParamState {
 
 abstract class _AppParamState implements AppParamState {
   const factory _AppParamState(
-      {final bool citySelectFlag,
-      final bool searchDisp,
-      final bool searchFlag}) = _$_AppParamState;
+      {final bool searchDisp,
+      final bool searchFlag,
+      final bool searchErrorFlag,
+      final String searchErrorMessage}) = _$_AppParamState;
 
-  @override
-  bool get citySelectFlag;
-  @override
+  @override //
   bool get searchDisp;
-  @override
+  @override //
   bool get searchFlag;
+  @override //
+  bool get searchErrorFlag;
+  @override
+  String get searchErrorMessage;
   @override
   @JsonKey(ignore: true)
   _$$_AppParamStateCopyWith<_$_AppParamState> get copyWith =>

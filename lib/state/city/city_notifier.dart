@@ -1,8 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/genre/genre_notifier.dart';
-import 'package:museum_search/state/prefecture/prefecture_notifier.dart';
 
 import '../../data/http/client.dart';
 import '../../data/http/path.dart';
@@ -10,6 +8,8 @@ import '../../extensions/extensions.dart';
 import '../../models/city.dart';
 import '../../models/prefecture.dart';
 import '../../utility/utility.dart';
+import '../genre/genre_notifier.dart';
+import '../prefecture/prefecture_notifier.dart';
 import 'city_state.dart';
 
 ////////////////////////////////////////////////

@@ -30,7 +30,6 @@ abstract class $PrefectureStateCopyWith<$Res> {
   factory $PrefectureStateCopyWith(
           PrefectureState value, $Res Function(PrefectureState) then) =
       _$PrefectureStateCopyWithImpl<$Res, PrefectureState>;
-
   @useResult
   $Res call({List<PrefectureData> prefList, int selectPrefCode});
 }
@@ -42,7 +41,6 @@ class _$PrefectureStateCopyWithImpl<$Res, $Val extends PrefectureState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -71,7 +69,6 @@ abstract class _$$_PrefectureStateCopyWith<$Res>
   factory _$$_PrefectureStateCopyWith(
           _$_PrefectureState value, $Res Function(_$_PrefectureState) then) =
       __$$_PrefectureStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call({List<PrefectureData> prefList, int selectPrefCode});
@@ -113,7 +110,6 @@ class _$_PrefectureState implements _PrefectureState {
 
 //
   final List<PrefectureData> _prefList;
-
 //
   @override
   @JsonKey()
@@ -161,10 +157,8 @@ abstract class _PrefectureState implements PrefectureState {
 
   @override //
   List<PrefectureData> get prefList;
-
   @override //
   int get selectPrefCode;
-
   @override
   @JsonKey(ignore: true)
   _$$_PrefectureStateCopyWith<_$_PrefectureState> get copyWith =>

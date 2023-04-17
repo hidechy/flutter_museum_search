@@ -2,24 +2,19 @@
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-//
-//
-//
-// import 'package:museum_search/state/genre/genre_notifier.dart';
-// import 'package:museum_search/state/genre/genre_state.dart';
-// import 'package:museum_search/state/prefecture/prefecture_notifier.dart';
-// import 'package:museum_search/state/prefecture/prefecture_state.dart';
-//
-//
-//
-
 import '../../data/http/client.dart';
 import '../../data/http/path.dart';
 import '../../extensions/extensions.dart';
 import '../../models/art_facility.dart';
 import '../../utility/utility.dart';
+import '../city/city_notifier.dart';
+import '../city/city_state.dart';
+import '../genre/genre_notifier.dart';
+import '../genre/genre_state.dart';
 import '../lat_lng/lat_lng_notifier.dart';
 import '../lat_lng/lat_lng_response_state.dart';
+import '../prefecture/prefecture_notifier.dart';
+import '../prefecture/prefecture_state.dart';
 import 'art_facility_result_state.dart';
 
 ////////////////////////////////////////////////
@@ -31,34 +26,18 @@ final artFacilityProvider = StateNotifierProvider.autoDispose<
 
   final latLngState = ref.watch(latLngProvider);
 
-  //
-  //
-  //
-  //
-  // final prefectureState = ref.watch(prefectureProvider);
-  //
-  // final genreState = ref.watch(genreProvider);
-  //
-  //
-  //
-  //
-  //
+  final prefectureState = ref.watch(prefectureProvider);
+  final cityState = ref.watch(cityProvider);
+  final genreState = ref.watch(genreProvider);
 
   return ArtFacilityNotifier(
     const ArtFacilityResultState(),
     client,
     utility,
     latLngState,
-
-    //
-    //
-    //
-    // prefectureState,
-    // genreState,
-    //
-    //
-    //
-    //
+    prefectureState,
+    cityState,
+    genreState,
   );
 });
 
@@ -68,6 +47,9 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
     this.client,
     this.utility,
     this.latLngState,
+    this.prefectureState,
+    this.cityState,
+    this.genreState,
   );
 
   final HttpClient client;
@@ -75,37 +57,39 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
 
   final LatLngResponseState latLngState;
 
-  //
-  //
-  //
-  // ArtFacilityNotifier(super.state, this.client, this.utility, this.latLngState,
-  //     this.prefectureState, this.genreState);
-  //
-  // final HttpClient client;
-  // final Utility utility;
-  //
-  // final LatLngResponseState latLngState;
-  //
-  // final PrefectureState prefectureState;
-  //
-  // final GenreState genreState;
-  //
-  //
-  //
+  final PrefectureState prefectureState;
+  final CityState cityState;
+  final GenreState genreState;
 
   ///
   Future<void> getArtFacilities() async {
     final uploadData = <String, dynamic>{};
 
-    //
-    //
-    //
-    //
-    // uploadData['prefecture'] = prefectureState.selectPref;
-    // uploadData['genre'] = genreState.selectGenre;
-    //
-    //
-    //
+    ///////////////////////////////////////////////////
+
+    var selectPrefName = '';
+    if (prefectureState.selectPrefCode != 0) {
+      prefectureState.prefList.forEach((element) {
+        if (element.prefCode == prefectureState.selectPrefCode) {
+          selectPrefName = element.prefName;
+        }
+      });
+    }
+
+    var selectCityName = '';
+    if (cityState.selectCityCode != '') {
+      cityState.cityList.forEach((element) {
+        if (element.cityCode == cityState.selectCityCode) {
+          selectCityName = element.cityName;
+        }
+      });
+    }
+
+    uploadData['address'] = '$selectPrefName$selectCityName';
+
+    uploadData['genre'] = genreState.selectGenre;
+
+    ///////////////////////////////////////////////////
 
     uploadData['latitude'] = latLngState.lat;
     uploadData['longitude'] = latLngState.lng;
