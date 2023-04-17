@@ -20,19 +20,26 @@ final cityProvider = StateNotifierProvider<CityNotifier, CityState>((ref) {
 
   final utility = Utility();
 
-  final prefList =
-      ref.watch(prefectureProvider.select((value) => value.prefList));
+  final prefectureMap =
+      ref.watch(prefectureProvider.select((value) => value.prefectureMap));
 
-  return CityNotifier(const CityState(), client, utility, prefList, ref: ref);
+  return CityNotifier(
+    const CityState(),
+    client,
+    utility,
+    prefectureMap,
+    ref: ref,
+  );
 });
 
 class CityNotifier extends StateNotifier<CityState> {
-  CityNotifier(super.state, this.client, this.utility, this.prefList,
+  CityNotifier(super.state, this.client, this.utility, this.prefectureMap,
       {required this.ref});
 
   final HttpClient client;
   final Utility utility;
-  final List<PrefectureData> prefList;
+
+  final Map<int, PrefectureData> prefectureMap;
 
   final StateNotifierProviderRef<CityNotifier, CityState> ref;
 
@@ -59,7 +66,7 @@ class CityNotifier extends StateNotifier<CityState> {
         ),
       ];
 
-      Map<String, CityData> cityMap = {};
+      final cityMap = <String, CityData>{};
 
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
         if (value['data'][i]['count'].toString().toInt() == 0) {
@@ -85,32 +92,16 @@ class CityNotifier extends StateNotifier<CityState> {
 
   ///
   Future<void> selectCity({required String cityCode}) async {
-    ////////////////////////////////////////////////
-    final cityList = [...state.cityList];
+    //-----------------------------------------//
+    final cityMap = {...state.cityMap};
 
-    var cityName = '';
-    var prefCode = 0;
+    final prefCode = cityMap[cityCode]!.prefCode;
 
-    cityList.forEach((element) {
-      if (element.cityCode == cityCode) {
-        cityName = element.cityName;
-        prefCode = element.prefCode;
-      }
-    });
-    ////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////
-    var prefName = '';
-    prefList.forEach((element) {
-      if (element.prefCode == prefCode) {
-        prefName = element.prefName;
-      }
-    });
-    ////////////////////////////////////////////////
-
-    await ref
-        .watch(genreProvider.notifier)
-        .getGenre(prefName: prefName, cityName: cityName);
+    await ref.watch(genreProvider.notifier).getGenre(
+          prefName: prefectureMap[prefCode]!.prefName,
+          cityName: cityMap[cityCode]!.cityName,
+        );
+    //-----------------------------------------//
 
     state = state.copyWith(selectCityCode: cityCode);
   }

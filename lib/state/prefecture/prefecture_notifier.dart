@@ -43,7 +43,7 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
 
       list.add(PrefectureData(prefCode: 0, prefName: ''));
 
-      Map<int, PrefectureData> prefectureMap = {};
+      final prefectureMap = <int, PrefectureData>{};
 
       prefecture.result.forEach((element) {
         list.add(element);
@@ -63,16 +63,8 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
   ///
   Future<void> selectPref({required int prefCode}) async {
     //-----------------------------------------//
-    final prefList = [...state.prefList];
-
-    var selectPref = PrefectureData(prefCode: 0, prefName: '');
-    prefList.forEach((element) {
-      if (element.prefCode == prefCode) {
-        selectPref = element;
-      }
-    });
-
-    await ref.watch(cityProvider.notifier).getCity(pref: selectPref);
+    final prefMap = {...state.prefectureMap};
+    await ref.watch(cityProvider.notifier).getCity(pref: prefMap[prefCode]!);
     //-----------------------------------------//
 
     state = state.copyWith(selectPrefCode: prefCode);
