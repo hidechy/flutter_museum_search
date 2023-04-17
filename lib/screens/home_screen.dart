@@ -317,7 +317,10 @@ class HomeScreen extends ConsumerWidget {
       items: prefectureState.prefList.map((e) {
         return DropdownMenuItem(
           value: e.prefCode,
-          child: Text(e.prefName),
+          child: Text(
+            e.prefName,
+            style: TextStyle(fontSize: 12),
+          ),
         );
       }).toList(),
       value: prefectureState.selectPrefCode,
@@ -344,7 +347,15 @@ class HomeScreen extends ConsumerWidget {
       items: cityState.cityList.map((e) {
         return DropdownMenuItem(
           value: e.cityCode,
-          child: Text(e.cityName),
+          child: (e.cityName == '')
+              ? Text(
+                  '${e.cityName}',
+                  style: TextStyle(fontSize: 12),
+                )
+              : Text(
+                  '${e.cityName}（${e.count}）',
+                  style: TextStyle(fontSize: 12),
+                ),
         );
       }).toList(),
       value: cityState.selectCityCode,
@@ -355,12 +366,13 @@ class HomeScreen extends ConsumerWidget {
 
     return Column(
       children: [
-        prefDropDown,
-        Divider(
-          color: Colors.white.withOpacity(0.3),
-          thickness: 2,
+        Row(
+          children: [
+            prefDropDown,
+            SizedBox(width: 20),
+            cityDropDown,
+          ],
         ),
-        cityDropDown,
       ],
     );
 
