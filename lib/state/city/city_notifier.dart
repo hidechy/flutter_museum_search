@@ -113,6 +113,11 @@ class CityNotifier extends StateNotifier<CityState> {
   Future<void> clearCity() async {
     state = state.copyWith(selectCityCode: '');
   }
+
+  ///
+  Future<void> clearCityList() async {
+    state = state.copyWith(cityList: []);
+  }
 }
 
 ////////////////////////////////////////////////

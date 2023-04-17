@@ -51,6 +51,8 @@ class HomeScreen extends ConsumerWidget {
                   await ref
                       .watch(genreProvider.notifier)
                       .getGenre(prefName: '', cityName: '');
+
+                  await clearSearchArea();
                 },
                 icon: (appParamState.searchDisp)
                     ? const Icon(
@@ -109,14 +111,6 @@ class HomeScreen extends ConsumerWidget {
                     onPressed: () {
                       //都道府県選択時
                       if (prefectureState.selectPrefCode > 0) {
-                        if (latLngState.lat > 0 || latLngState.lng > 0) {
-                          ref
-                              .watch(appParamProvider.notifier)
-                              .setSearchErrorFlag(
-                                searchErrorMessage: '都道府県での検索を\n優先します。',
-                              );
-                        }
-
                         if (cityState.selectCityCode == '') {
                           ref
                               .watch(appParamProvider.notifier)
@@ -126,6 +120,15 @@ class HomeScreen extends ConsumerWidget {
                               );
 
                           return;
+                        }
+                      } else {
+                        if (latLngState.lat == 0 || latLngState.lng == 0) {
+                          ref
+                              .watch(appParamProvider.notifier)
+                              .setSearchErrorFlag(
+                                searchErrorMessage:
+                                    '都道府県または\n現在地点の座標を\n設定してください。',
+                              );
                         }
                       }
 
@@ -446,5 +449,12 @@ class HomeScreen extends ConsumerWidget {
     await _ref
         .watch(appParamProvider.notifier)
         .setSearchFlag(searchFlag: false);
+  }
+
+  ///
+  Future<void> clearSearchArea() async {
+    await _ref.watch(cityProvider.notifier).clearCityList();
+    await _ref.watch(prefectureProvider.notifier).clearPref();
+    await _ref.watch(genreProvider.notifier).clearGenre();
   }
 }
