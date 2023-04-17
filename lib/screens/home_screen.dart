@@ -463,7 +463,7 @@ class HomeScreen extends ConsumerWidget {
   }
 
   ///
-  Future<bool> latLngSettingCheck() async {
+  bool latLngSettingCheck() {
     final latLngState = _ref.watch(latLngProvider);
 
     if (latLngState.lat == 0 || latLngState.lng == 0) {

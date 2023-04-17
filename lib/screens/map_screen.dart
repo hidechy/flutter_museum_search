@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, cascade_invocations
+// ignore_for_file: must_be_immutable, cascade_invocations, inference_failure_on_untyped_parameter, avoid_dynamic_calls
 
 import 'dart:async';
 import 'dart:math';
@@ -8,6 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:museum_search/state/route_transit/route_transit_notifier.dart';
+import 'package:museum_search/state/route_transit/route_transit_request_state.dart';
+import 'package:museum_search/state/route_transit/route_transit_response_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
@@ -26,6 +29,8 @@ class MapScreen extends ConsumerWidget {
 
   List<double> latList = [];
   List<double> lngList = [];
+
+  Set<Polyline> polylineSet = {};
 
   late LatLngBounds bounds;
 
@@ -46,6 +51,8 @@ class MapScreen extends ConsumerWidget {
 
     final selectIdList =
         ref.watch(artFacilityProvider.select((value) => value.selectIdList));
+
+    makePolyline();
 
     return Scaffold(
       body: SafeArea(
@@ -68,6 +75,7 @@ class MapScreen extends ConsumerWidget {
                 initialCameraPosition: basePoint,
                 onMapCreated: _controller.complete,
                 markers: mapMarkerState.markers,
+                polylines: polylineSet,
               ),
             ),
             //------------------------------------//
@@ -167,6 +175,12 @@ class MapScreen extends ConsumerWidget {
 
     final mapMarkerState = _ref.watch(mapMarkerProvider);
 
+    final latLngState = _ref.watch(latLngProvider);
+
+    final now = DateTime.now();
+    final timeFormat = DateFormat('HH:mm:ss');
+    final currentTime = timeFormat.format(now);
+
     artFacilityState.allList.forEach((element) {
       if (artFacilityState.selectIdList.contains(element.id)) {
         list.add(
@@ -210,8 +224,20 @@ class MapScreen extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          _ref
+                        onTap: () async {
+                          await _ref
+                              .watch(routeTransitProvider.notifier)
+                              .getRouteTransit(
+                                param: RouteTransitRequestState(
+                                  start:
+                                      '${latLngState.lat},${latLngState.lng}',
+                                  goal:
+                                      '${element.latitude},${element.longitude}',
+                                  startTime: '${now.yyyymmdd}T$currentTime',
+                                ),
+                              );
+
+                          await _ref
                               .read(mapMarkerProvider.notifier)
                               .getSelectedFacilityMarker(name: element.name);
                         },
@@ -335,5 +361,29 @@ class MapScreen extends ConsumerWidget {
     if (!await launchUrl(mapUrl, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
+  }
+
+  ///
+  void makePolyline() {
+    final routeTransitState = _ref.watch(routeTransitProvider);
+
+    final poly = <LatLng>[];
+
+    routeTransitState.list.forEach((element) {
+      final origin = element as RouteTransitResponseItemState;
+
+      poly.add(
+        LatLng(origin.latitude.toDouble(), origin.longitude.toDouble()),
+      );
+    });
+
+    polylineSet.add(
+      Polyline(
+        polylineId: const PolylineId('overview_polyline'),
+        color: Colors.redAccent,
+        width: 5,
+        points: poly,
+      ),
+    );
   }
 }
