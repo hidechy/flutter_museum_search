@@ -6,7 +6,10 @@ part 'map_marker_state.freezed.dart';
 @freezed
 class MapMarkerState with _$MapMarkerState {
   const factory MapMarkerState({
+    //
     @Default({}) Set<Marker> markers,
+
+    //
     @Default('') String selectName,
   }) = _MapMarkerState;
 }

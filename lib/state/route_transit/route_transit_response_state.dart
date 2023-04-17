@@ -12,7 +12,10 @@ class RouteTransitState with _$RouteTransitState {
 @freezed
 class RouteTransitResponseItemState with _$RouteTransitResponseItemState {
   const factory RouteTransitResponseItemState({
+    //
     @Default('') String latitude,
+
+    //
     @Default('') String longitude,
   }) = _RouteTransitResponseItemState;
 }

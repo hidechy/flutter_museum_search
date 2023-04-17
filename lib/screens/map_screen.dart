@@ -243,7 +243,7 @@ class MapScreen extends ConsumerWidget {
                               .read(mapMarkerProvider.notifier)
                               .getSelectedFacilityMarker(name: element.name);
                         },
-                        child: const Icon(Icons.location_on, size: 20),
+                        child: const Icon(Icons.stacked_line_chart, size: 20),
                       ),
                       GestureDetector(
                         onTap: () async {

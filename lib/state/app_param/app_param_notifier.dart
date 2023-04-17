@@ -29,9 +29,8 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
   }
 
   ///
-  Future<void> clearSearchErrorFlag() async {
-    state = state.copyWith(searchErrorFlag: false, searchErrorMessage: '');
-  }
+  Future<void> clearSearchErrorFlag() async =>
+      state = state.copyWith(searchErrorFlag: false, searchErrorMessage: '');
 }
 
 //////////////////////////////////////////////////////

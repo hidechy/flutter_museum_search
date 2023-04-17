@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$CityState {
 //
   List<CityData> get cityList => throw _privateConstructorUsedError; //
-  String get selectCityCode => throw _privateConstructorUsedError;
+  String get selectCityCode => throw _privateConstructorUsedError; //
+  Map<String, CityData> get cityMap => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CityStateCopyWith<CityState> get copyWith =>
@@ -30,7 +31,10 @@ abstract class $CityStateCopyWith<$Res> {
   factory $CityStateCopyWith(CityState value, $Res Function(CityState) then) =
       _$CityStateCopyWithImpl<$Res, CityState>;
   @useResult
-  $Res call({List<CityData> cityList, String selectCityCode});
+  $Res call(
+      {List<CityData> cityList,
+      String selectCityCode,
+      Map<String, CityData> cityMap});
 }
 
 /// @nodoc
@@ -48,6 +52,7 @@ class _$CityStateCopyWithImpl<$Res, $Val extends CityState>
   $Res call({
     Object? cityList = null,
     Object? selectCityCode = null,
+    Object? cityMap = null,
   }) {
     return _then(_value.copyWith(
       cityList: null == cityList
@@ -58,6 +63,10 @@ class _$CityStateCopyWithImpl<$Res, $Val extends CityState>
           ? _value.selectCityCode
           : selectCityCode // ignore: cast_nullable_to_non_nullable
               as String,
+      cityMap: null == cityMap
+          ? _value.cityMap
+          : cityMap // ignore: cast_nullable_to_non_nullable
+              as Map<String, CityData>,
     ) as $Val);
   }
 }
@@ -69,7 +78,10 @@ abstract class _$$_CityStateCopyWith<$Res> implements $CityStateCopyWith<$Res> {
       __$$_CityStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<CityData> cityList, String selectCityCode});
+  $Res call(
+      {List<CityData> cityList,
+      String selectCityCode,
+      Map<String, CityData> cityMap});
 }
 
 /// @nodoc
@@ -85,6 +97,7 @@ class __$$_CityStateCopyWithImpl<$Res>
   $Res call({
     Object? cityList = null,
     Object? selectCityCode = null,
+    Object? cityMap = null,
   }) {
     return _then(_$_CityState(
       cityList: null == cityList
@@ -95,6 +108,10 @@ class __$$_CityStateCopyWithImpl<$Res>
           ? _value.selectCityCode
           : selectCityCode // ignore: cast_nullable_to_non_nullable
               as String,
+      cityMap: null == cityMap
+          ? _value._cityMap
+          : cityMap // ignore: cast_nullable_to_non_nullable
+              as Map<String, CityData>,
     ));
   }
 }
@@ -103,8 +120,11 @@ class __$$_CityStateCopyWithImpl<$Res>
 
 class _$_CityState implements _CityState {
   const _$_CityState(
-      {final List<CityData> cityList = const [], this.selectCityCode = ''})
-      : _cityList = cityList;
+      {final List<CityData> cityList = const [],
+      this.selectCityCode = '',
+      final Map<String, CityData> cityMap = const {}})
+      : _cityList = cityList,
+        _cityMap = cityMap;
 
 //
   final List<CityData> _cityList;
@@ -121,10 +141,20 @@ class _$_CityState implements _CityState {
   @override
   @JsonKey()
   final String selectCityCode;
+//
+  final Map<String, CityData> _cityMap;
+//
+  @override
+  @JsonKey()
+  Map<String, CityData> get cityMap {
+    if (_cityMap is EqualUnmodifiableMapView) return _cityMap;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_cityMap);
+  }
 
   @override
   String toString() {
-    return 'CityState(cityList: $cityList, selectCityCode: $selectCityCode)';
+    return 'CityState(cityList: $cityList, selectCityCode: $selectCityCode, cityMap: $cityMap)';
   }
 
   @override
@@ -134,12 +164,16 @@ class _$_CityState implements _CityState {
             other is _$_CityState &&
             const DeepCollectionEquality().equals(other._cityList, _cityList) &&
             (identical(other.selectCityCode, selectCityCode) ||
-                other.selectCityCode == selectCityCode));
+                other.selectCityCode == selectCityCode) &&
+            const DeepCollectionEquality().equals(other._cityMap, _cityMap));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(_cityList), selectCityCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_cityList),
+      selectCityCode,
+      const DeepCollectionEquality().hash(_cityMap));
 
   @JsonKey(ignore: true)
   @override
@@ -151,12 +185,15 @@ class _$_CityState implements _CityState {
 abstract class _CityState implements CityState {
   const factory _CityState(
       {final List<CityData> cityList,
-      final String selectCityCode}) = _$_CityState;
+      final String selectCityCode,
+      final Map<String, CityData> cityMap}) = _$_CityState;
 
   @override //
   List<CityData> get cityList;
   @override //
   String get selectCityCode;
+  @override //
+  Map<String, CityData> get cityMap;
   @override
   @JsonKey(ignore: true)
   _$$_CityStateCopyWith<_$_CityState> get copyWith =>

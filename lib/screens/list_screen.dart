@@ -36,6 +36,10 @@ class _ListScreenState extends State<ListScreen> {
             name: element.name,
             genre: element.genre,
             address: element.address,
+            displayRoutesButton: true,
+            routesButtonPress: () {
+              routesButtonPress(id: element.id);
+            },
           ),
         ),
       );
@@ -115,11 +119,16 @@ class _ListScreenState extends State<ListScreen> {
             .toString()
             .replaceAll('[', '')
             .replaceAll('<', '')
-            .replaceAll("'", "")
+            .replaceAll("'", '')
             .replaceAll('>', '')
             .replaceAll(']', '')
             .toInt());
       }
     }
+  }
+
+  ///
+  void routesButtonPress({required int id}) {
+    print(id);
   }
 }

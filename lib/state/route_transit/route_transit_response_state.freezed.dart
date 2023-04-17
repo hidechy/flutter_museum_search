@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, inference_failure_on_collection_literal
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'route_transit_response_state.dart';
@@ -28,7 +28,6 @@ abstract class $RouteTransitStateCopyWith<$Res> {
   factory $RouteTransitStateCopyWith(
           RouteTransitState value, $Res Function(RouteTransitState) then) =
       _$RouteTransitStateCopyWithImpl<$Res, RouteTransitState>;
-
   @useResult
   $Res call({dynamic list});
 }
@@ -40,7 +39,6 @@ class _$RouteTransitStateCopyWithImpl<$Res, $Val extends RouteTransitState>
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -64,7 +62,6 @@ abstract class _$$_RouteTransitStateCopyWith<$Res>
   factory _$$_RouteTransitStateCopyWith(_$_RouteTransitState value,
           $Res Function(_$_RouteTransitState) then) =
       __$$_RouteTransitStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call({dynamic list});
@@ -128,7 +125,6 @@ abstract class _RouteTransitState implements RouteTransitState {
 
   @override
   dynamic get list;
-
   @override
   @JsonKey(ignore: true)
   _$$_RouteTransitStateCopyWith<_$_RouteTransitState> get copyWith =>
@@ -137,8 +133,8 @@ abstract class _RouteTransitState implements RouteTransitState {
 
 /// @nodoc
 mixin _$RouteTransitResponseItemState {
-  String get latitude => throw _privateConstructorUsedError;
-
+//
+  String get latitude => throw _privateConstructorUsedError; //
   String get longitude => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -153,7 +149,6 @@ abstract class $RouteTransitResponseItemStateCopyWith<$Res> {
           $Res Function(RouteTransitResponseItemState) then) =
       _$RouteTransitResponseItemStateCopyWithImpl<$Res,
           RouteTransitResponseItemState>;
-
   @useResult
   $Res call({String latitude, String longitude});
 }
@@ -166,7 +161,6 @@ class _$RouteTransitResponseItemStateCopyWithImpl<$Res,
 
   // ignore: unused_field
   final $Val _value;
-
   // ignore: unused_field
   final $Res Function($Val) _then;
 
@@ -196,7 +190,6 @@ abstract class _$$_RouteTransitResponseItemStateCopyWith<$Res>
           _$_RouteTransitResponseItemState value,
           $Res Function(_$_RouteTransitResponseItemState) then) =
       __$$_RouteTransitResponseItemStateCopyWithImpl<$Res>;
-
   @override
   @useResult
   $Res call({String latitude, String longitude});
@@ -238,9 +231,11 @@ class _$_RouteTransitResponseItemState
   const _$_RouteTransitResponseItemState(
       {this.latitude = '', this.longitude = ''});
 
+//
   @override
   @JsonKey()
   final String latitude;
+//
   @override
   @JsonKey()
   final String longitude;
@@ -278,12 +273,10 @@ abstract class _RouteTransitResponseItemState
       {final String latitude,
       final String longitude}) = _$_RouteTransitResponseItemState;
 
-  @override
+  @override //
   String get latitude;
-
-  @override
+  @override //
   String get longitude;
-
   @override
   @JsonKey(ignore: true)
   _$$_RouteTransitResponseItemStateCopyWith<_$_RouteTransitResponseItemState>

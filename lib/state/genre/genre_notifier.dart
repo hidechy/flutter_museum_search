@@ -27,9 +27,7 @@ class GenreNotifier extends StateNotifier<GenreState> {
 
   ///
   @override
-  void dispose() {
-    super.dispose();
-  }
+  void dispose() => super.dispose();
 
   ///
   Future<void> getGenre(
@@ -57,14 +55,11 @@ class GenreNotifier extends StateNotifier<GenreState> {
   }
 
   ///
-  Future<void> selectGenre({required String genre}) async {
-    state = state.copyWith(selectGenre: genre);
-  }
+  Future<void> selectGenre({required String genre}) async =>
+      state = state.copyWith(selectGenre: genre);
 
   ///
-  Future<void> clearGenre() async {
-    state = state.copyWith(selectGenre: '');
-  }
+  Future<void> clearGenre() async => state = state.copyWith(selectGenre: '');
 }
 
 //////////////////////////////////////////////////////

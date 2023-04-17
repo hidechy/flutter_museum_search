@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$MapMarkerState {
-  Set<Marker> get markers => throw _privateConstructorUsedError;
+//
+  Set<Marker> get markers => throw _privateConstructorUsedError; //
   String get selectName => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -107,7 +108,9 @@ class _$_MapMarkerState implements _MapMarkerState {
       {final Set<Marker> markers = const {}, this.selectName = ''})
       : _markers = markers;
 
+//
   final Set<Marker> _markers;
+//
   @override
   @JsonKey()
   Set<Marker> get markers {
@@ -116,6 +119,7 @@ class _$_MapMarkerState implements _MapMarkerState {
     return EqualUnmodifiableSetView(_markers);
   }
 
+//
   @override
   @JsonKey()
   final String selectName;
@@ -150,9 +154,9 @@ abstract class _MapMarkerState implements MapMarkerState {
   const factory _MapMarkerState(
       {final Set<Marker> markers, final String selectName}) = _$_MapMarkerState;
 
-  @override
+  @override //
   Set<Marker> get markers;
-  @override
+  @override //
   String get selectName;
   @override
   @JsonKey(ignore: true)

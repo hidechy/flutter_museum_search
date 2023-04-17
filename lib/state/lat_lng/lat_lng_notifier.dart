@@ -16,14 +16,11 @@ class LatLngNotifier extends StateNotifier<LatLngResponseState> {
   LatLngNotifier(super.state);
 
   ///
-  Future<void> setLatLng({required LatLngRequestState param}) async {
-    state = state.copyWith(lat: param.lat, lng: param.lng);
-  }
+  Future<void> setLatLng({required LatLngRequestState param}) async =>
+      state = state.copyWith(lat: param.lat, lng: param.lng);
 
   ///
-  Future<void> clearLatLng() async {
-    state = state.copyWith(lat: 0, lng: 0);
-  }
+  Future<void> clearLatLng() async => state = state.copyWith(lat: 0, lng: 0);
 }
 
 ////////////////////////////////////////////////

@@ -101,14 +101,22 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
 
       final allIdList = <int>[];
 
+      final facilityMap = <int, Facility>{};
+
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
         final val = Facility.fromJson(value['data'][i] as Map<String, dynamic>);
 
         list.add(val);
         allIdList.add(val.id);
+
+        facilityMap[val.id] = val;
       }
 
-      state = state.copyWith(allList: list, allIdList: allIdList);
+      state = state.copyWith(
+        allList: list,
+        allIdList: allIdList,
+        facilityMap: facilityMap,
+      );
     }).catchError((error, _) {
       utility.showError('予期せぬエラーが発生しました');
     });

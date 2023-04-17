@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$LatLngRequestState {
-  double get lat => throw _privateConstructorUsedError;
+//
+  double get lat => throw _privateConstructorUsedError; //
   double get lng => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -105,9 +106,11 @@ class __$$_LatLngRequestStateCopyWithImpl<$Res>
 class _$_LatLngRequestState implements _LatLngRequestState {
   const _$_LatLngRequestState({this.lat = 0.0, this.lng = 0.0});
 
+//
   @override
   @JsonKey()
   final double lat;
+//
   @override
   @JsonKey()
   final double lng;
@@ -141,9 +144,9 @@ abstract class _LatLngRequestState implements LatLngRequestState {
   const factory _LatLngRequestState({final double lat, final double lng}) =
       _$_LatLngRequestState;
 
-  @override
+  @override //
   double get lat;
-  @override
+  @override //
   double get lng;
   @override
   @JsonKey(ignore: true)

@@ -38,9 +38,7 @@ class CityNotifier extends StateNotifier<CityState> {
 
   ///
   @override
-  void dispose() {
-    super.dispose();
-  }
+  void dispose() => super.dispose();
 
   ///
   Future<void> getCity({required PrefectureData pref}) async {
@@ -61,6 +59,8 @@ class CityNotifier extends StateNotifier<CityState> {
         ),
       ];
 
+      Map<String, CityData> cityMap = {};
+
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
         if (value['data'][i]['count'].toString().toInt() == 0) {
           continue;
@@ -69,9 +69,15 @@ class CityNotifier extends StateNotifier<CityState> {
         list.add(
           CityData.fromJson(value['data'][i] as Map<String, dynamic>),
         );
+
+        cityMap[value['data'][i]['cityCode'].toString()] =
+            CityData.fromJson(value['data'][i] as Map<String, dynamic>);
       }
 
-      state = state.copyWith(cityList: list);
+      state = state.copyWith(
+        cityList: list,
+        cityMap: cityMap,
+      );
     }).catchError((error, _) {
       utility.showError('予期せぬエラーが発生しました');
     });
@@ -110,14 +116,10 @@ class CityNotifier extends StateNotifier<CityState> {
   }
 
   ///
-  Future<void> clearCity() async {
-    state = state.copyWith(selectCityCode: '');
-  }
+  Future<void> clearCity() async => state = state.copyWith(selectCityCode: '');
 
   ///
-  Future<void> clearCityList() async {
-    state = state.copyWith(cityList: []);
-  }
+  Future<void> clearCityList() async => state = state.copyWith(cityList: []);
 }
 
 ////////////////////////////////////////////////

@@ -25,9 +25,7 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
 
   ///
   @override
-  void dispose() {
-    super.dispose();
-  }
+  void dispose() => super.dispose();
 
   ///
   Future<void> getPrefecture() async {
@@ -45,9 +43,18 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
 
       list.add(PrefectureData(prefCode: 0, prefName: ''));
 
-      prefecture.result.forEach(list.add);
+      Map<int, PrefectureData> prefectureMap = {};
 
-      state = state.copyWith(prefList: list);
+      prefecture.result.forEach((element) {
+        list.add(element);
+
+        prefectureMap[element.prefCode] = element;
+      });
+
+      state = state.copyWith(
+        prefList: list,
+        prefectureMap: prefectureMap,
+      );
     } catch (e) {
       throw e.toString();
     }
@@ -72,9 +79,7 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
   }
 
   ///
-  Future<void> clearPref() async {
-    state = state.copyWith(selectPrefCode: 0);
-  }
+  Future<void> clearPref() async => state = state.copyWith(selectPrefCode: 0);
 }
 
 //////////////////////////////////////////////////////

@@ -14,6 +14,8 @@ class FacilityCard extends StatelessWidget {
     required this.genre,
     required this.address,
     this.displayCheckBox = false,
+    this.displayRoutesButton = false,
+    this.routesButtonPress,
   });
 
   final bool? checkboxCheck;
@@ -25,6 +27,8 @@ class FacilityCard extends StatelessWidget {
   final String genre;
   final String address;
   final bool? displayCheckBox;
+  final bool? displayRoutesButton;
+  final VoidCallback? routesButtonPress;
 
   ///
   @override
@@ -49,31 +53,48 @@ class FacilityCard extends StatelessWidget {
               onChanged: onChanged,
             ),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      dist,
-                      style: const TextStyle(color: Colors.yellowAccent),
-                    ),
-                    Text('$latitude / $longitude'),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            child: DefaultTextStyle(
+              style: const TextStyle(fontSize: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(name),
-                      Text(genre),
-                      Text(address),
+                      Text(
+                        dist,
+                        style: const TextStyle(color: Colors.yellowAccent),
+                      ),
+                      Text('$latitude / $longitude'),
                     ],
                   ),
-                ),
-              ],
+                  Container(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(name),
+                        Text(genre),
+                        Text(address),
+                      ],
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(),
+                      IconButton(
+                        onPressed: routesButtonPress,
+                        icon: Icon(
+                          Icons.stacked_line_chart,
+                          size: 20,
+                          color: Colors.white.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

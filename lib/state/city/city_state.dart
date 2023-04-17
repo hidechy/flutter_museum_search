@@ -11,5 +11,8 @@ class CityState with _$CityState {
     @Default([]) List<CityData> cityList,
     //
     @Default('') String selectCityCode,
+
+    //
+    @Default({}) Map<String, CityData> cityMap,
   }) = _CityState;
 }

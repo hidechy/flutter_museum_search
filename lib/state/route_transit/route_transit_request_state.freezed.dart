@@ -16,8 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RouteTransitRequestState {
-  String get start => throw _privateConstructorUsedError;
-  String get goal => throw _privateConstructorUsedError;
+//
+  String get start => throw _privateConstructorUsedError; //
+  String get goal => throw _privateConstructorUsedError; //
   String get startTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -120,12 +121,15 @@ class _$_RouteTransitRequestState implements _RouteTransitRequestState {
   const _$_RouteTransitRequestState(
       {this.start = '', this.goal = '', this.startTime = ''});
 
+//
   @override
   @JsonKey()
   final String start;
+//
   @override
   @JsonKey()
   final String goal;
+//
   @override
   @JsonKey()
   final String startTime;
@@ -163,11 +167,11 @@ abstract class _RouteTransitRequestState implements RouteTransitRequestState {
       final String goal,
       final String startTime}) = _$_RouteTransitRequestState;
 
-  @override
+  @override //
   String get start;
-  @override
+  @override //
   String get goal;
-  @override
+  @override //
   String get startTime;
   @override
   @JsonKey(ignore: true)

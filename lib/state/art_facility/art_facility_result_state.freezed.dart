@@ -16,9 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ArtFacilityResultState {
-  List<Facility> get allList => throw _privateConstructorUsedError;
-  List<int> get allIdList => throw _privateConstructorUsedError;
-  List<int> get selectIdList => throw _privateConstructorUsedError;
+//
+  List<Facility> get allList => throw _privateConstructorUsedError; //
+  List<int> get allIdList => throw _privateConstructorUsedError; //
+  List<int> get selectIdList => throw _privateConstructorUsedError; //
+  Map<int, Facility> get facilityMap => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ArtFacilityResultStateCopyWith<ArtFacilityResultState> get copyWith =>
@@ -32,7 +34,10 @@ abstract class $ArtFacilityResultStateCopyWith<$Res> {
       _$ArtFacilityResultStateCopyWithImpl<$Res, ArtFacilityResultState>;
   @useResult
   $Res call(
-      {List<Facility> allList, List<int> allIdList, List<int> selectIdList});
+      {List<Facility> allList,
+      List<int> allIdList,
+      List<int> selectIdList,
+      Map<int, Facility> facilityMap});
 }
 
 /// @nodoc
@@ -52,6 +57,7 @@ class _$ArtFacilityResultStateCopyWithImpl<$Res,
     Object? allList = null,
     Object? allIdList = null,
     Object? selectIdList = null,
+    Object? facilityMap = null,
   }) {
     return _then(_value.copyWith(
       allList: null == allList
@@ -66,6 +72,10 @@ class _$ArtFacilityResultStateCopyWithImpl<$Res,
           ? _value.selectIdList
           : selectIdList // ignore: cast_nullable_to_non_nullable
               as List<int>,
+      facilityMap: null == facilityMap
+          ? _value.facilityMap
+          : facilityMap // ignore: cast_nullable_to_non_nullable
+              as Map<int, Facility>,
     ) as $Val);
   }
 }
@@ -79,7 +89,10 @@ abstract class _$$_ArtFacilityResultStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<Facility> allList, List<int> allIdList, List<int> selectIdList});
+      {List<Facility> allList,
+      List<int> allIdList,
+      List<int> selectIdList,
+      Map<int, Facility> facilityMap});
 }
 
 /// @nodoc
@@ -97,6 +110,7 @@ class __$$_ArtFacilityResultStateCopyWithImpl<$Res>
     Object? allList = null,
     Object? allIdList = null,
     Object? selectIdList = null,
+    Object? facilityMap = null,
   }) {
     return _then(_$_ArtFacilityResultState(
       allList: null == allList
@@ -111,6 +125,10 @@ class __$$_ArtFacilityResultStateCopyWithImpl<$Res>
           ? _value._selectIdList
           : selectIdList // ignore: cast_nullable_to_non_nullable
               as List<int>,
+      facilityMap: null == facilityMap
+          ? _value._facilityMap
+          : facilityMap // ignore: cast_nullable_to_non_nullable
+              as Map<int, Facility>,
     ));
   }
 }
@@ -121,12 +139,16 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
   const _$_ArtFacilityResultState(
       {final List<Facility> allList = const [],
       final List<int> allIdList = const [],
-      final List<int> selectIdList = const []})
+      final List<int> selectIdList = const [],
+      final Map<int, Facility> facilityMap = const {}})
       : _allList = allList,
         _allIdList = allIdList,
-        _selectIdList = selectIdList;
+        _selectIdList = selectIdList,
+        _facilityMap = facilityMap;
 
+//
   final List<Facility> _allList;
+//
   @override
   @JsonKey()
   List<Facility> get allList {
@@ -135,7 +157,9 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
     return EqualUnmodifiableListView(_allList);
   }
 
+//
   final List<int> _allIdList;
+//
   @override
   @JsonKey()
   List<int> get allIdList {
@@ -144,7 +168,9 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
     return EqualUnmodifiableListView(_allIdList);
   }
 
+//
   final List<int> _selectIdList;
+//
   @override
   @JsonKey()
   List<int> get selectIdList {
@@ -153,9 +179,20 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
     return EqualUnmodifiableListView(_selectIdList);
   }
 
+//
+  final Map<int, Facility> _facilityMap;
+//
+  @override
+  @JsonKey()
+  Map<int, Facility> get facilityMap {
+    if (_facilityMap is EqualUnmodifiableMapView) return _facilityMap;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_facilityMap);
+  }
+
   @override
   String toString() {
-    return 'ArtFacilityResultState(allList: $allList, allIdList: $allIdList, selectIdList: $selectIdList)';
+    return 'ArtFacilityResultState(allList: $allList, allIdList: $allIdList, selectIdList: $selectIdList, facilityMap: $facilityMap)';
   }
 
   @override
@@ -167,7 +204,9 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
             const DeepCollectionEquality()
                 .equals(other._allIdList, _allIdList) &&
             const DeepCollectionEquality()
-                .equals(other._selectIdList, _selectIdList));
+                .equals(other._selectIdList, _selectIdList) &&
+            const DeepCollectionEquality()
+                .equals(other._facilityMap, _facilityMap));
   }
 
   @override
@@ -175,7 +214,8 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
       runtimeType,
       const DeepCollectionEquality().hash(_allList),
       const DeepCollectionEquality().hash(_allIdList),
-      const DeepCollectionEquality().hash(_selectIdList));
+      const DeepCollectionEquality().hash(_selectIdList),
+      const DeepCollectionEquality().hash(_facilityMap));
 
   @JsonKey(ignore: true)
   @override
@@ -189,14 +229,17 @@ abstract class _ArtFacilityResultState implements ArtFacilityResultState {
   const factory _ArtFacilityResultState(
       {final List<Facility> allList,
       final List<int> allIdList,
-      final List<int> selectIdList}) = _$_ArtFacilityResultState;
+      final List<int> selectIdList,
+      final Map<int, Facility> facilityMap}) = _$_ArtFacilityResultState;
 
-  @override
+  @override //
   List<Facility> get allList;
-  @override
+  @override //
   List<int> get allIdList;
-  @override
+  @override //
   List<int> get selectIdList;
+  @override //
+  Map<int, Facility> get facilityMap;
   @override
   @JsonKey(ignore: true)
   _$$_ArtFacilityResultStateCopyWith<_$_ArtFacilityResultState> get copyWith =>

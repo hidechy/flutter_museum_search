@@ -11,5 +11,8 @@ class PrefectureState with _$PrefectureState {
     @Default([]) List<PrefectureData> prefList,
     //
     @Default(0) int selectPrefCode,
+
+    //
+    @Default({}) Map<int, PrefectureData> prefectureMap,
   }) = _PrefectureState;
 }
