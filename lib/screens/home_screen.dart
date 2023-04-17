@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../extensions/extensions.dart';
+import '../models/art_facility.dart';
 import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 import '../state/city/city_notifier.dart';
@@ -12,6 +13,8 @@ import '../state/genre/genre_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
 import '../state/prefecture/prefecture_notifier.dart';
+import 'component/facility_card.dart';
+import 'list_screen.dart';
 import 'map_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -36,6 +39,8 @@ class HomeScreen extends ConsumerWidget {
 
     final selectCityCode =
         ref.watch(cityProvider.select((value) => value.selectCityCode));
+
+    final artFacilityState = ref.watch(artFacilityProvider);
 
     return Scaffold(
       body: Column(
@@ -96,12 +101,15 @@ class HomeScreen extends ConsumerWidget {
                           ),
                     Container(
                       padding: const EdgeInsets.only(right: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(latLngState.lat.toString()),
-                          Text(latLngState.lng.toString()),
-                        ],
+                      child: DefaultTextStyle(
+                        style: const TextStyle(fontSize: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(latLngState.lat.toString()),
+                            Text(latLngState.lng.toString()),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -148,6 +156,32 @@ class HomeScreen extends ConsumerWidget {
                       }
                     },
                     icon: const Icon(Icons.search),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      if (artFacilityState.selectIdList.length < 2) {
+                        showErrorMessage(
+                          message: '並び替えるために2つ以上の施設を選択してください。',
+                        );
+                      } else {
+                        final selectedArtFacilities = <Facility>[];
+                        artFacilityState.allList.forEach((element) {
+                          if (artFacilityState.selectIdList
+                              .contains(element.id)) {
+                            selectedArtFacilities.add(element);
+                          }
+                        });
+
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ListScreen(list: selectedArtFacilities),
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.list),
                   ),
                   IconButton(
                     onPressed: () {
@@ -222,60 +256,20 @@ class HomeScreen extends ConsumerWidget {
       }
 
       list.add(
-        Container(
-          width: _context.screenSize.width,
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(bottom: 10),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.white.withOpacity(0.3),
-              ),
-            ),
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Checkbox(
-                value: artFacilityState.selectIdList.contains(element.id),
-                activeColor: Colors.yellowAccent.withOpacity(0.2),
-                side: BorderSide(color: Colors.white.withOpacity(0.4)),
-                onChanged: (value) {
-                  _ref
-                      .read(artFacilityProvider.notifier)
-                      .onCheckboxChange(id: element.id);
-                },
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          element.dist,
-                          style: const TextStyle(color: Colors.yellowAccent),
-                        ),
-                        Text('${element.latitude} / ${element.longitude}'),
-                      ],
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(element.name),
-                          Text(element.genre),
-                          Text(element.address),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        FacilityCard(
+          checkboxCheck: artFacilityState.selectIdList.contains(element.id),
+          onChanged: (value) {
+            _ref
+                .read(artFacilityProvider.notifier)
+                .onCheckboxChange(id: element.id);
+          },
+          dist: element.dist,
+          latitude: element.latitude,
+          longitude: element.longitude,
+          name: element.name,
+          genre: element.genre,
+          address: element.address,
+          displayCheckBox: true,
         ),
       );
     });
@@ -469,20 +463,25 @@ class HomeScreen extends ConsumerWidget {
     final latLngState = _ref.watch(latLngProvider);
 
     if (latLngState.lat == 0 || latLngState.lng == 0) {
-      ScaffoldMessenger.of(_context).showSnackBar(
-        const SnackBar(
-          duration: Duration(milliseconds: 500),
-          backgroundColor: Colors.black,
-          content: Text(
-            '現在位置の座標が設定されていません。',
-            style: TextStyle(color: Colors.white, fontSize: 10),
-          ),
-        ),
-      );
+      showErrorMessage(message: '現在位置の座標が設定されていません。');
 
       return false;
     }
 
     return true;
+  }
+
+  ///
+  void showErrorMessage({required String message}) {
+    ScaffoldMessenger.of(_context).showSnackBar(
+      SnackBar(
+        duration: const Duration(milliseconds: 500),
+        backgroundColor: Colors.black,
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white, fontSize: 10),
+        ),
+      ),
+    );
   }
 }
