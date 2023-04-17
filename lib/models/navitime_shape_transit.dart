@@ -1,6 +1,6 @@
 // To parse this JSON data, do
 //
-//     final routeTransit = routeTransitFromJson(jsonString);
+//     final navitimeShapeTransit = navitimeShapeTransitFromJson(jsonString);
 
 // ignore_for_file: inference_failure_on_untyped_parameter, avoid_dynamic_calls
 
@@ -8,16 +8,18 @@ import 'dart:convert';
 
 import '../extensions/extensions.dart';
 
-RouteTransit routeTransitFromJson(String str) =>
-    RouteTransit.fromJson(json.decode(str) as Map<String, dynamic>);
+NavitimeShapeTransit navitimeShapeTransitFromJson(String str) =>
+    NavitimeShapeTransit.fromJson(json.decode(str) as Map<String, dynamic>);
 
-String routeTransitToJson(RouteTransit data) => json.encode(data.toJson());
+String navitimeShapeTransitToJson(NavitimeShapeTransit data) =>
+    json.encode(data.toJson());
 
 ///
-class RouteTransit {
-  RouteTransit({required this.items, required this.unit});
+class NavitimeShapeTransit {
+  NavitimeShapeTransit({required this.items, required this.unit});
 
-  factory RouteTransit.fromJson(Map<String, dynamic> json) => RouteTransit(
+  factory NavitimeShapeTransit.fromJson(Map<String, dynamic> json) =>
+      NavitimeShapeTransit(
         items: List<Item>.from(
           json['items'].map(
             (x) => Item.fromJson(x as Map<String, dynamic>),

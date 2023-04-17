@@ -8,9 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:museum_search/state/route_transit/route_transit_notifier.dart';
-import 'package:museum_search/state/route_transit/route_transit_request_state.dart';
-import 'package:museum_search/state/route_transit/route_transit_response_state.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
@@ -19,6 +17,9 @@ import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../state/map_marker/map_marker_notifier.dart';
+import '../state/navitime_shape_transit/navitime_shape_transit_notifier.dart';
+import '../state/navitime_shape_transit/navitime_shape_transit_request_state.dart';
+import '../state/navitime_shape_transit/navitime_shape_transit_response_state.dart';
 
 class MapScreen extends ConsumerWidget {
   MapScreen({super.key});
@@ -228,9 +229,9 @@ class MapScreen extends ConsumerWidget {
                       GestureDetector(
                         onTap: () async {
                           await _ref
-                              .watch(routeTransitProvider.notifier)
-                              .getRouteTransit(
-                                param: RouteTransitRequestState(
+                              .watch(navitimeShapeTransitProvider.notifier)
+                              .getNavitimeShapeTransit(
+                                param: NavitimeShapeTransitRequestState(
                                   start:
                                       '${latLngState.lat},${latLngState.lng}',
                                   goal:
@@ -367,12 +368,13 @@ class MapScreen extends ConsumerWidget {
 
   ///
   void makePolyline() {
-    final list = _ref.watch(routeTransitProvider.select((value) => value.list));
+    final list =
+        _ref.watch(navitimeShapeTransitProvider.select((value) => value.list));
 
     final poly = <LatLng>[];
 
     list.forEach((element) {
-      final origin = element as RouteTransitResponseItemState;
+      final origin = element as NavitimeShapeTransitResponseItemState;
 
       poly.add(
         LatLng(origin.latitude.toDouble(), origin.longitude.toDouble()),

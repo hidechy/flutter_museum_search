@@ -3,23 +3,24 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 
-import '../../models/route_transit.dart';
-import 'route_transit_request_state.dart';
-import 'route_transit_response_state.dart';
+import '../../models/navitime_shape_transit.dart';
+import 'navitime_shape_transit_request_state.dart';
+import 'navitime_shape_transit_response_state.dart';
 
 //////////////////////////////////////////////////////
 
-final routeTransitProvider =
-    StateNotifierProvider.autoDispose<RouteTransitNotifier, RouteTransitState>(
-        (ref) {
-  return RouteTransitNotifier(const RouteTransitState());
+final navitimeShapeTransitProvider = StateNotifierProvider.autoDispose<
+    NavitimeShapeTransitNotifier, NavitimeShapeTransitResponseState>((ref) {
+  return NavitimeShapeTransitNotifier(
+      const NavitimeShapeTransitResponseState());
 });
 
-class RouteTransitNotifier extends StateNotifier<RouteTransitState> {
-  RouteTransitNotifier(super.state);
+class NavitimeShapeTransitNotifier
+    extends StateNotifier<NavitimeShapeTransitResponseState> {
+  NavitimeShapeTransitNotifier(super.state);
 
-  Future<void> getRouteTransit(
-      {required RouteTransitRequestState param}) async {
+  Future<void> getNavitimeShapeTransit(
+      {required NavitimeShapeTransitRequestState param}) async {
     try {
       final queryParameters = <String>[
         'start=${param.start}',
@@ -44,14 +45,14 @@ class RouteTransitNotifier extends StateNotifier<RouteTransitState> {
 
       final response = await get(Uri.parse(url), headers: header);
 
-      final routeTransit = routeTransitFromJson(response.body);
+      final navitimeShapeTransit = navitimeShapeTransitFromJson(response.body);
 
-      final list = <RouteTransitResponseItemState>[];
+      final list = <NavitimeShapeTransitResponseItemState>[];
 
-      routeTransit.items[0].path.forEach((element) {
+      navitimeShapeTransit.items[0].path.forEach((element) {
         element.coords.forEach((element2) {
           list.add(
-            RouteTransitResponseItemState(
+            NavitimeShapeTransitResponseItemState(
               latitude: element2[0].toString(),
               longitude: element2[1].toString(),
             ),

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'route_transit_request_state.dart';
+part of 'navitime_shape_transit_request_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,31 +15,33 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$RouteTransitRequestState {
+mixin _$NavitimeShapeTransitRequestState {
 //
   String get start => throw _privateConstructorUsedError; //
   String get goal => throw _privateConstructorUsedError; //
   String get startTime => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RouteTransitRequestStateCopyWith<RouteTransitRequestState> get copyWith =>
-      throw _privateConstructorUsedError;
+  $NavitimeShapeTransitRequestStateCopyWith<NavitimeShapeTransitRequestState>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RouteTransitRequestStateCopyWith<$Res> {
-  factory $RouteTransitRequestStateCopyWith(RouteTransitRequestState value,
-          $Res Function(RouteTransitRequestState) then) =
-      _$RouteTransitRequestStateCopyWithImpl<$Res, RouteTransitRequestState>;
+abstract class $NavitimeShapeTransitRequestStateCopyWith<$Res> {
+  factory $NavitimeShapeTransitRequestStateCopyWith(
+          NavitimeShapeTransitRequestState value,
+          $Res Function(NavitimeShapeTransitRequestState) then) =
+      _$NavitimeShapeTransitRequestStateCopyWithImpl<$Res,
+          NavitimeShapeTransitRequestState>;
   @useResult
   $Res call({String start, String goal, String startTime});
 }
 
 /// @nodoc
-class _$RouteTransitRequestStateCopyWithImpl<$Res,
-        $Val extends RouteTransitRequestState>
-    implements $RouteTransitRequestStateCopyWith<$Res> {
-  _$RouteTransitRequestStateCopyWithImpl(this._value, this._then);
+class _$NavitimeShapeTransitRequestStateCopyWithImpl<$Res,
+        $Val extends NavitimeShapeTransitRequestState>
+    implements $NavitimeShapeTransitRequestStateCopyWith<$Res> {
+  _$NavitimeShapeTransitRequestStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -71,24 +73,25 @@ class _$RouteTransitRequestStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_RouteTransitRequestStateCopyWith<$Res>
-    implements $RouteTransitRequestStateCopyWith<$Res> {
-  factory _$$_RouteTransitRequestStateCopyWith(
-          _$_RouteTransitRequestState value,
-          $Res Function(_$_RouteTransitRequestState) then) =
-      __$$_RouteTransitRequestStateCopyWithImpl<$Res>;
+abstract class _$$_NavitimeShapeTransitRequestStateCopyWith<$Res>
+    implements $NavitimeShapeTransitRequestStateCopyWith<$Res> {
+  factory _$$_NavitimeShapeTransitRequestStateCopyWith(
+          _$_NavitimeShapeTransitRequestState value,
+          $Res Function(_$_NavitimeShapeTransitRequestState) then) =
+      __$$_NavitimeShapeTransitRequestStateCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String start, String goal, String startTime});
 }
 
 /// @nodoc
-class __$$_RouteTransitRequestStateCopyWithImpl<$Res>
-    extends _$RouteTransitRequestStateCopyWithImpl<$Res,
-        _$_RouteTransitRequestState>
-    implements _$$_RouteTransitRequestStateCopyWith<$Res> {
-  __$$_RouteTransitRequestStateCopyWithImpl(_$_RouteTransitRequestState _value,
-      $Res Function(_$_RouteTransitRequestState) _then)
+class __$$_NavitimeShapeTransitRequestStateCopyWithImpl<$Res>
+    extends _$NavitimeShapeTransitRequestStateCopyWithImpl<$Res,
+        _$_NavitimeShapeTransitRequestState>
+    implements _$$_NavitimeShapeTransitRequestStateCopyWith<$Res> {
+  __$$_NavitimeShapeTransitRequestStateCopyWithImpl(
+      _$_NavitimeShapeTransitRequestState _value,
+      $Res Function(_$_NavitimeShapeTransitRequestState) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -98,7 +101,7 @@ class __$$_RouteTransitRequestStateCopyWithImpl<$Res>
     Object? goal = null,
     Object? startTime = null,
   }) {
-    return _then(_$_RouteTransitRequestState(
+    return _then(_$_NavitimeShapeTransitRequestState(
       start: null == start
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
@@ -117,8 +120,9 @@ class __$$_RouteTransitRequestStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RouteTransitRequestState implements _RouteTransitRequestState {
-  const _$_RouteTransitRequestState(
+class _$_NavitimeShapeTransitRequestState
+    implements _NavitimeShapeTransitRequestState {
+  const _$_NavitimeShapeTransitRequestState(
       {this.start = '', this.goal = '', this.startTime = ''});
 
 //
@@ -136,14 +140,14 @@ class _$_RouteTransitRequestState implements _RouteTransitRequestState {
 
   @override
   String toString() {
-    return 'RouteTransitRequestState(start: $start, goal: $goal, startTime: $startTime)';
+    return 'NavitimeShapeTransitRequestState(start: $start, goal: $goal, startTime: $startTime)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RouteTransitRequestState &&
+            other is _$_NavitimeShapeTransitRequestState &&
             (identical(other.start, start) || other.start == start) &&
             (identical(other.goal, goal) || other.goal == goal) &&
             (identical(other.startTime, startTime) ||
@@ -156,16 +160,18 @@ class _$_RouteTransitRequestState implements _RouteTransitRequestState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RouteTransitRequestStateCopyWith<_$_RouteTransitRequestState>
-      get copyWith => __$$_RouteTransitRequestStateCopyWithImpl<
-          _$_RouteTransitRequestState>(this, _$identity);
+  _$$_NavitimeShapeTransitRequestStateCopyWith<
+          _$_NavitimeShapeTransitRequestState>
+      get copyWith => __$$_NavitimeShapeTransitRequestStateCopyWithImpl<
+          _$_NavitimeShapeTransitRequestState>(this, _$identity);
 }
 
-abstract class _RouteTransitRequestState implements RouteTransitRequestState {
-  const factory _RouteTransitRequestState(
+abstract class _NavitimeShapeTransitRequestState
+    implements NavitimeShapeTransitRequestState {
+  const factory _NavitimeShapeTransitRequestState(
       {final String start,
       final String goal,
-      final String startTime}) = _$_RouteTransitRequestState;
+      final String startTime}) = _$_NavitimeShapeTransitRequestState;
 
   @override //
   String get start;
@@ -175,6 +181,7 @@ abstract class _RouteTransitRequestState implements RouteTransitRequestState {
   String get startTime;
   @override
   @JsonKey(ignore: true)
-  _$$_RouteTransitRequestStateCopyWith<_$_RouteTransitRequestState>
+  _$$_NavitimeShapeTransitRequestStateCopyWith<
+          _$_NavitimeShapeTransitRequestState>
       get copyWith => throw _privateConstructorUsedError;
 }
