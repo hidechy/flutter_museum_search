@@ -26,11 +26,16 @@ class HomeScreen extends ConsumerWidget {
     _context = context;
     _ref = ref;
 
-    final appParamState = ref.watch(appParamProvider);
-
     final latLngState = ref.watch(latLngProvider);
-    final prefectureState = ref.watch(prefectureProvider);
-    final cityState = ref.watch(cityProvider);
+
+    final searchDisp =
+        ref.watch(appParamProvider.select((value) => value.searchDisp));
+
+    final selectPrefCode =
+        ref.watch(prefectureProvider.select((value) => value.selectPrefCode));
+
+    final selectCityCode =
+        ref.watch(cityProvider.select((value) => value.selectCityCode));
 
     return Scaffold(
       body: Column(
@@ -46,7 +51,7 @@ class HomeScreen extends ConsumerWidget {
 
                   await ref
                       .read(appParamProvider.notifier)
-                      .setSearchDisp(searchDisp: !appParamState.searchDisp);
+                      .setSearchDisp(searchDisp: !searchDisp);
 
                   await ref
                       .watch(genreProvider.notifier)
@@ -54,7 +59,7 @@ class HomeScreen extends ConsumerWidget {
 
                   await clearSearchArea();
                 },
-                icon: (appParamState.searchDisp)
+                icon: searchDisp
                     ? const Icon(
                         Icons.arrow_drop_up_outlined,
                         color: Colors.lightBlueAccent,
@@ -111,8 +116,8 @@ class HomeScreen extends ConsumerWidget {
                     onPressed: () {
                       if (latLngSettingCheck() == true) {
                         //都道府県選択時
-                        if (prefectureState.selectPrefCode > 0) {
-                          if (cityState.selectCityCode == '') {
+                        if (selectPrefCode > 0) {
+                          if (selectCityCode == '') {
                             ref
                                 .watch(appParamProvider.notifier)
                                 .setSearchErrorFlag(
@@ -164,7 +169,7 @@ class HomeScreen extends ConsumerWidget {
             ],
           ),
           const Divider(color: Colors.black, thickness: 2),
-          if (appParamState.searchDisp) ...[
+          if (searchDisp) ...[
             displaySearchBlock(),
             const Divider(color: Colors.black, thickness: 2),
           ],
@@ -206,9 +211,6 @@ class HomeScreen extends ConsumerWidget {
   ///
   Widget dispArtFacilities() {
     final artFacilityState = _ref.watch(artFacilityProvider);
-
-    final allList =
-        _ref.watch(artFacilityProvider.select((value) => value.allList));
 
     final list = <Widget>[];
 
@@ -292,7 +294,7 @@ class HomeScreen extends ConsumerWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (allList.isNotEmpty) displayAllCheck(),
+          if (artFacilityState.allList.isNotEmpty) displayAllCheck(),
           Column(children: list),
         ],
       ),

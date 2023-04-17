@@ -47,7 +47,8 @@ class MapScreen extends ConsumerWidget {
 
     mapInit();
 
-    final mapMarkerState = ref.watch(mapMarkerProvider);
+    final markers =
+        ref.watch(mapMarkerProvider.select((value) => value.markers));
 
     final selectIdList =
         ref.watch(artFacilityProvider.select((value) => value.selectIdList));
@@ -74,7 +75,7 @@ class MapScreen extends ConsumerWidget {
               child: GoogleMap(
                 initialCameraPosition: basePoint,
                 onMapCreated: _controller.complete,
-                markers: mapMarkerState.markers,
+                markers: markers,
                 polylines: polylineSet,
               ),
             ),
@@ -173,7 +174,8 @@ class MapScreen extends ConsumerWidget {
 
     final artFacilityState = _ref.watch(artFacilityProvider);
 
-    final mapMarkerState = _ref.watch(mapMarkerProvider);
+    final selectName =
+        _ref.watch(mapMarkerProvider.select((value) => value.selectName));
 
     final latLngState = _ref.watch(latLngProvider);
 
@@ -193,7 +195,7 @@ class MapScreen extends ConsumerWidget {
                 color: Colors.white.withOpacity(0.6),
                 width: 2,
               ),
-              color: (element.name == mapMarkerState.selectName)
+              color: (element.name == selectName)
                   ? Colors.yellowAccent.withOpacity(0.2)
                   : Colors.transparent,
             ),
@@ -365,11 +367,11 @@ class MapScreen extends ConsumerWidget {
 
   ///
   void makePolyline() {
-    final routeTransitState = _ref.watch(routeTransitProvider);
+    final list = _ref.watch(routeTransitProvider.select((value) => value.list));
 
     final poly = <LatLng>[];
 
-    routeTransitState.list.forEach((element) {
+    list.forEach((element) {
       final origin = element as RouteTransitResponseItemState;
 
       poly.add(
