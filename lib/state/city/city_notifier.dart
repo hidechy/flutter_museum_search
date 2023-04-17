@@ -8,24 +8,17 @@ import '../../extensions/extensions.dart';
 import '../../models/city.dart';
 import '../../models/prefecture.dart';
 import '../../utility/utility.dart';
-import '../app_param/app_param_notifier.dart';
 import 'city_state.dart';
 
 ////////////////////////////////////////////////
-final cityProvider = StateNotifierProvider.autoDispose
-    .family<CityNotifier, CityState, Pref>((ref, pref) {
+
+// TODO autoDisposeを外している
+final cityProvider = StateNotifierProvider<CityNotifier, CityState>((ref) {
   final client = ref.read(httpClientProvider);
 
   final utility = Utility();
 
-  final appParamState = ref.watch(appParamProvider);
-
-  if (appParamState.citySelectFlag) {
-    return CityNotifier(const CityState(), client, utility);
-  } else {
-    return CityNotifier(const CityState(), client, utility)
-      ..getCity(pref: pref);
-  }
+  return CityNotifier(const CityState(), client, utility);
 });
 
 class CityNotifier extends StateNotifier<CityState> {
@@ -43,17 +36,23 @@ class CityNotifier extends StateNotifier<CityState> {
         'prefecture': pref.prefName,
       },
     ).then((value) {
-      final list = <CityData>[];
+      final list = <CityData>[
+        CityData(
+          prefCode: 0,
+          cityCode: '',
+          cityName: '',
+          bigCityFlag: '',
+          count: 0,
+        ),
+      ];
 
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
+        if (value['data'][i]['count'].toString().toInt() == 0) {
+          continue;
+        }
+
         list.add(
-          CityData(
-            prefCode: value['data'][i]['prefCode'].toString().toInt(),
-            cityCode: value['data'][i]['cityCode'].toString(),
-            cityName: value['data'][i]['cityName'].toString(),
-            bigCityFlag: value['data'][i]['bigCityFlag'].toString(),
-            count: value['data'][i]['count'].toString().toInt(),
-          ),
+          CityData.fromJson(value['data'][i] as Map<String, dynamic>),
         );
       }
 
@@ -64,14 +63,13 @@ class CityNotifier extends StateNotifier<CityState> {
   }
 
   ///
-  Future<void> selectCity(
-      {required String cityCode, required String cityName}) async {
-    state = state.copyWith(selectCityCode: cityCode, selectCityName: cityName);
+  Future<void> selectCity({required String cityCode}) async {
+    state = state.copyWith(selectCityCode: cityCode);
   }
 
   ///
   Future<void> clearCity() async {
-    state = state.copyWith(selectCityCode: '', selectCityName: '');
+    state = state.copyWith(selectCityCode: '');
   }
 }
 

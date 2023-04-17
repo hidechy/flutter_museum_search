@@ -7,8 +7,9 @@ part 'city_state.freezed.dart';
 @freezed
 class CityState with _$CityState {
   const factory CityState({
+    //
     @Default([]) List<CityData> cityList,
+    //
     @Default('') String selectCityCode,
-    @Default('') String selectCityName,
   }) = _CityState;
 }

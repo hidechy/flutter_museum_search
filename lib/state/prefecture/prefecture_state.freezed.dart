@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PrefectureState {
-  List<Pref> get prefList => throw _privateConstructorUsedError;
+//
+  List<Pref> get prefList => throw _privateConstructorUsedError; //
   int get selectPrefCode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -107,7 +108,9 @@ class _$_PrefectureState implements _PrefectureState {
       {final List<Pref> prefList = const [], this.selectPrefCode = 0})
       : _prefList = prefList;
 
+//
   final List<Pref> _prefList;
+//
   @override
   @JsonKey()
   List<Pref> get prefList {
@@ -116,6 +119,7 @@ class _$_PrefectureState implements _PrefectureState {
     return EqualUnmodifiableListView(_prefList);
   }
 
+//
   @override
   @JsonKey()
   final int selectPrefCode;
@@ -151,9 +155,9 @@ abstract class _PrefectureState implements PrefectureState {
       {final List<Pref> prefList,
       final int selectPrefCode}) = _$_PrefectureState;
 
-  @override
+  @override //
   List<Pref> get prefList;
-  @override
+  @override //
   int get selectPrefCode;
   @override
   @JsonKey(ignore: true)

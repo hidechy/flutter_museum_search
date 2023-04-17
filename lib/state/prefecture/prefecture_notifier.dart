@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 
 import '../../models/prefecture.dart';
+import '../city/city_notifier.dart';
 import 'prefecture_state.dart';
 
 //////////////////////////////////////////////////////
@@ -11,11 +12,17 @@ import 'prefecture_state.dart';
 final prefectureProvider =
     StateNotifierProvider.autoDispose<PrefectureNotifier, PrefectureState>(
         (ref) {
-  return PrefectureNotifier(const PrefectureState())..getPrefecture();
+  return PrefectureNotifier(
+    const PrefectureState(),
+    ref: ref,
+  )..getPrefecture();
 });
 
 class PrefectureNotifier extends StateNotifier<PrefectureState> {
-  PrefectureNotifier(super.state);
+  PrefectureNotifier(super.state, {required this.ref});
+
+  final AutoDisposeStateNotifierProviderRef<PrefectureNotifier, PrefectureState>
+      ref;
 
   ///
   Future<void> getPrefecture() async {
@@ -43,6 +50,19 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
 
   ///
   Future<void> selectPref({required int prefCode}) async {
+    //-----------------------------------------//
+    final prefList = [...state.prefList];
+
+    var selectPref = Pref(prefCode: 0, prefName: '');
+    prefList.forEach((element) {
+      if (element.prefCode == prefCode) {
+        selectPref = element;
+      }
+    });
+
+    await ref.watch(cityProvider.notifier).getCity(pref: selectPref);
+    //-----------------------------------------//
+
     state = state.copyWith(selectPrefCode: prefCode);
   }
 

@@ -5,17 +5,21 @@ import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../extensions/extensions.dart';
-import '../models/prefecture.dart';
 import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 import '../state/city/city_notifier.dart';
-import '../state/genre/genre_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
 import '../state/prefecture/prefecture_notifier.dart';
-import 'alert/city_select_alert.dart';
-import 'alert/museum_search_dialog.dart';
 import 'map_screen.dart';
+
+//
+// import '../state/city/city_notifier.dart';
+// import '../state/genre/genre_notifier.dart';
+//
+// import 'alert/city_select_alert.dart';
+// import 'alert/museum_search_dialog.dart';
+//
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -88,9 +92,14 @@ class HomeScreen extends ConsumerWidget {
                           .read(appParamProvider.notifier)
                           .setCitySelectFlag(citySelectFlag: false);
 
-                      await ref
-                          .watch(genreProvider.notifier)
-                          .getGenre(selectPref: '', selectCity: '');
+                      //
+                      //
+                      // await ref
+                      //     .watch(genreProvider.notifier)
+                      //     .getGenre(selectPref: '', selectCity: '');
+                      //
+                      //
+                      //
                     },
                     icon: (appParamState.searchDisp)
                         ? const Icon(Icons.arrow_drop_up_outlined)
@@ -298,24 +307,8 @@ class HomeScreen extends ConsumerWidget {
 
   ///
   Widget displaySearchBlock() {
-    var selectCityName = '';
-
-    //------------------------//
-
-    var selectPref = Pref(prefCode: 0, prefName: '');
-
     final prefectureState = _ref.watch(prefectureProvider);
-
-    prefectureState.prefList.forEach((element) {
-      if (element.prefCode == prefectureState.selectPrefCode) {
-        selectPref = element;
-      }
-    });
-
-    selectCityName = _ref.watch(
-        cityProvider(selectPref).select((value) => value.selectCityName));
-
-    //------------------------//
+    final cityState = _ref.watch(cityProvider);
 
     ///
     final prefDropDown = DropdownButton(
@@ -335,59 +328,144 @@ class HomeScreen extends ConsumerWidget {
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
 
-        await MuseumSearchDialog(
-          context: _context,
-          widget: CitySelectAlert(),
-        );
+        //
+        // await MuseumSearchDialog(
+        //   context: _context,
+        //   widget: CitySelectAlert(),
+        // );
+        //
       },
     );
 
     ///
-    final genreState = _ref.watch(genreProvider);
-    final genreDropDown = DropdownButton(
+    final cityDropDown = DropdownButton(
       dropdownColor: Colors.pinkAccent.withOpacity(0.1),
       iconEnabledColor: Colors.white,
-      items: genreState.genreList.map((e) {
-        return DropdownMenuItem(value: e, child: Text(e));
+      items: cityState.cityList.map((e) {
+        return DropdownMenuItem(
+          value: e.cityCode,
+          child: Text(e.cityName),
+        );
       }).toList(),
-      value: genreState.selectGenre,
+      value: cityState.selectCityCode,
       onChanged: (value) async {
-        await setSearchFlagFalse();
-
-        await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
+        await _ref.watch(cityProvider.notifier).selectCity(cityCode: value!);
       },
     );
 
-    return Container(
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.1),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  prefDropDown,
-                  const SizedBox(width: 20),
-                  Text(selectCityName),
-                ],
-              ),
-              Container(),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              genreDropDown,
-              Container(),
-            ],
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        prefDropDown,
+        Divider(
+          color: Colors.white.withOpacity(0.3),
+          thickness: 2,
+        ),
+        cityDropDown,
+      ],
     );
+
+    //
+    //
+    //
+    //
+    //
+    // var selectCityName = '';
+    //
+    // //------------------------//
+    //
+    // var selectPref = Pref(prefCode: 0, prefName: '');
+    //
+    // final prefectureState = _ref.watch(prefectureProvider);
+    //
+    // prefectureState.prefList.forEach((element) {
+    //   if (element.prefCode == prefectureState.selectPrefCode) {
+    //     selectPref = element;
+    //   }
+    // });
+    //
+    // selectCityName = _ref.watch(
+    //     cityProvider(selectPref).select((value) => value.selectCityName));
+    //
+    // //------------------------//
+    //
+    // ///
+    // final prefDropDown = DropdownButton(
+    //   dropdownColor: Colors.pinkAccent.withOpacity(0.1),
+    //   iconEnabledColor: Colors.white,
+    //   items: prefectureState.prefList.map((e) {
+    //     return DropdownMenuItem(
+    //       value: e.prefCode,
+    //       child: Text(e.prefName),
+    //     );
+    //   }).toList(),
+    //   value: prefectureState.selectPrefCode,
+    //   onChanged: (value) async {
+    //     await setSearchFlagFalse();
+    //
+    //     await _ref
+    //         .watch(prefectureProvider.notifier)
+    //         .selectPref(prefCode: value!);
+    //
+    //     await MuseumSearchDialog(
+    //       context: _context,
+    //       widget: CitySelectAlert(),
+    //     );
+    //   },
+    // );
+    //
+    // ///
+    // final genreState = _ref.watch(genreProvider);
+    // final genreDropDown = DropdownButton(
+    //   dropdownColor: Colors.pinkAccent.withOpacity(0.1),
+    //   iconEnabledColor: Colors.white,
+    //   items: genreState.genreList.map((e) {
+    //     return DropdownMenuItem(value: e, child: Text(e));
+    //   }).toList(),
+    //   value: genreState.selectGenre,
+    //   onChanged: (value) async {
+    //     await setSearchFlagFalse();
+    //
+    //     await _ref.watch(genreProvider.notifier).selectGenre(genre: value!);
+    //   },
+    // );
+    //
+    // return Container(
+    //   padding: const EdgeInsets.all(5),
+    //   decoration: BoxDecoration(
+    //     color: Colors.blueAccent.withOpacity(0.1),
+    //   ),
+    //   child: Column(
+    //     children: [
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           Row(
+    //             children: [
+    //               prefDropDown,
+    //               const SizedBox(width: 20),
+    //               Text(selectCityName),
+    //             ],
+    //           ),
+    //           Container(),
+    //         ],
+    //       ),
+    //       Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           genreDropDown,
+    //           Container(),
+    //         ],
+    //       ),
+    //     ],
+    //   ),
+    // );
+    //
+    //
+    //
+    //
+    //
+    //
+    //
   }
 
   ///
