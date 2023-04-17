@@ -109,47 +109,51 @@ class HomeScreen extends ConsumerWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      //都道府県選択時
-                      if (prefectureState.selectPrefCode > 0) {
-                        if (cityState.selectCityCode == '') {
-                          ref
-                              .watch(appParamProvider.notifier)
-                              .setSearchErrorFlag(
-                                searchErrorMessage:
-                                    '都道府県設定時は\n市区町村も\n入力してください。',
-                              );
+                      if (latLngSettingCheck() == true) {
+                        //都道府県選択時
+                        if (prefectureState.selectPrefCode > 0) {
+                          if (cityState.selectCityCode == '') {
+                            ref
+                                .watch(appParamProvider.notifier)
+                                .setSearchErrorFlag(
+                                  searchErrorMessage:
+                                      '都道府県設定時は\n市区町村も\n入力してください。',
+                                );
 
-                          return;
+                            return;
+                          }
+                        } else {
+                          if (latLngState.lat == 0 || latLngState.lng == 0) {
+                            ref
+                                .watch(appParamProvider.notifier)
+                                .setSearchErrorFlag(
+                                  searchErrorMessage:
+                                      '都道府県または\n現在地点の座標を\n設定してください。',
+                                );
+                          }
                         }
-                      } else {
-                        if (latLngState.lat == 0 || latLngState.lng == 0) {
-                          ref
-                              .watch(appParamProvider.notifier)
-                              .setSearchErrorFlag(
-                                searchErrorMessage:
-                                    '都道府県または\n現在地点の座標を\n設定してください。',
-                              );
-                        }
+
+                        ref
+                            .watch(appParamProvider.notifier)
+                            .setSearchFlag(searchFlag: true);
+
+                        ref
+                            .watch(artFacilityProvider.notifier)
+                            .getArtFacilities();
                       }
-
-                      ref
-                          .watch(appParamProvider.notifier)
-                          .setSearchFlag(searchFlag: true);
-
-                      ref
-                          .watch(artFacilityProvider.notifier)
-                          .getArtFacilities();
                     },
                     icon: const Icon(Icons.search),
                   ),
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MapScreen(),
-                        ),
-                      );
+                      if (latLngSettingCheck() == true) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MapScreen(),
+                          ),
+                        );
+                      }
                     },
                     icon: const Icon(Icons.map),
                   ),
@@ -456,5 +460,27 @@ class HomeScreen extends ConsumerWidget {
     await _ref.watch(cityProvider.notifier).clearCityList();
     await _ref.watch(prefectureProvider.notifier).clearPref();
     await _ref.watch(genreProvider.notifier).clearGenre();
+  }
+
+  ///
+  Future<bool> latLngSettingCheck() async {
+    final latLngState = _ref.watch(latLngProvider);
+
+    if (latLngState.lat == 0 || latLngState.lng == 0) {
+      ScaffoldMessenger.of(_context).showSnackBar(
+        const SnackBar(
+          duration: Duration(milliseconds: 500),
+          backgroundColor: Colors.black,
+          content: Text(
+            '現在位置の座標が設定されていません。',
+            style: TextStyle(color: Colors.white, fontSize: 10),
+          ),
+        ),
+      );
+
+      return false;
+    }
+
+    return true;
   }
 }
