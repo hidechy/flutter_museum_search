@@ -1,7 +1,7 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
-import 'package:museum_search/extensions/extensions.dart';
 
+import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 import 'component/facility_card.dart';
 
