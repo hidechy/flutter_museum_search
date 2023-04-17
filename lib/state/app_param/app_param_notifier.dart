@@ -17,10 +17,6 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
       state = state.copyWith(searchDisp: searchDisp);
 
   ///
-  Future<void> setSearchFlag({required bool searchFlag}) async =>
-      state = state.copyWith(searchFlag: searchFlag);
-
-  ///
   Future<void> setSearchErrorFlag({required String searchErrorMessage}) async {
     state = state.copyWith(
       searchErrorFlag: true,

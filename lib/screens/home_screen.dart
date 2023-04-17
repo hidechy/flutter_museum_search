@@ -54,8 +54,6 @@ class HomeScreen extends ConsumerWidget {
 
               IconButton(
                 onPressed: () async {
-                  await setSearchFlagFalse();
-
                   await ref
                       .read(appParamProvider.notifier)
                       .setSearchDisp(searchDisp: !searchDisp);
@@ -85,16 +83,12 @@ class HomeScreen extends ConsumerWidget {
                     (latLngState.lat == 0 || latLngState.lng == 0)
                         ? IconButton(
                             onPressed: () async {
-                              await setSearchFlagFalse();
-
                               await getLocation();
                             },
                             icon: const Icon(Icons.location_on),
                           )
                         : IconButton(
                             onPressed: () async {
-                              await setSearchFlagFalse();
-
                               await _ref
                                   .watch(latLngProvider.notifier)
                                   .clearLatLng();
@@ -123,12 +117,12 @@ class HomeScreen extends ConsumerWidget {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (latLngSettingCheck() == true) {
                         //都道府県選択時
                         if (selectPrefCode > 0) {
                           if (selectCityCode == '') {
-                            ref
+                            await ref
                                 .watch(appParamProvider.notifier)
                                 .setSearchErrorFlag(
                                   searchErrorMessage:
@@ -139,7 +133,7 @@ class HomeScreen extends ConsumerWidget {
                           }
                         } else {
                           if (latLngState.lat == 0 || latLngState.lng == 0) {
-                            ref
+                            await ref
                                 .watch(appParamProvider.notifier)
                                 .setSearchErrorFlag(
                                   searchErrorMessage:
@@ -148,11 +142,7 @@ class HomeScreen extends ConsumerWidget {
                           }
                         }
 
-                        ref
-                            .watch(appParamProvider.notifier)
-                            .setSearchFlag(searchFlag: true);
-
-                        ref
+                        await ref
                             .watch(artFacilityProvider.notifier)
                             .getArtFacilities();
                       }
@@ -270,7 +260,7 @@ class HomeScreen extends ConsumerWidget {
       list.add(
         FacilityCard(
           checkboxCheck: artFacilityState.selectIdList.contains(element.id),
-          onChanged: (value) {
+          itemSelectTap: () {
             _ref
                 .read(artFacilityProvider.notifier)
                 .onCheckboxChange(id: element.id);
@@ -323,23 +313,27 @@ class HomeScreen extends ConsumerWidget {
           bottom: BorderSide(width: 2),
         ),
       ),
-      child: Row(
-        children: [
-          Checkbox(
-            value: allList.length == selectIdList.length,
-            activeColor: Colors.yellowAccent.withOpacity(0.2),
-            side: BorderSide(color: Colors.white.withOpacity(0.4)),
-            onChanged: (value) {
-              _ref.watch(artFacilityProvider.notifier).onAllCheckChange();
-            },
+      child: GestureDetector(
+        onTap: () =>
+            _ref.watch(artFacilityProvider.notifier).onAllCheckChange(),
+        child: AbsorbPointer(
+          child: Row(
+            children: [
+              Checkbox(
+                value: allList.length == selectIdList.length,
+                activeColor: Colors.yellowAccent.withOpacity(0.2),
+                side: BorderSide(color: Colors.white.withOpacity(0.4)),
+                onChanged: (value) {},
+              ),
+              Expanded(
+                child: Text(
+                  '全て選択する（${allList.length}件）',
+                  style: const TextStyle(color: Colors.grey),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Text(
-              '全て選択する（${allList.length}件）',
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -367,8 +361,6 @@ class HomeScreen extends ConsumerWidget {
       }).toList(),
       value: prefectureState.selectPrefCode,
       onChanged: (value) async {
-        await setSearchFlagFalse();
-
         await _ref.watch(appParamProvider.notifier).clearSearchErrorFlag();
 
         await _ref
@@ -454,13 +446,6 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
     );
-  }
-
-  ///
-  Future<void> setSearchFlagFalse() async {
-    await _ref
-        .watch(appParamProvider.notifier)
-        .setSearchFlag(searchFlag: false);
   }
 
   ///

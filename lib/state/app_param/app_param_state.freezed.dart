@@ -18,7 +18,6 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AppParamState {
 //
   bool get searchDisp => throw _privateConstructorUsedError; //
-  bool get searchFlag => throw _privateConstructorUsedError; //
   bool get searchErrorFlag => throw _privateConstructorUsedError;
   String get searchErrorMessage => throw _privateConstructorUsedError;
 
@@ -33,11 +32,7 @@ abstract class $AppParamStateCopyWith<$Res> {
           AppParamState value, $Res Function(AppParamState) then) =
       _$AppParamStateCopyWithImpl<$Res, AppParamState>;
   @useResult
-  $Res call(
-      {bool searchDisp,
-      bool searchFlag,
-      bool searchErrorFlag,
-      String searchErrorMessage});
+  $Res call({bool searchDisp, bool searchErrorFlag, String searchErrorMessage});
 }
 
 /// @nodoc
@@ -54,7 +49,6 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
   @override
   $Res call({
     Object? searchDisp = null,
-    Object? searchFlag = null,
     Object? searchErrorFlag = null,
     Object? searchErrorMessage = null,
   }) {
@@ -62,10 +56,6 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
       searchDisp: null == searchDisp
           ? _value.searchDisp
           : searchDisp // ignore: cast_nullable_to_non_nullable
-              as bool,
-      searchFlag: null == searchFlag
-          ? _value.searchFlag
-          : searchFlag // ignore: cast_nullable_to_non_nullable
               as bool,
       searchErrorFlag: null == searchErrorFlag
           ? _value.searchErrorFlag
@@ -87,11 +77,7 @@ abstract class _$$_AppParamStateCopyWith<$Res>
       __$$_AppParamStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {bool searchDisp,
-      bool searchFlag,
-      bool searchErrorFlag,
-      String searchErrorMessage});
+  $Res call({bool searchDisp, bool searchErrorFlag, String searchErrorMessage});
 }
 
 /// @nodoc
@@ -106,7 +92,6 @@ class __$$_AppParamStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? searchDisp = null,
-    Object? searchFlag = null,
     Object? searchErrorFlag = null,
     Object? searchErrorMessage = null,
   }) {
@@ -114,10 +99,6 @@ class __$$_AppParamStateCopyWithImpl<$Res>
       searchDisp: null == searchDisp
           ? _value.searchDisp
           : searchDisp // ignore: cast_nullable_to_non_nullable
-              as bool,
-      searchFlag: null == searchFlag
-          ? _value.searchFlag
-          : searchFlag // ignore: cast_nullable_to_non_nullable
               as bool,
       searchErrorFlag: null == searchErrorFlag
           ? _value.searchErrorFlag
@@ -136,7 +117,6 @@ class __$$_AppParamStateCopyWithImpl<$Res>
 class _$_AppParamState implements _AppParamState {
   const _$_AppParamState(
       {this.searchDisp = false,
-      this.searchFlag = false,
       this.searchErrorFlag = false,
       this.searchErrorMessage = ''});
 
@@ -147,10 +127,6 @@ class _$_AppParamState implements _AppParamState {
 //
   @override
   @JsonKey()
-  final bool searchFlag;
-//
-  @override
-  @JsonKey()
   final bool searchErrorFlag;
   @override
   @JsonKey()
@@ -158,7 +134,7 @@ class _$_AppParamState implements _AppParamState {
 
   @override
   String toString() {
-    return 'AppParamState(searchDisp: $searchDisp, searchFlag: $searchFlag, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage)';
+    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage)';
   }
 
   @override
@@ -168,8 +144,6 @@ class _$_AppParamState implements _AppParamState {
             other is _$_AppParamState &&
             (identical(other.searchDisp, searchDisp) ||
                 other.searchDisp == searchDisp) &&
-            (identical(other.searchFlag, searchFlag) ||
-                other.searchFlag == searchFlag) &&
             (identical(other.searchErrorFlag, searchErrorFlag) ||
                 other.searchErrorFlag == searchErrorFlag) &&
             (identical(other.searchErrorMessage, searchErrorMessage) ||
@@ -177,8 +151,8 @@ class _$_AppParamState implements _AppParamState {
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, searchDisp, searchFlag, searchErrorFlag, searchErrorMessage);
+  int get hashCode =>
+      Object.hash(runtimeType, searchDisp, searchErrorFlag, searchErrorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -190,14 +164,11 @@ class _$_AppParamState implements _AppParamState {
 abstract class _AppParamState implements AppParamState {
   const factory _AppParamState(
       {final bool searchDisp,
-      final bool searchFlag,
       final bool searchErrorFlag,
       final String searchErrorMessage}) = _$_AppParamState;
 
   @override //
   bool get searchDisp;
-  @override //
-  bool get searchFlag;
   @override //
   bool get searchErrorFlag;
   @override

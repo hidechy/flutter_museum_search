@@ -40,9 +40,10 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             genre: element.genre,
             address: element.address,
             displayRoutesButton: true,
-            routesButtonPress: () {
-              routesButtonPress(id: element.id);
+            routesButtonTap: () {
+              routesButtonTap(id: element.id);
             },
+            displayDragIndicator: true,
           ),
         ),
       );
@@ -119,7 +120,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
                 ///
                 itemDecorationWhileDragging: const BoxDecoration(
-                  color: Colors.blueGrey,
+                  color: Colors.black,
                   boxShadow: [
                     BoxShadow(color: Colors.white, blurRadius: 4),
                   ],
@@ -169,7 +170,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   ///
-  void routesButtonPress({required int id}) {
+  void routesButtonTap({required int id}) {
     print(id);
 
     print(orderedIdList);

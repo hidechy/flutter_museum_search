@@ -7,8 +7,6 @@ class AppParamState with _$AppParamState {
   const factory AppParamState({
     //
     @Default(false) bool searchDisp,
-    //
-    @Default(false) bool searchFlag,
 
     //
     @Default(false) bool searchErrorFlag,
