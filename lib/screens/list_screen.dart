@@ -1,6 +1,7 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/screens/route_map_screen.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -232,9 +233,16 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
     final destFacility = facilityMap[id]!;
 
-    print(originFacility.latitude);
-    print(originFacility.longitude);
-    print(destFacility.latitude);
-    print(destFacility.longitude);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RouteMapScreen(
+          facilityMap: {
+            'origin': originFacility,
+            'destination': destFacility,
+          },
+        ),
+      ),
+    );
   }
 }
