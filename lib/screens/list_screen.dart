@@ -1,7 +1,6 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/screens/total_route_map_screen.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -10,7 +9,7 @@ import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import 'component/facility_card.dart';
 import 'map_screen.dart';
-import 'route_map_screen.dart';
+import 'total_route_map_screen.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key, required this.list});
@@ -44,10 +43,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             name: element.name,
             genre: element.genre,
             address: element.address,
-            displayRoutesButton: true,
-            routesButtonTap: () {
-              routesButtonTap(id: element.id);
-            },
             displayDragIndicator: true,
           ),
         ),
@@ -199,60 +194,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     widget.list.forEach((element) {
       defaultIdList.add(element.id);
     });
-  }
-
-  ///
-  void routesButtonTap({required int id}) {
-    final facilityMap =
-        ref.read(artFacilityProvider.select((value) => value.facilityMap));
-
-    final latLngState = ref.watch(latLngProvider);
-
-    final latLngAddressState = ref.watch(latLngAddressProvider);
-
-    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
-
-    final index = idList.indexWhere((element) => element == id);
-
-    var originFacility = Facility(
-      id: 0,
-      name: '',
-      genre: '',
-      address: '',
-      latitude: '',
-      longitude: '',
-      dist: '',
-    );
-
-    if (index > 0) {
-      originFacility = facilityMap[idList[index - 1]]!;
-    } else {
-      //TODO リストの一番上の場合は現在地点を始点とする
-
-      originFacility = Facility(
-        id: 0,
-        name: '現在地点',
-        genre: '',
-        address: '${latLngAddressState.city}${latLngAddressState.town}',
-        latitude: latLngState.lat.toString(),
-        longitude: latLngState.lng.toString(),
-        dist: '0',
-      );
-    }
-
-    final destFacility = facilityMap[id]!;
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RouteMapScreen(
-          facilityMap: {
-            'origin': originFacility,
-            'destination': destFacility,
-          },
-        ),
-      ),
-    );
   }
 
   ///

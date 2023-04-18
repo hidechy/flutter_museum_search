@@ -14,9 +14,8 @@ class FacilityCard extends StatelessWidget {
     required this.genre,
     required this.address,
     this.displayCheckBox = false,
-    this.displayRoutesButton = false,
-    this.routesButtonTap,
     this.displayDragIndicator = false,
+    this.facilitySelectTap,
   });
 
   final bool? checkboxCheck;
@@ -28,9 +27,8 @@ class FacilityCard extends StatelessWidget {
   final String genre;
   final String address;
   final bool? displayCheckBox;
-  final bool? displayRoutesButton;
-  final VoidCallback? routesButtonTap;
   final bool? displayDragIndicator;
+  final VoidCallback? facilitySelectTap;
 
   ///
   @override
@@ -44,82 +42,8 @@ class FacilityCard extends StatelessWidget {
           bottom: BorderSide(color: Colors.white.withOpacity(0.3)),
         ),
       ),
-      child: Row(
-        children: [
-          if (displayCheckBox == true)
-            Checkbox(
-              value: checkboxCheck,
-              activeColor: Colors.yellowAccent.withOpacity(0.2),
-              side: BorderSide(color: Colors.white.withOpacity(0.4)),
-              onChanged: onChanged,
-            ),
-          if (displayDragIndicator == true) ...[
-            Icon(
-              Icons.drag_indicator_outlined,
-              color: Colors.white.withOpacity(0.6),
-            ),
-            const SizedBox(width: 10),
-          ],
-          Expanded(
-            child: DefaultTextStyle(
-              style: const TextStyle(fontSize: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        dist,
-                        style: const TextStyle(color: Colors.yellowAccent),
-                      ),
-                      Text('$latitude / $longitude'),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(name),
-                        Text(genre),
-                        Text(address),
-                      ],
-                    ),
-                  ),
-                  if (displayRoutesButton == true)
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(),
-                          GestureDetector(
-                            onTap: routesButtonTap,
-                            child: Icon(
-                              Icons.stacked_line_chart,
-                              size: 20,
-                              color: Colors.white.withOpacity(0.6),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-
-      /*
-
-
-
-
-
       child: GestureDetector(
-        onTap: itemSelectTap,
+        onTap: facilitySelectTap,
         child: AbsorbPointer(
           child: Row(
             children: [
@@ -128,7 +52,7 @@ class FacilityCard extends StatelessWidget {
                   value: checkboxCheck,
                   activeColor: Colors.yellowAccent.withOpacity(0.2),
                   side: BorderSide(color: Colors.white.withOpacity(0.4)),
-                  onChanged: (value) {},
+                  onChanged: onChanged,
                 ),
               if (displayDragIndicator == true) ...[
                 Icon(
@@ -164,24 +88,6 @@ class FacilityCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (displayRoutesButton == true)
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(),
-                              GestureDetector(
-                                onTap: routesButtonTap,
-                                child: Icon(
-                                  Icons.stacked_line_chart,
-                                  size: 20,
-                                  color: Colors.white.withOpacity(0.6),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                     ],
                   ),
                 ),
@@ -190,13 +96,6 @@ class FacilityCard extends StatelessWidget {
           ),
         ),
       ),
-
-
-
-
-
-
-      */
     );
   }
 }

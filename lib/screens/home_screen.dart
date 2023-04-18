@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/lat_lng_address/lat_lng_address_notifier.dart';
-import 'package:museum_search/state/lat_lng_address/lat_lng_address_request_state.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -14,6 +12,8 @@ import '../state/city/city_notifier.dart';
 import '../state/genre/genre_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
+import '../state/lat_lng_address/lat_lng_address_notifier.dart';
+import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../state/prefecture/prefecture_notifier.dart';
 import 'component/facility_card.dart';
 import 'list_screen.dart';
@@ -262,7 +262,7 @@ class HomeScreen extends ConsumerWidget {
       list.add(
         FacilityCard(
           checkboxCheck: artFacilityState.selectIdList.contains(element.id),
-          onChanged: (value) {
+          facilitySelectTap: () {
             _ref
                 .read(artFacilityProvider.notifier)
                 .onCheckboxChange(id: element.id);

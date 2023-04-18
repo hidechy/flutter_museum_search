@@ -148,7 +148,7 @@ class TotalRouteMapScreen extends ConsumerWidget {
 
   ///
   void makePolyline() {
-    var twelveColor = utility.getTwelveColor();
+    final twelveColor = utility.getTwelveColor();
 
     final now = DateTime.now();
     final timeFormat = DateFormat('HH:mm:ss');

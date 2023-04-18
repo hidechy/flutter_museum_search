@@ -24,9 +24,9 @@ import '../state/navitime_shape_transit/navitime_shape_transit_response_state.da
 class MapScreen extends ConsumerWidget {
   MapScreen({super.key});
 
-  ///
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  // ///
+  // final Completer<GoogleMapController> _controller =
+  //     Completer<GoogleMapController>();
 
   List<double> latList = [];
   List<double> lngList = [];
@@ -48,11 +48,10 @@ class MapScreen extends ConsumerWidget {
 
     mapInit();
 
+    setBounds();
+
     final markers =
         ref.watch(mapMarkerProvider.select((value) => value.markers));
-
-    final selectIdList =
-        ref.watch(artFacilityProvider.select((value) => value.selectIdList));
 
     makePolyline();
 
@@ -75,43 +74,28 @@ class MapScreen extends ConsumerWidget {
             Expanded(
               child: GoogleMap(
                 initialCameraPosition: basePoint,
-                onMapCreated: _controller.complete,
+                onMapCreated: (controller) {
+                  Future<dynamic>.delayed(
+                    const Duration(milliseconds: 1000),
+                  ).then(
+                    (dynamic _) async {
+                      await ref
+                          .read(mapMarkerProvider.notifier)
+                          .getFacilityMarker();
+
+                      await controller.animateCamera(
+                        CameraUpdate.newLatLngBounds(bounds, 50),
+                      );
+                    },
+                  );
+                },
                 markers: markers,
                 polylines: polylineSet,
               ),
             ),
             //------------------------------------//
 
-            if (selectIdList.isNotEmpty)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      IconButton(
-                        onPressed: () async {
-                          await ref
-                              .read(mapMarkerProvider.notifier)
-                              .getFacilityMarker();
-
-                          await setBounds();
-                        },
-                        icon: const Icon(Icons.location_on),
-                      ),
-                      IconButton(
-                        onPressed: () async {
-                          await setBounds();
-                        },
-                        icon: const Icon(Icons.vignette_rounded),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: displayFacilities(),
-                  ),
-                ],
-              ),
+            displayFacilities(),
 
             const SizedBox(height: 20),
           ],
@@ -162,10 +146,6 @@ class MapScreen extends ConsumerWidget {
         southwest: LatLng(minSouthwestLat, minSouthwestLng),
         northeast: LatLng(maxNortheastLat, maxNortheastLng),
       );
-
-      final controller = await _controller.future;
-
-      await controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     }
   }
 
