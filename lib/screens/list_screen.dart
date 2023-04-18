@@ -83,8 +83,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     icon: const Icon(Icons.map),
                   ),
                   IconButton(
-                    onPressed: () {
-                      ref
+                    onPressed: () async {
+                      await ref
                           .watch(appParamProvider.notifier)
                           .clearSelectedRouteStart();
 
