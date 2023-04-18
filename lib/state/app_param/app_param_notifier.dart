@@ -32,6 +32,10 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
   Future<void> setSelectedRouteStart(
           {required String selectedRouteStart}) async =>
       state = state.copyWith(selectedRouteStart: selectedRouteStart);
+
+  ///
+  Future<void> clearSelectedRouteStart() async =>
+      state = state.copyWith(selectedRouteStart: '');
 }
 
 //////////////////////////////////////////////////////

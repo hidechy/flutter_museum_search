@@ -1,6 +1,7 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/state/app_param/app_param_notifier.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -9,7 +10,7 @@ import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import 'component/facility_card.dart';
 import 'map_screen.dart';
-import 'total_route_map_screen.dart';
+import 'route_map_screen.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key, required this.list});
@@ -82,7 +83,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     icon: const Icon(Icons.map),
                   ),
                   IconButton(
-                    onPressed: totalRoutesButtonTap,
+                    onPressed: () {
+                      ref
+                          .watch(appParamProvider.notifier)
+                          .clearSelectedRouteStart();
+
+                      routesButtonTap();
+                    },
                     icon: const Icon(Icons.stacked_line_chart),
                   )
                 ],
@@ -197,7 +204,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   ///
-  void totalRoutesButtonTap() {
+  void routesButtonTap() {
     final facilityMap =
         ref.read(artFacilityProvider.select((value) => value.facilityMap));
 
@@ -226,7 +233,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => TotalRouteMapScreen(facilityList: facilityList),
+        builder: (context) => RouteMapScreen(facilityList: facilityList),
       ),
     );
   }

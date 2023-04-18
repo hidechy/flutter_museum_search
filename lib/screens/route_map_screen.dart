@@ -14,8 +14,8 @@ import '../state/navitime_shape_transit/navitime_shape_transit_notifier.dart';
 import '../state/navitime_shape_transit/navitime_shape_transit_request_state.dart';
 import '../state/navitime_shape_transit/navitime_shape_transit_response_state.dart';
 
-class TotalRouteMapScreen extends ConsumerWidget {
-  TotalRouteMapScreen({super.key, required this.facilityList});
+class RouteMapScreen extends ConsumerWidget {
+  RouteMapScreen({super.key, required this.facilityList});
 
   final List<Facility> facilityList;
 
@@ -43,7 +43,6 @@ class TotalRouteMapScreen extends ConsumerWidget {
 
     makeBounds();
 
-    //TODO 利用制限があるため、暫定的にコメントアウト
     makePolyline();
 
     return Scaffold(
@@ -171,7 +170,7 @@ class TotalRouteMapScreen extends ConsumerWidget {
     print(selectedRouteStart);
     print('AAAAAA');
 
-    //
+    //TODO 利用制限があるため、暫定的にコメントアウト
     //
     // for (var i = 0; i < facilityList.length - 1; i++) {
     //   final navitimeShapeTransitState = _ref.watch(navitimeShapeTransitProvider(
@@ -204,9 +203,6 @@ class TotalRouteMapScreen extends ConsumerWidget {
     //     ),
     //   );
     // }
-    //
-    //
-    //
   }
 
   ///
@@ -292,18 +288,16 @@ class TotalRouteMapScreen extends ConsumerWidget {
                       const Icon(Icons.arrow_downward_outlined),
                       const SizedBox(width: 10),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           final llList = [
                             facilityList[i].latitude,
                             facilityList[i].longitude
                           ];
 
-                          _ref
+                          await _ref
                               .watch(appParamProvider.notifier)
                               .setSelectedRouteStart(
                                   selectedRouteStart: llList.join(','));
-
-                          Navigator.pop(_context);
                         },
                         child: const Chip(
                           backgroundColor: Colors.black,
