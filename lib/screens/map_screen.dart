@@ -357,10 +357,8 @@ class MapScreen extends ConsumerWidget {
     final poly = <LatLng>[];
 
     list.forEach((element) {
-      final origin = element as NavitimeShapeTransitResponseItemState;
-
       poly.add(
-        LatLng(origin.latitude.toDouble(), origin.longitude.toDouble()),
+        LatLng(element.latitude.toDouble(), element.longitude.toDouble()),
       );
     });
 

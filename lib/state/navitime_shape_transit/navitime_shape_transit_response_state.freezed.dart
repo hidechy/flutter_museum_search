@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$NavitimeShapeTransitResponseState {
-  dynamic get list => throw _privateConstructorUsedError;
+  List<NavitimeShapeTransitResponseItemState> get list =>
+      throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $NavitimeShapeTransitResponseStateCopyWith<NavitimeShapeTransitResponseState>
@@ -31,7 +32,7 @@ abstract class $NavitimeShapeTransitResponseStateCopyWith<$Res> {
       _$NavitimeShapeTransitResponseStateCopyWithImpl<$Res,
           NavitimeShapeTransitResponseState>;
   @useResult
-  $Res call({dynamic list});
+  $Res call({List<NavitimeShapeTransitResponseItemState> list});
 }
 
 /// @nodoc
@@ -48,13 +49,13 @@ class _$NavitimeShapeTransitResponseStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? list = freezed,
+    Object? list = null,
   }) {
     return _then(_value.copyWith(
-      list: freezed == list
+      list: null == list
           ? _value.list
           : list // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as List<NavitimeShapeTransitResponseItemState>,
     ) as $Val);
   }
 }
@@ -68,7 +69,7 @@ abstract class _$$_NavitimeShapeTransitResponseStateCopyWith<$Res>
       __$$_NavitimeShapeTransitResponseStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({dynamic list});
+  $Res call({List<NavitimeShapeTransitResponseItemState> list});
 }
 
 /// @nodoc
@@ -84,10 +85,13 @@ class __$$_NavitimeShapeTransitResponseStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? list = freezed,
+    Object? list = null,
   }) {
     return _then(_$_NavitimeShapeTransitResponseState(
-      list: freezed == list ? _value.list! : list,
+      list: null == list
+          ? _value._list
+          : list // ignore: cast_nullable_to_non_nullable
+              as List<NavitimeShapeTransitResponseItemState>,
     ));
   }
 }
@@ -96,11 +100,18 @@ class __$$_NavitimeShapeTransitResponseStateCopyWithImpl<$Res>
 
 class _$_NavitimeShapeTransitResponseState
     implements _NavitimeShapeTransitResponseState {
-  const _$_NavitimeShapeTransitResponseState({this.list = const []});
+  const _$_NavitimeShapeTransitResponseState(
+      {final List<NavitimeShapeTransitResponseItemState> list = const []})
+      : _list = list;
 
+  final List<NavitimeShapeTransitResponseItemState> _list;
   @override
   @JsonKey()
-  final dynamic list;
+  List<NavitimeShapeTransitResponseItemState> get list {
+    if (_list is EqualUnmodifiableListView) return _list;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_list);
+  }
 
   @override
   String toString() {
@@ -112,12 +123,12 @@ class _$_NavitimeShapeTransitResponseState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_NavitimeShapeTransitResponseState &&
-            const DeepCollectionEquality().equals(other.list, list));
+            const DeepCollectionEquality().equals(other._list, _list));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(list));
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_list));
 
   @JsonKey(ignore: true)
   @override
@@ -130,11 +141,12 @@ class _$_NavitimeShapeTransitResponseState
 
 abstract class _NavitimeShapeTransitResponseState
     implements NavitimeShapeTransitResponseState {
-  const factory _NavitimeShapeTransitResponseState({final dynamic list}) =
+  const factory _NavitimeShapeTransitResponseState(
+          {final List<NavitimeShapeTransitResponseItemState> list}) =
       _$_NavitimeShapeTransitResponseState;
 
   @override
-  dynamic get list;
+  List<NavitimeShapeTransitResponseItemState> get list;
   @override
   @JsonKey(ignore: true)
   _$$_NavitimeShapeTransitResponseStateCopyWith<

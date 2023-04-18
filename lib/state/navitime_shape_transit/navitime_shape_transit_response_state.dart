@@ -6,7 +6,7 @@ part 'navitime_shape_transit_response_state.freezed.dart';
 class NavitimeShapeTransitResponseState
     with _$NavitimeShapeTransitResponseState {
   const factory NavitimeShapeTransitResponseState({
-    @Default([]) list,
+    @Default([]) List<NavitimeShapeTransitResponseItemState> list,
   }) = _NavitimeShapeTransitResponseState;
 }
 
