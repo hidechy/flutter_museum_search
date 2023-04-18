@@ -151,36 +151,38 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   IconButton(
                     onPressed: () async {
-                      if (artFacilityState.selectIdList.length < 2) {
-                        showErrorMessage(
-                          message: '並び替えるために2つ以上の施設を選択してください。',
-                        );
-                      } else {
-                        await ref
-                            .watch(latLngAddressProvider.notifier)
-                            .getLatLngAddress(
-                              param: LatLngAddressRequestState(
-                                latitude: latLngState.lat.toString(),
-                                longitude: latLngState.lng.toString(),
-                              ),
-                            );
-
-                        //-------------//
-                        final selectedArtFacilities = <Facility>[];
-                        artFacilityState.selectIdList.forEach((element) {
-                          selectedArtFacilities.add(
-                            artFacilityState.facilityMap[element]!,
+                      if (latLngSettingCheck() == true) {
+                        if (artFacilityState.selectIdList.length < 2) {
+                          showErrorMessage(
+                            message: '並び替えるために2つ以上の施設を選択してください。',
                           );
-                        });
+                        } else {
+                          await ref
+                              .watch(latLngAddressProvider.notifier)
+                              .getLatLngAddress(
+                                param: LatLngAddressRequestState(
+                                  latitude: latLngState.lat.toString(),
+                                  longitude: latLngState.lng.toString(),
+                                ),
+                              );
 
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ListScreen(list: selectedArtFacilities),
-                          ),
-                        );
-                        //-------------//
+                          //-------------//
+                          final selectedArtFacilities = <Facility>[];
+                          artFacilityState.selectIdList.forEach((element) {
+                            selectedArtFacilities.add(
+                              artFacilityState.facilityMap[element]!,
+                            );
+                          });
+
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ListScreen(list: selectedArtFacilities),
+                            ),
+                          );
+                          //-------------//
+                        }
                       }
                     },
                     icon: const Icon(Icons.list),
@@ -260,7 +262,7 @@ class HomeScreen extends ConsumerWidget {
       list.add(
         FacilityCard(
           checkboxCheck: artFacilityState.selectIdList.contains(element.id),
-          itemSelectTap: () {
+          onChanged: (value) {
             _ref
                 .read(artFacilityProvider.notifier)
                 .onCheckboxChange(id: element.id);
