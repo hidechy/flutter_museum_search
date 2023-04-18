@@ -27,6 +27,11 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
   ///
   Future<void> clearSearchErrorFlag() async =>
       state = state.copyWith(searchErrorFlag: false, searchErrorMessage: '');
+
+  ///
+  Future<void> setSelectedRouteStart(
+          {required String selectedRouteStart}) async =>
+      state = state.copyWith(selectedRouteStart: selectedRouteStart);
 }
 
 //////////////////////////////////////////////////////

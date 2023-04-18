@@ -11,5 +11,8 @@ class AppParamState with _$AppParamState {
     //
     @Default(false) bool searchErrorFlag,
     @Default('') String searchErrorMessage,
+
+    //
+    @Default('') String selectedRouteStart,
   }) = _AppParamState;
 }

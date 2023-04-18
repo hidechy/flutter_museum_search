@@ -19,7 +19,8 @@ mixin _$AppParamState {
 //
   bool get searchDisp => throw _privateConstructorUsedError; //
   bool get searchErrorFlag => throw _privateConstructorUsedError;
-  String get searchErrorMessage => throw _privateConstructorUsedError;
+  String get searchErrorMessage => throw _privateConstructorUsedError; //
+  String get selectedRouteStart => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppParamStateCopyWith<AppParamState> get copyWith =>
@@ -32,7 +33,11 @@ abstract class $AppParamStateCopyWith<$Res> {
           AppParamState value, $Res Function(AppParamState) then) =
       _$AppParamStateCopyWithImpl<$Res, AppParamState>;
   @useResult
-  $Res call({bool searchDisp, bool searchErrorFlag, String searchErrorMessage});
+  $Res call(
+      {bool searchDisp,
+      bool searchErrorFlag,
+      String searchErrorMessage,
+      String selectedRouteStart});
 }
 
 /// @nodoc
@@ -51,6 +56,7 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
     Object? searchDisp = null,
     Object? searchErrorFlag = null,
     Object? searchErrorMessage = null,
+    Object? selectedRouteStart = null,
   }) {
     return _then(_value.copyWith(
       searchDisp: null == searchDisp
@@ -65,6 +71,10 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
           ? _value.searchErrorMessage
           : searchErrorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedRouteStart: null == selectedRouteStart
+          ? _value.selectedRouteStart
+          : selectedRouteStart // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -77,7 +87,11 @@ abstract class _$$_AppParamStateCopyWith<$Res>
       __$$_AppParamStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool searchDisp, bool searchErrorFlag, String searchErrorMessage});
+  $Res call(
+      {bool searchDisp,
+      bool searchErrorFlag,
+      String searchErrorMessage,
+      String selectedRouteStart});
 }
 
 /// @nodoc
@@ -94,6 +108,7 @@ class __$$_AppParamStateCopyWithImpl<$Res>
     Object? searchDisp = null,
     Object? searchErrorFlag = null,
     Object? searchErrorMessage = null,
+    Object? selectedRouteStart = null,
   }) {
     return _then(_$_AppParamState(
       searchDisp: null == searchDisp
@@ -108,6 +123,10 @@ class __$$_AppParamStateCopyWithImpl<$Res>
           ? _value.searchErrorMessage
           : searchErrorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedRouteStart: null == selectedRouteStart
+          ? _value.selectedRouteStart
+          : selectedRouteStart // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -118,7 +137,8 @@ class _$_AppParamState implements _AppParamState {
   const _$_AppParamState(
       {this.searchDisp = false,
       this.searchErrorFlag = false,
-      this.searchErrorMessage = ''});
+      this.searchErrorMessage = '',
+      this.selectedRouteStart = ''});
 
 //
   @override
@@ -131,10 +151,14 @@ class _$_AppParamState implements _AppParamState {
   @override
   @JsonKey()
   final String searchErrorMessage;
+//
+  @override
+  @JsonKey()
+  final String selectedRouteStart;
 
   @override
   String toString() {
-    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage)';
+    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage, selectedRouteStart: $selectedRouteStart)';
   }
 
   @override
@@ -147,12 +171,14 @@ class _$_AppParamState implements _AppParamState {
             (identical(other.searchErrorFlag, searchErrorFlag) ||
                 other.searchErrorFlag == searchErrorFlag) &&
             (identical(other.searchErrorMessage, searchErrorMessage) ||
-                other.searchErrorMessage == searchErrorMessage));
+                other.searchErrorMessage == searchErrorMessage) &&
+            (identical(other.selectedRouteStart, selectedRouteStart) ||
+                other.selectedRouteStart == selectedRouteStart));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, searchDisp, searchErrorFlag, searchErrorMessage);
+  int get hashCode => Object.hash(runtimeType, searchDisp, searchErrorFlag,
+      searchErrorMessage, selectedRouteStart);
 
   @JsonKey(ignore: true)
   @override
@@ -165,7 +191,8 @@ abstract class _AppParamState implements AppParamState {
   const factory _AppParamState(
       {final bool searchDisp,
       final bool searchErrorFlag,
-      final String searchErrorMessage}) = _$_AppParamState;
+      final String searchErrorMessage,
+      final String selectedRouteStart}) = _$_AppParamState;
 
   @override //
   bool get searchDisp;
@@ -173,6 +200,8 @@ abstract class _AppParamState implements AppParamState {
   bool get searchErrorFlag;
   @override
   String get searchErrorMessage;
+  @override //
+  String get selectedRouteStart;
   @override
   @JsonKey(ignore: true)
   _$$_AppParamStateCopyWith<_$_AppParamState> get copyWith =>

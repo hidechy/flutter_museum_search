@@ -50,7 +50,10 @@ class NavitimeShapeTransitNotifier
 
       final header = <String, String>{
         'X-RapidAPI-Host': 'navitime-route-totalnavi.p.rapidapi.com',
-        'X-RapidAPI-Key': 'e7737991e9mshe2f9b08fce63cddp186074jsn686b1f74dc33'
+//      'X-RapidAPI-Key': 'e7737991e9mshe2f9b08fce63cddp186074jsn686b1f74dc33'
+
+        //toyoda20230418hideyuki@gmail.com
+        'X-RapidAPI-Key': '3a56f33739msh320321fb2cd5b3fp1150acjsn526de119c2e7'
       };
 
       final response = await get(Uri.parse(url), headers: header);
