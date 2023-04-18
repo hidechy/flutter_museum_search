@@ -6,6 +6,9 @@ part 'navitime_shape_transit_request_state.freezed.dart';
 class NavitimeShapeTransitRequestState with _$NavitimeShapeTransitRequestState {
   const factory NavitimeShapeTransitRequestState({
     //
+    @Default(false) bool interlocking,
+
+    //
     @Default('') String start,
 
     //

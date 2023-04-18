@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$NavitimeShapeTransitRequestState {
 //
+  bool get interlocking => throw _privateConstructorUsedError; //
   String get start => throw _privateConstructorUsedError; //
   String get goal => throw _privateConstructorUsedError; //
   String get startTime => throw _privateConstructorUsedError;
@@ -34,7 +35,7 @@ abstract class $NavitimeShapeTransitRequestStateCopyWith<$Res> {
       _$NavitimeShapeTransitRequestStateCopyWithImpl<$Res,
           NavitimeShapeTransitRequestState>;
   @useResult
-  $Res call({String start, String goal, String startTime});
+  $Res call({bool interlocking, String start, String goal, String startTime});
 }
 
 /// @nodoc
@@ -51,11 +52,16 @@ class _$NavitimeShapeTransitRequestStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? interlocking = null,
     Object? start = null,
     Object? goal = null,
     Object? startTime = null,
   }) {
     return _then(_value.copyWith(
+      interlocking: null == interlocking
+          ? _value.interlocking
+          : interlocking // ignore: cast_nullable_to_non_nullable
+              as bool,
       start: null == start
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$_NavitimeShapeTransitRequestStateCopyWith<$Res>
       __$$_NavitimeShapeTransitRequestStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String start, String goal, String startTime});
+  $Res call({bool interlocking, String start, String goal, String startTime});
 }
 
 /// @nodoc
@@ -97,11 +103,16 @@ class __$$_NavitimeShapeTransitRequestStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? interlocking = null,
     Object? start = null,
     Object? goal = null,
     Object? startTime = null,
   }) {
     return _then(_$_NavitimeShapeTransitRequestState(
+      interlocking: null == interlocking
+          ? _value.interlocking
+          : interlocking // ignore: cast_nullable_to_non_nullable
+              as bool,
       start: null == start
           ? _value.start
           : start // ignore: cast_nullable_to_non_nullable
@@ -123,8 +134,15 @@ class __$$_NavitimeShapeTransitRequestStateCopyWithImpl<$Res>
 class _$_NavitimeShapeTransitRequestState
     implements _NavitimeShapeTransitRequestState {
   const _$_NavitimeShapeTransitRequestState(
-      {this.start = '', this.goal = '', this.startTime = ''});
+      {this.interlocking = false,
+      this.start = '',
+      this.goal = '',
+      this.startTime = ''});
 
+//
+  @override
+  @JsonKey()
+  final bool interlocking;
 //
   @override
   @JsonKey()
@@ -140,7 +158,7 @@ class _$_NavitimeShapeTransitRequestState
 
   @override
   String toString() {
-    return 'NavitimeShapeTransitRequestState(start: $start, goal: $goal, startTime: $startTime)';
+    return 'NavitimeShapeTransitRequestState(interlocking: $interlocking, start: $start, goal: $goal, startTime: $startTime)';
   }
 
   @override
@@ -148,6 +166,8 @@ class _$_NavitimeShapeTransitRequestState
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_NavitimeShapeTransitRequestState &&
+            (identical(other.interlocking, interlocking) ||
+                other.interlocking == interlocking) &&
             (identical(other.start, start) || other.start == start) &&
             (identical(other.goal, goal) || other.goal == goal) &&
             (identical(other.startTime, startTime) ||
@@ -155,7 +175,8 @@ class _$_NavitimeShapeTransitRequestState
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, start, goal, startTime);
+  int get hashCode =>
+      Object.hash(runtimeType, interlocking, start, goal, startTime);
 
   @JsonKey(ignore: true)
   @override
@@ -169,10 +190,13 @@ class _$_NavitimeShapeTransitRequestState
 abstract class _NavitimeShapeTransitRequestState
     implements NavitimeShapeTransitRequestState {
   const factory _NavitimeShapeTransitRequestState(
-      {final String start,
+      {final bool interlocking,
+      final String start,
       final String goal,
       final String startTime}) = _$_NavitimeShapeTransitRequestState;
 
+  @override //
+  bool get interlocking;
   @override //
   String get start;
   @override //

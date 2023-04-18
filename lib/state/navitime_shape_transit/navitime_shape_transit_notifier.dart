@@ -9,10 +9,20 @@ import 'navitime_shape_transit_response_state.dart';
 
 //////////////////////////////////////////////////////
 
-final navitimeShapeTransitProvider = StateNotifierProvider.autoDispose<
-    NavitimeShapeTransitNotifier, NavitimeShapeTransitResponseState>((ref) {
+final navitimeShapeTransitProvider = StateNotifierProvider.autoDispose.family<
+    NavitimeShapeTransitNotifier,
+    NavitimeShapeTransitResponseState,
+    NavitimeShapeTransitRequestState>((ref, param) {
+  //TODO 連動フラグが立っている場合
+  if (param.interlocking) {
+    return NavitimeShapeTransitNotifier(
+      const NavitimeShapeTransitResponseState(),
+    )..getNavitimeShapeTransit(param: param);
+  }
+
   return NavitimeShapeTransitNotifier(
-      const NavitimeShapeTransitResponseState());
+    const NavitimeShapeTransitResponseState(),
+  );
 });
 
 class NavitimeShapeTransitNotifier

@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.2.0"
+  apple_maps_flutter:
+    dependency: transitive
+    description:
+      name: apple_maps_flutter
+      sha256: "3785518d2bf37066e920b055b171f76258e8937d9182946e5c3ba63614f28285"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   archive:
     dependency: transitive
     description:
@@ -664,6 +672,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.0"
+  platform_maps_flutter:
+    dependency: "direct main"
+    description:
+      name: platform_maps_flutter
+      sha256: "866b3270cf4efe0df1c9e6012840fb6f5623dd1844b1cfc6aaca4ba36b068f98"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   plugin_platform_interface:
     dependency: transitive
     description:

@@ -142,7 +142,9 @@ class RouteMapScreen extends ConsumerWidget {
                 IconButton(
                   onPressed: () async {
                     await ref
-                        .watch(navitimeShapeTransitProvider.notifier)
+                        .watch(navitimeShapeTransitProvider(
+                          const NavitimeShapeTransitRequestState(),
+                        ).notifier)
                         .getNavitimeShapeTransit(
                           param: NavitimeShapeTransitRequestState(
                             start: '${facilityMap['origin']!.latitude},'
@@ -245,8 +247,9 @@ class RouteMapScreen extends ConsumerWidget {
 
   ///
   void makePolyline() {
-    final list =
-        _ref.watch(navitimeShapeTransitProvider.select((value) => value.list));
+    final list = _ref.watch(navitimeShapeTransitProvider(
+      const NavitimeShapeTransitRequestState(),
+    ).select((value) => value.list));
 
     final poly = <LatLng>[];
 
