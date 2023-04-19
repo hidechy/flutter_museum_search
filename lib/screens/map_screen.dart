@@ -375,7 +375,7 @@ class MapScreen extends ConsumerWidget {
                                       ),
                                     );
 
-                                await showGoogleMap(
+                                await showGoogleTransit(
                                   latitude: facilityList[i].latitude,
                                   longitude: facilityList[i].longitude,
                                 );
@@ -398,7 +398,7 @@ class MapScreen extends ConsumerWidget {
                                       ),
                                     );
 
-                                await showYahooMap();
+                                await showYahooTransit();
                               },
                               icon:
                                   const Icon(FontAwesomeIcons.yahoo, size: 20),
@@ -419,7 +419,7 @@ class MapScreen extends ConsumerWidget {
   }
 
   ///
-  Future<void> showYahooMap() async {
+  Future<void> showYahooTransit() async {
     // 先にdestinationを取得 // 順番変えてはいけない
     final destinationLLAS = _ref.watch(latLngAddressProvider(
       const LatLngAddressRequestState(),
@@ -474,7 +474,7 @@ class MapScreen extends ConsumerWidget {
   }
 
   ///
-  Future<void> showGoogleMap(
+  Future<void> showGoogleTransit(
       {required String latitude, required String longitude}) async {
     // 先にdestinationを取得 // 順番変えてはいけない
     final destinationLLAS = _ref.watch(latLngAddressProvider(
