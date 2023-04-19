@@ -67,12 +67,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Routing Order'),
+        title: const Text('Routing Order'),
         leading: IconButton(
           onPressed: () async {
             await ref
                 .watch(appParamProvider.notifier)
-                .clearSelectedRouteStart();
+                .clearSelectedRouteNumber();
 
             routesButtonTap();
           },

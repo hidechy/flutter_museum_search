@@ -27,6 +27,8 @@ class MapScreen extends ConsumerWidget {
 
   final List<Facility> facilityList;
 
+  late GoogleMapController mapController;
+
   late CameraPosition basePoint;
 
   Set<Marker> markers = {};
@@ -60,7 +62,10 @@ class MapScreen extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(),
+                IconButton(
+                  onPressed: setBounds,
+                  icon: const Icon(Icons.vignette_rounded),
+                ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close),
@@ -85,6 +90,8 @@ class MapScreen extends ConsumerWidget {
                 mapType: MapType.terrain,
                 initialCameraPosition: basePoint,
                 onMapCreated: (controller) {
+                  mapController = controller;
+
                   Future<dynamic>.delayed(
                     const Duration(milliseconds: 1000),
                   ).then(
@@ -166,11 +173,18 @@ class MapScreen extends ConsumerWidget {
   }
 
   ///
+  void setBounds() {
+    mapController.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, 50),
+    );
+  }
+
+  ///
   void makePolyline() {
     polylineSet = {};
 
-    final selectedRouteStart = _ref
-        .watch(appParamProvider.select((value) => value.selectedRouteStart));
+    final selectedRouteNumber = _ref
+        .watch(appParamProvider.select((value) => value.selectedRouteNumber));
 
     for (var i = 0; i < facilityList.length - 1; i++) {
       final polylineState = _ref.watch(polylineProvider(
@@ -184,8 +198,7 @@ class MapScreen extends ConsumerWidget {
       polylineSet.add(
         Polyline(
           polylineId: PolylineId('overview_polyline{$i}'),
-          color: ('${facilityList[i].latitude},${facilityList[i].longitude}' ==
-                  selectedRouteStart)
+          color: (i.toString() == selectedRouteNumber)
               ? Colors.redAccent
               : Colors.grey,
           width: 5,
@@ -346,15 +359,10 @@ class MapScreen extends ConsumerWidget {
                           children: [
                             IconButton(
                               onPressed: () async {
-                                final llList = [
-                                  facilityList[i].latitude,
-                                  facilityList[i].longitude
-                                ];
-
                                 await _ref
                                     .watch(appParamProvider.notifier)
-                                    .setSelectedRouteStart(
-                                        selectedRouteStart: llList.join(','));
+                                    .setSelectedRouteNumber(
+                                        selectedRouteNumber: i.toString());
                               },
                               icon: const Icon(Icons.stacked_line_chart,
                                   size: 20),
