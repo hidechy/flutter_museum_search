@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 import '../state/app_param/app_param_notifier.dart';
+import '../state/map_marker/map_marker_notifier.dart';
 import '../state/polyline/polyline_notifier.dart';
 import '../state/polyline/polyline_request_state.dart';
 
@@ -27,18 +28,18 @@ class MapScreen extends ConsumerWidget {
 
   final List<Facility> facilityList;
 
-  late GoogleMapController mapController;
-
-  late CameraPosition basePoint;
-
   Set<Marker> markers = {};
 
   Set<Polyline> polylineSet = {};
 
-  late LatLngBounds bounds;
-
   List<double> latList = [];
   List<double> lngList = [];
+
+  late GoogleMapController mapController;
+
+  late CameraPosition basePoint;
+
+  late LatLngBounds bounds;
 
   late BuildContext _context;
   late WidgetRef _ref;
@@ -123,6 +124,9 @@ class MapScreen extends ConsumerWidget {
       zoom: 14,
     );
 
+    final numbersList =
+        _ref.watch(mapMarkerProvider.select((value) => value.numbersList));
+
     markers = {};
 
     markers.add(
@@ -144,8 +148,10 @@ class MapScreen extends ConsumerWidget {
             facilityList[i].latitude.toDouble(),
             facilityList[i].longitude.toDouble(),
           ),
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+          // icon:
+          //     BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+
+          icon: numbersList[i - 1],
         ),
       );
     }
@@ -319,7 +325,9 @@ class MapScreen extends ConsumerWidget {
                         ? Colors.blueAccent.withOpacity(0.6)
                         : Colors.orangeAccent.withOpacity(0.4),
                     foregroundColor: Colors.white,
-                    child: Text((i + 1).toString()),
+                    child: (i == 0)
+                        ? const Text('Here', style: TextStyle(fontSize: 10))
+                        : Text(i.toString()),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
@@ -333,8 +341,9 @@ class MapScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(facilityList[i].address),
-                              Text('${facilityList[i].latitude} / '
-                                  '${facilityList[i].longitude}'),
+                              Text(
+                                '${facilityList[i].latitude} / ${facilityList[i].longitude}',
+                              ),
                             ],
                           ),
                         ),

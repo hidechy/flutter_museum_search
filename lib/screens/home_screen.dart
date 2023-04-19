@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../extensions/extensions.dart';
@@ -14,12 +15,18 @@ import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
+import '../state/map_marker/map_marker_notifier.dart';
 import '../state/prefecture/prefecture_notifier.dart';
+import '../utility/utility.dart';
 import 'component/facility_card.dart';
 import 'list_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
+
+  Utility utility = Utility();
+
+  List<BitmapDescriptor> numbersList = [];
 
   late BuildContext _context;
   late WidgetRef _ref;
@@ -169,11 +176,34 @@ class HomeScreen extends ConsumerWidget {
 
                           //-------------//
                           final selectedArtFacilities = <Facility>[];
+
                           artFacilityState.selectIdList.forEach((element) {
                             selectedArtFacilities.add(
                               artFacilityState.facilityMap[element]!,
                             );
                           });
+
+                          /////////////////////////////////
+                          numbersList = [];
+
+                          for (var i = 1;
+                              i <= artFacilityState.selectIdList.length;
+                              i++) {
+                            final uintData = await utility.imageChangeUint8List(
+                              'assets/images/numbers/number_${i.toString().padLeft(2, '0')}.png',
+                              70,
+                              70,
+                            );
+
+                            numbersList.add(
+                              BitmapDescriptor.fromBytes(uintData),
+                            );
+                          }
+
+                          await _ref
+                              .watch(mapMarkerProvider.notifier)
+                              .setNumbersList(numbersList: numbersList);
+                          /////////////////////////////////
 
                           await Navigator.push(
                             context,

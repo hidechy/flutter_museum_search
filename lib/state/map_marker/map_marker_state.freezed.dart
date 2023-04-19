@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MapMarkerState {
 //
   Set<Marker> get markers => throw _privateConstructorUsedError; //
-  String get selectName => throw _privateConstructorUsedError;
+  String get selectName => throw _privateConstructorUsedError; //
+  List<BitmapDescriptor> get numbersList => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MapMarkerStateCopyWith<MapMarkerState> get copyWith =>
@@ -31,7 +32,10 @@ abstract class $MapMarkerStateCopyWith<$Res> {
           MapMarkerState value, $Res Function(MapMarkerState) then) =
       _$MapMarkerStateCopyWithImpl<$Res, MapMarkerState>;
   @useResult
-  $Res call({Set<Marker> markers, String selectName});
+  $Res call(
+      {Set<Marker> markers,
+      String selectName,
+      List<BitmapDescriptor> numbersList});
 }
 
 /// @nodoc
@@ -49,6 +53,7 @@ class _$MapMarkerStateCopyWithImpl<$Res, $Val extends MapMarkerState>
   $Res call({
     Object? markers = null,
     Object? selectName = null,
+    Object? numbersList = null,
   }) {
     return _then(_value.copyWith(
       markers: null == markers
@@ -59,6 +64,10 @@ class _$MapMarkerStateCopyWithImpl<$Res, $Val extends MapMarkerState>
           ? _value.selectName
           : selectName // ignore: cast_nullable_to_non_nullable
               as String,
+      numbersList: null == numbersList
+          ? _value.numbersList
+          : numbersList // ignore: cast_nullable_to_non_nullable
+              as List<BitmapDescriptor>,
     ) as $Val);
   }
 }
@@ -71,7 +80,10 @@ abstract class _$$_MapMarkerStateCopyWith<$Res>
       __$$_MapMarkerStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Set<Marker> markers, String selectName});
+  $Res call(
+      {Set<Marker> markers,
+      String selectName,
+      List<BitmapDescriptor> numbersList});
 }
 
 /// @nodoc
@@ -87,6 +99,7 @@ class __$$_MapMarkerStateCopyWithImpl<$Res>
   $Res call({
     Object? markers = null,
     Object? selectName = null,
+    Object? numbersList = null,
   }) {
     return _then(_$_MapMarkerState(
       markers: null == markers
@@ -97,6 +110,10 @@ class __$$_MapMarkerStateCopyWithImpl<$Res>
           ? _value.selectName
           : selectName // ignore: cast_nullable_to_non_nullable
               as String,
+      numbersList: null == numbersList
+          ? _value._numbersList
+          : numbersList // ignore: cast_nullable_to_non_nullable
+              as List<BitmapDescriptor>,
     ));
   }
 }
@@ -105,8 +122,11 @@ class __$$_MapMarkerStateCopyWithImpl<$Res>
 
 class _$_MapMarkerState implements _MapMarkerState {
   const _$_MapMarkerState(
-      {final Set<Marker> markers = const {}, this.selectName = ''})
-      : _markers = markers;
+      {final Set<Marker> markers = const {},
+      this.selectName = '',
+      final List<BitmapDescriptor> numbersList = const []})
+      : _markers = markers,
+        _numbersList = numbersList;
 
 //
   final Set<Marker> _markers;
@@ -123,10 +143,20 @@ class _$_MapMarkerState implements _MapMarkerState {
   @override
   @JsonKey()
   final String selectName;
+//
+  final List<BitmapDescriptor> _numbersList;
+//
+  @override
+  @JsonKey()
+  List<BitmapDescriptor> get numbersList {
+    if (_numbersList is EqualUnmodifiableListView) return _numbersList;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_numbersList);
+  }
 
   @override
   String toString() {
-    return 'MapMarkerState(markers: $markers, selectName: $selectName)';
+    return 'MapMarkerState(markers: $markers, selectName: $selectName, numbersList: $numbersList)';
   }
 
   @override
@@ -136,12 +166,17 @@ class _$_MapMarkerState implements _MapMarkerState {
             other is _$_MapMarkerState &&
             const DeepCollectionEquality().equals(other._markers, _markers) &&
             (identical(other.selectName, selectName) ||
-                other.selectName == selectName));
+                other.selectName == selectName) &&
+            const DeepCollectionEquality()
+                .equals(other._numbersList, _numbersList));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_markers), selectName);
+      runtimeType,
+      const DeepCollectionEquality().hash(_markers),
+      selectName,
+      const DeepCollectionEquality().hash(_numbersList));
 
   @JsonKey(ignore: true)
   @override
@@ -152,12 +187,16 @@ class _$_MapMarkerState implements _MapMarkerState {
 
 abstract class _MapMarkerState implements MapMarkerState {
   const factory _MapMarkerState(
-      {final Set<Marker> markers, final String selectName}) = _$_MapMarkerState;
+      {final Set<Marker> markers,
+      final String selectName,
+      final List<BitmapDescriptor> numbersList}) = _$_MapMarkerState;
 
   @override //
   Set<Marker> get markers;
   @override //
   String get selectName;
+  @override //
+  List<BitmapDescriptor> get numbersList;
   @override
   @JsonKey(ignore: true)
   _$$_MapMarkerStateCopyWith<_$_MapMarkerState> get copyWith =>

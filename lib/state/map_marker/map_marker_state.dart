@@ -11,5 +11,8 @@ class MapMarkerState with _$MapMarkerState {
 
     //
     @Default('') String selectName,
+
+    //
+    @Default([]) List<BitmapDescriptor> numbersList,
   }) = _MapMarkerState;
 }
