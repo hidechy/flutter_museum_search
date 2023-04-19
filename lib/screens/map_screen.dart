@@ -12,9 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 import '../state/app_param/app_param_notifier.dart';
-import '../state/lat_lng/lat_lng_notifier.dart';
-import '../state/lat_lng_address/lat_lng_address_notifier.dart';
-import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../state/polyline/polyline_notifier.dart';
 import '../state/polyline/polyline_request_state.dart';
 
@@ -170,6 +167,8 @@ class MapScreen extends ConsumerWidget {
 
   ///
   void makePolyline() {
+    polylineSet = {};
+
     final selectedRouteStart = _ref
         .watch(appParamProvider.select((value) => value.selectedRouteStart));
 
@@ -361,42 +360,12 @@ class MapScreen extends ConsumerWidget {
                                   size: 20),
                             ),
                             IconButton(
-                              onPressed: () async {
-                                await _ref
-                                    .watch(latLngAddressProvider(
-                                      const LatLngAddressRequestState(),
-                                    ).notifier)
-                                    .getLatLngAddress(
-                                      //TODO 到着地点を設定する
-                                      param: LatLngAddressRequestState(
-                                        latitude: facilityList[i + 1].latitude,
-                                        longitude:
-                                            facilityList[i + 1].longitude,
-                                      ),
-                                    );
-
-                                await showGoogleTransit(index: i);
-                              },
+                              onPressed: () => showGoogleTransit(index: i),
                               icon:
                                   const Icon(FontAwesomeIcons.google, size: 20),
                             ),
                             IconButton(
-                              onPressed: () async {
-                                await _ref
-                                    .watch(latLngAddressProvider(
-                                      const LatLngAddressRequestState(),
-                                    ).notifier)
-                                    .getLatLngAddress(
-                                      //TODO 到着地点を設定する
-                                      param: LatLngAddressRequestState(
-                                        latitude: facilityList[i + 1].latitude,
-                                        longitude:
-                                            facilityList[i + 1].longitude,
-                                      ),
-                                    );
-
-                                await showYahooTransit(index: i);
-                              },
+                              onPressed: () => showYahooTransit(index: i),
                               icon:
                                   const Icon(FontAwesomeIcons.yahoo, size: 20),
                             ),
@@ -417,36 +386,14 @@ class MapScreen extends ConsumerWidget {
 
   ///
   Future<void> showYahooTransit({required int index}) async {
-    // 先にdestinationを取得 // 順番変えてはいけない
-    final destinationLLAS = _ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
-    //------------------------------------// origin
-    await _ref
-        .watch(latLngAddressProvider(
-          const LatLngAddressRequestState(),
-        ).notifier)
-        .getLatLngAddress(
-          param: LatLngAddressRequestState(
-            latitude: facilityList[index].latitude,
-            longitude: facilityList[index].longitude,
-          ),
-        );
-
-    final originLLAS = _ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-    //------------------------------------// origin
-
     final hourFormat = DateFormat('HH');
     final minuteFormat = DateFormat('mm');
 
     final now = DateTime.now();
 
     final queryParameters = <String>[
-      'from=${originLLAS.city}${originLLAS.town}',
-      'to=${destinationLLAS.city}${destinationLLAS.town}',
+      'from=${facilityList[index].address}',
+      'to=${facilityList[index + 1].address}',
       't=1',
       'y=${now.year}${now.month.toString().padLeft(2, '0')}',
       'd=${now.day}',
@@ -470,17 +417,10 @@ class MapScreen extends ConsumerWidget {
 
   ///
   Future<void> showGoogleTransit({required int index}) async {
-    // 先にdestinationを取得 // 順番変えてはいけない
-    final destinationLLAS = _ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
-    //------------------------------------// origin
-
     final queryParameters = <String>[
       'https://www.google.co.jp/maps/dir',
       '${facilityList[index].latitude},${facilityList[index].longitude}',
-      '${destinationLLAS.city}${destinationLLAS.town}',
+      (facilityList[index + 1].address),
       '@${facilityList[index].latitude},${facilityList[index].longitude}'
     ];
 

@@ -30,8 +30,6 @@ class LatLngAddressNotifier extends StateNotifier<LocationAddress> {
   ///
   Future<void> getLatLngAddress(
       {required LatLngAddressRequestState param}) async {
-    print(param);
-
     try {
       final queryParameters = <String>[
         'method=searchByGeoLocation',
@@ -42,13 +40,9 @@ class LatLngAddressNotifier extends StateNotifier<LocationAddress> {
       final url =
           "https://geoapi.heartrails.com/api/json?${queryParameters.join('&')}";
 
-      print(url);
-
       final response = await get(Uri.parse(url));
 
       final latLngAddress = latLngAddressFromJson(response.body);
-
-      print(latLngAddress.response.location[0]);
 
       state = LocationAddress(
         city: latLngAddress.response.location[0].city,

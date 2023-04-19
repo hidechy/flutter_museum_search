@@ -65,34 +65,30 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     ));
 
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Routing Order'),
+        leading: IconButton(
+          onPressed: () async {
+            await ref
+                .watch(appParamProvider.notifier)
+                .clearSelectedRouteStart();
+
+            routesButtonTap();
+          },
+          icon: const Icon(Icons.stacked_line_chart),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.close),
+          ),
+        ],
+      ),
       body: Column(
         children: [
-          const SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      await ref
-                          .watch(appParamProvider.notifier)
-                          .clearSelectedRouteStart();
-
-                      routesButtonTap();
-                    },
-                    icon: const Icon(Icons.stacked_line_chart),
-                  )
-                ],
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.close),
-              ),
-            ],
-          ),
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
