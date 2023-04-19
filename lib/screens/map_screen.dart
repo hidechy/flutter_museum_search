@@ -375,10 +375,7 @@ class MapScreen extends ConsumerWidget {
                                       ),
                                     );
 
-                                await showGoogleTransit(
-                                  latitude: facilityList[i].latitude,
-                                  longitude: facilityList[i].longitude,
-                                );
+                                await showGoogleTransit(index: i);
                               },
                               icon:
                                   const Icon(FontAwesomeIcons.google, size: 20),
@@ -398,7 +395,7 @@ class MapScreen extends ConsumerWidget {
                                       ),
                                     );
 
-                                await showYahooTransit();
+                                await showYahooTransit(index: i);
                               },
                               icon:
                                   const Icon(FontAwesomeIcons.yahoo, size: 20),
@@ -419,23 +416,21 @@ class MapScreen extends ConsumerWidget {
   }
 
   ///
-  Future<void> showYahooTransit() async {
+  Future<void> showYahooTransit({required int index}) async {
     // 先にdestinationを取得 // 順番変えてはいけない
     final destinationLLAS = _ref.watch(latLngAddressProvider(
       const LatLngAddressRequestState(),
     ));
 
     //------------------------------------// origin
-    final latLngState = _ref.watch(latLngProvider);
-
     await _ref
         .watch(latLngAddressProvider(
           const LatLngAddressRequestState(),
         ).notifier)
         .getLatLngAddress(
           param: LatLngAddressRequestState(
-            latitude: latLngState.lat.toString(),
-            longitude: latLngState.lng.toString(),
+            latitude: facilityList[index].latitude,
+            longitude: facilityList[index].longitude,
           ),
         );
 
@@ -458,8 +453,8 @@ class MapScreen extends ConsumerWidget {
       'h=${hourFormat.format(now)}',
       'm=${minuteFormat.format(now)}',
       'sort=1',
-      'lat=${latLngState.lat}',
-      'lon=${latLngState.lng}',
+      'lat=${facilityList[index].latitude}',
+      'lon=${facilityList[index].longitude}',
       'zoom=13',
       'maptype=basic'
     ];
@@ -474,21 +469,19 @@ class MapScreen extends ConsumerWidget {
   }
 
   ///
-  Future<void> showGoogleTransit(
-      {required String latitude, required String longitude}) async {
+  Future<void> showGoogleTransit({required int index}) async {
     // 先にdestinationを取得 // 順番変えてはいけない
     final destinationLLAS = _ref.watch(latLngAddressProvider(
       const LatLngAddressRequestState(),
     ));
 
     //------------------------------------// origin
-    final latLngState = _ref.watch(latLngProvider);
 
     final queryParameters = <String>[
       'https://www.google.co.jp/maps/dir',
-      '${latLngState.lat},${latLngState.lng}',
+      '${facilityList[index].latitude},${facilityList[index].longitude}',
       '${destinationLLAS.city}${destinationLLAS.town}',
-      '@$latitude,$longitude'
+      '@${facilityList[index].latitude},${facilityList[index].longitude}'
     ];
 
     final url = queryParameters.join('/');
