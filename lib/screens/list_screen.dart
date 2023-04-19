@@ -1,16 +1,16 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/app_param/app_param_notifier.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
+import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
+import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import 'component/facility_card.dart';
 import 'map_screen.dart';
-import 'route_map_screen.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
   const ListScreen({super.key, required this.list});
@@ -60,7 +60,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   Widget build(BuildContext context) {
     final latLngState = ref.watch(latLngProvider);
 
-    final latLngAddressState = ref.watch(latLngAddressProvider);
+    final latLngAddressState = ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
 
     return Scaffold(
       body: Column(
@@ -71,17 +73,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             children: [
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MapScreen(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.map),
-                  ),
                   IconButton(
                     onPressed: () async {
                       await ref
@@ -210,7 +201,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
     final latLngState = ref.watch(latLngProvider);
 
-    final latLngAddressState = ref.watch(latLngAddressProvider);
+    final latLngAddressState = ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
 
     final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
 
@@ -233,7 +226,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => RouteMapScreen(facilityList: facilityList),
+        builder: (context) => MapScreen(facilityList: facilityList),
       ),
     );
   }

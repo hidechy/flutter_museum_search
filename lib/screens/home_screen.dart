@@ -17,7 +17,6 @@ import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../state/prefecture/prefecture_notifier.dart';
 import 'component/facility_card.dart';
 import 'list_screen.dart';
-import 'map_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -158,7 +157,9 @@ class HomeScreen extends ConsumerWidget {
                           );
                         } else {
                           await ref
-                              .watch(latLngAddressProvider.notifier)
+                              .watch(latLngAddressProvider(
+                                const LatLngAddressRequestState(),
+                              ).notifier)
                               .getLatLngAddress(
                                 param: LatLngAddressRequestState(
                                   latitude: latLngState.lat.toString(),
@@ -186,19 +187,6 @@ class HomeScreen extends ConsumerWidget {
                       }
                     },
                     icon: const Icon(Icons.list),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      if (latLngSettingCheck() == true) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MapScreen(),
-                          ),
-                        );
-                      }
-                    },
-                    icon: const Icon(Icons.map),
                   ),
                 ],
               ),

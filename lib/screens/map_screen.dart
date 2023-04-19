@@ -1,6 +1,5 @@
-// ignore_for_file: must_be_immutable, cascade_invocations, inference_failure_on_untyped_parameter, avoid_dynamic_calls
+// ignore_for_file: must_be_immutable, cascade_invocations
 
-import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,37 +7,42 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
-import '../state/art_facility/art_facility_notifier.dart';
+import '../models/art_facility.dart';
+import '../state/app_param/app_param_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
-import '../state/map_marker/map_marker_notifier.dart';
-import '../state/navitime_shape_transit/navitime_shape_transit_notifier.dart';
-import '../state/navitime_shape_transit/navitime_shape_transit_request_state.dart';
-import '../state/navitime_shape_transit/navitime_shape_transit_response_state.dart';
+import '../state/polyline/polyline_notifier.dart';
+import '../state/polyline/polyline_request_state.dart';
+
+//
+//import 'package:intl/intl.dart';
+// import '../state/navitime_shape_transit/navitime_shape_transit_notifier.dart';
+// import '../state/navitime_shape_transit/navitime_shape_transit_request_state.dart';
+// import '../state/navitime_shape_transit/navitime_shape_transit_response_state.dart';
+//
 
 class MapScreen extends ConsumerWidget {
-  MapScreen({super.key});
+  MapScreen({super.key, required this.facilityList});
 
-  // ///
-  // final Completer<GoogleMapController> _controller =
-  //     Completer<GoogleMapController>();
+  final List<Facility> facilityList;
 
-  List<double> latList = [];
-  List<double> lngList = [];
+  late CameraPosition basePoint;
+
+  Set<Marker> markers = {};
 
   Set<Polyline> polylineSet = {};
 
   late LatLngBounds bounds;
 
+  List<double> latList = [];
+  List<double> lngList = [];
+
   late BuildContext _context;
   late WidgetRef _ref;
-
-  late CameraPosition basePoint;
 
   ///
   @override
@@ -48,10 +52,7 @@ class MapScreen extends ConsumerWidget {
 
     mapInit();
 
-    setBounds();
-
-    final markers =
-        ref.watch(mapMarkerProvider.select((value) => value.markers));
+    makeBounds();
 
     makePolyline();
 
@@ -70,20 +71,28 @@ class MapScreen extends ConsumerWidget {
               ],
             ),
 
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(),
+                TextButton(
+                  onPressed: showUnderMenu,
+                  child: const Text('show detail'),
+                ),
+              ],
+            ),
+
             //------------------------------------//
             Expanded(
               child: GoogleMap(
+                mapType: MapType.terrain,
                 initialCameraPosition: basePoint,
                 onMapCreated: (controller) {
                   Future<dynamic>.delayed(
                     const Duration(milliseconds: 1000),
                   ).then(
-                    (dynamic _) async {
-                      await ref
-                          .read(mapMarkerProvider.notifier)
-                          .getFacilityMarker();
-
-                      await controller.animateCamera(
+                    (dynamic _) {
+                      controller.animateCamera(
                         CameraUpdate.newLatLngBounds(bounds, 50),
                       );
                     },
@@ -94,205 +103,345 @@ class MapScreen extends ConsumerWidget {
               ),
             ),
             //------------------------------------//
-
-            displayFacilities(),
-
-            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 
-  Future<void> mapInit() async {
-    final latLngState = _ref.watch(latLngProvider);
-
+  ///
+  void mapInit() {
     basePoint = CameraPosition(
-      target: LatLng(latLngState.lat, latLngState.lng),
+      target: LatLng(
+        facilityList[0].latitude.toDouble(),
+        facilityList[0].longitude.toDouble(),
+      ),
       zoom: 14,
     );
 
-    bounds = LatLngBounds(
-      southwest: LatLng(latLngState.lat, latLngState.lng),
-      northeast: LatLng(latLngState.lat, latLngState.lng),
+    markers = {};
+
+    markers.add(
+      Marker(
+        markerId: MarkerId(facilityList[0].name),
+        position: LatLng(
+          facilityList[0].latitude.toDouble(),
+          facilityList[0].longitude.toDouble(),
+        ),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      ),
     );
-  }
 
-  ///
-  Future<void> setBounds() async {
-    latList = [];
-    lngList = [];
-
-    final latLngState = _ref.watch(latLngProvider);
-    latList.add(latLngState.lat);
-    lngList.add(latLngState.lng);
-
-    final artFacilityState = _ref.watch(artFacilityProvider);
-
-    artFacilityState.allList.forEach((element) {
-      if (artFacilityState.selectIdList.contains(element.id)) {
-        latList.add(element.latitude.toDouble());
-        lngList.add(element.longitude.toDouble());
-      }
-    });
-
-    if (latList.isNotEmpty && lngList.isNotEmpty) {
-      final minSouthwestLat = latList.reduce(min);
-      final maxNortheastLat = latList.reduce(max);
-      final minSouthwestLng = lngList.reduce(min);
-      final maxNortheastLng = lngList.reduce(max);
-
-      bounds = LatLngBounds(
-        southwest: LatLng(minSouthwestLat, minSouthwestLng),
-        northeast: LatLng(maxNortheastLat, maxNortheastLng),
+    for (var i = 1; i < facilityList.length; i++) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(facilityList[i].name),
+          position: LatLng(
+            facilityList[i].latitude.toDouble(),
+            facilityList[i].longitude.toDouble(),
+          ),
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),
+        ),
       );
     }
   }
 
   ///
-  Widget displayFacilities() {
-    final list = <Widget>[];
+  void makeBounds() {
+    latList = [];
+    lngList = [];
 
-    final artFacilityState = _ref.watch(artFacilityProvider);
+    facilityList.forEach((element) {
+      latList.add(element.latitude.toDouble());
+      lngList.add(element.longitude.toDouble());
+    });
 
-    final selectName =
-        _ref.watch(mapMarkerProvider.select((value) => value.selectName));
+    final minSouthwestLat = latList.reduce(min);
+    final maxNortheastLat = latList.reduce(max);
+    final minSouthwestLng = lngList.reduce(min);
+    final maxNortheastLng = lngList.reduce(max);
 
-    final latLngState = _ref.watch(latLngProvider);
+    bounds = LatLngBounds(
+      southwest: LatLng(minSouthwestLat, minSouthwestLng),
+      northeast: LatLng(maxNortheastLat, maxNortheastLng),
+    );
+  }
 
-    final now = DateTime.now();
-    final timeFormat = DateFormat('HH:mm:ss');
-    final currentTime = timeFormat.format(now);
+  ///
+  void makePolyline() {
+    final selectedRouteStart = _ref
+        .watch(appParamProvider.select((value) => value.selectedRouteStart));
 
-    artFacilityState.allList.forEach((element) {
-      if (artFacilityState.selectIdList.contains(element.id)) {
-        list.add(
-          Container(
-            width: 150,
-            padding: const EdgeInsets.all(10),
-            margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+    for (var i = 0; i < facilityList.length - 1; i++) {
+      final polylineState = _ref.watch(polylineProvider(
+        PolylineRequestState(
+          origin: '${facilityList[i].latitude},${facilityList[i].longitude}',
+          destination:
+              '${facilityList[i + 1].latitude},${facilityList[i + 1].longitude}',
+        ),
+      ));
+
+      polylineSet.add(
+        Polyline(
+          polylineId: PolylineId('overview_polyline{$i}'),
+          color: ('${facilityList[i].latitude},${facilityList[i].longitude}' ==
+                  selectedRouteStart)
+              ? Colors.redAccent
+              : Colors.grey,
+          width: 5,
+          points: polylineState.polylinePoints
+              .map((e) => LatLng(e.latitude, e.longitude))
+              .toList(),
+        ),
+      );
+    }
+  }
+
+  // ///
+  // void makePolyline() {
+  //   //
+  //   // final now = DateTime.now();
+  //   // final timeFormat = DateFormat('HH:mm:ss');
+  //   // final currentTime = timeFormat.format(now);
+  //   //
+  //
+  //   final selectedRouteStart = _ref
+  //       .watch(appParamProvider.select((value) => value.selectedRouteStart));
+  //
+  //   //TODO 利用制限があるため、暫定的にコメントアウト
+  //   //
+  //   // for (var i = 0; i < facilityList.length - 1; i++) {
+  //   //   final navitimeShapeTransitState = _ref.watch(navitimeShapeTransitProvider(
+  //   //     NavitimeShapeTransitRequestState(
+  //   //       interlocking: true,
+  //   //       start: '${facilityList[i].latitude},${facilityList[i].longitude}',
+  //   //       goal:
+  //   //           '${facilityList[i + 1].latitude},${facilityList[i + 1].longitude}',
+  //   //       startTime: '${now.yyyymmdd}T$currentTime',
+  //   //     ),
+  //   //   ));
+  //   //
+  //   //   final poly = <LatLng>[];
+  //   //
+  //   //   final nsList = navitimeShapeTransitState.list as List;
+  //   //
+  //   //   nsList.forEach((element) {
+  //   //     final origin = element as NavitimeShapeTransitResponseItemState;
+  //   //     poly.add(
+  //   //       LatLng(origin.latitude.toDouble(), origin.longitude.toDouble()),
+  //   //     );
+  //   //   });
+  //   //
+  //   //   polylineSet.add(
+  //   //     Polyline(
+  //   //       polylineId: PolylineId('overview_polyline($i)'),
+  //   //       color: ('${facilityList[i].latitude},${facilityList[i].longitude}' ==
+  //   //               selectedRouteStart)
+  //   //           ? Colors.redAccent
+  //   //           : Colors.grey,
+  //   //       width: 5,
+  //   //       points: poly,
+  //   //     ),
+  //   //   );
+  //   // }
+  //   //
+  //   //TODO 利用制限があるため、暫定的にコメントアウト
+  // }
+
+  ///
+  Future<dynamic> showUnderMenu() async {
+    return showModalBottomSheet(
+      backgroundColor: Colors.black.withOpacity(0.1),
+      context: _context,
+      barrierColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(
+          child: DecoratedBox(
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.white.withOpacity(0.6),
-                width: 2,
+              color: Colors.black.withOpacity(0.3),
+              border: Border(
+                top: BorderSide(
+                  color: Colors.blueAccent.withOpacity(0.3),
+                  width: 5,
+                ),
               ),
-              color: (element.name == selectName)
-                  ? Colors.yellowAccent.withOpacity(0.2)
-                  : Colors.transparent,
             ),
-            child: DefaultTextStyle(
-              style: const TextStyle(fontSize: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                        minHeight: _context.screenSize.height / 10),
-                    child: Column(
+            child: Container(
+              height: 250,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          alignment: Alignment.topRight,
-                          child: Text(
-                            element.dist,
-                            style: const TextStyle(color: Colors.yellowAccent),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(element.name, maxLines: 3),
-                      ],
+                      children: displayBottomSheetContent(),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          await _ref
-                              .watch(navitimeShapeTransitProvider(
-                                const NavitimeShapeTransitRequestState(),
-                              ).notifier)
-                              .getNavitimeShapeTransit(
-                                param: NavitimeShapeTransitRequestState(
-                                  start:
-                                      '${latLngState.lat},${latLngState.lng}',
-                                  goal:
-                                      '${element.latitude},${element.longitude}',
-                                  startTime: '${now.yyyymmdd}T$currentTime',
-                                ),
-                              );
-
-                          await _ref
-                              .read(mapMarkerProvider.notifier)
-                              .getSelectedFacilityMarker(name: element.name);
-                        },
-                        child: const Icon(Icons.stacked_line_chart, size: 20),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          await _ref
-                              .watch(latLngAddressProvider.notifier)
-                              .getLatLngAddress(
-                                param: LatLngAddressRequestState(
-                                  latitude: element.latitude,
-                                  longitude: element.longitude,
-                                ),
-                              );
-
-                          await showGoogleMap(
-                            latitude: element.latitude,
-                            longitude: element.longitude,
-                          );
-                        },
-                        child: const Icon(FontAwesomeIcons.google, size: 20),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          await _ref
-                              .watch(latLngAddressProvider.notifier)
-                              .getLatLngAddress(
-                                param: LatLngAddressRequestState(
-                                  latitude: element.latitude,
-                                  longitude: element.longitude,
-                                ),
-                              );
-
-                          await showYahooMap();
-                        },
-                        child: const Icon(FontAwesomeIcons.yahoo, size: 20),
-                      ),
-                    ],
-                  ),
-                ],
+                    const SizedBox(height: 30),
+                  ],
+                ),
               ),
             ),
           ),
         );
-      }
-    });
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(children: list),
+      },
     );
+  }
+
+  ///
+  List<Widget> displayBottomSheetContent() {
+    final list = <Widget>[];
+
+    for (var i = 0; i < facilityList.length; i++) {
+      list.add(
+        DefaultTextStyle(
+          style: const TextStyle(fontSize: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: (i == 0)
+                        ? Colors.blueAccent.withOpacity(0.6)
+                        : Colors.orangeAccent.withOpacity(0.4),
+                    foregroundColor: Colors.white,
+                    child: Text((i + 1).toString()),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(facilityList[i].name),
+                        Container(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(facilityList[i].address),
+                              Text('${facilityList[i].latitude} / '
+                                  '${facilityList[i].longitude}'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              if (i < facilityList.length - 1)
+                Container(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 40),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.arrow_downward_outlined, size: 40),
+                      const SizedBox(width: 10),
+                      DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              onPressed: () async {
+                                final llList = [
+                                  facilityList[i].latitude,
+                                  facilityList[i].longitude
+                                ];
+
+                                await _ref
+                                    .watch(appParamProvider.notifier)
+                                    .setSelectedRouteStart(
+                                        selectedRouteStart: llList.join(','));
+                              },
+                              icon: const Icon(Icons.stacked_line_chart,
+                                  size: 20),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await _ref
+                                    .watch(latLngAddressProvider(
+                                      const LatLngAddressRequestState(),
+                                    ).notifier)
+                                    .getLatLngAddress(
+                                      //TODO 到着地点を設定する
+                                      param: LatLngAddressRequestState(
+                                        latitude: facilityList[i + 1].latitude,
+                                        longitude:
+                                            facilityList[i + 1].longitude,
+                                      ),
+                                    );
+
+                                await showGoogleMap(
+                                  latitude: facilityList[i].latitude,
+                                  longitude: facilityList[i].longitude,
+                                );
+                              },
+                              icon:
+                                  const Icon(FontAwesomeIcons.google, size: 20),
+                            ),
+                            IconButton(
+                              onPressed: () async {
+                                await _ref
+                                    .watch(latLngAddressProvider(
+                                      const LatLngAddressRequestState(),
+                                    ).notifier)
+                                    .getLatLngAddress(
+                                      //TODO 到着地点を設定する
+                                      param: LatLngAddressRequestState(
+                                        latitude: facilityList[i + 1].latitude,
+                                        longitude:
+                                            facilityList[i + 1].longitude,
+                                      ),
+                                    );
+
+                                await showYahooMap();
+                              },
+                              icon:
+                                  const Icon(FontAwesomeIcons.yahoo, size: 20),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return list;
   }
 
   ///
   Future<void> showYahooMap() async {
     // 先にdestinationを取得 // 順番変えてはいけない
-    final destinationLLAS = _ref.watch(latLngAddressProvider);
+    final destinationLLAS = _ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
 
     //------------------------------------// origin
     final latLngState = _ref.watch(latLngProvider);
 
-    await _ref.watch(latLngAddressProvider.notifier).getLatLngAddress(
+    await _ref
+        .watch(latLngAddressProvider(
+          const LatLngAddressRequestState(),
+        ).notifier)
+        .getLatLngAddress(
           param: LatLngAddressRequestState(
             latitude: latLngState.lat.toString(),
             longitude: latLngState.lng.toString(),
           ),
         );
 
-    final originLLAS = _ref.watch(latLngAddressProvider);
+    final originLLAS = _ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
     //------------------------------------// origin
 
     final hourFormat = DateFormat('HH');
@@ -328,7 +477,9 @@ class MapScreen extends ConsumerWidget {
   Future<void> showGoogleMap(
       {required String latitude, required String longitude}) async {
     // 先にdestinationを取得 // 順番変えてはいけない
-    final destinationLLAS = _ref.watch(latLngAddressProvider);
+    final destinationLLAS = _ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
 
     //------------------------------------// origin
     final latLngState = _ref.watch(latLngProvider);
@@ -346,29 +497,5 @@ class MapScreen extends ConsumerWidget {
     if (!await launchUrl(mapUrl, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
     }
-  }
-
-  ///
-  void makePolyline() {
-    final list = _ref.watch(navitimeShapeTransitProvider(
-      const NavitimeShapeTransitRequestState(),
-    ).select((value) => value.list));
-
-    final poly = <LatLng>[];
-
-    list.forEach((element) {
-      poly.add(
-        LatLng(element.latitude.toDouble(), element.longitude.toDouble()),
-      );
-    });
-
-    polylineSet.add(
-      Polyline(
-        polylineId: const PolylineId('overview_polyline'),
-        color: Colors.redAccent,
-        width: 5,
-        points: poly,
-      ),
-    );
   }
 }
