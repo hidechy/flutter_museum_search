@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:museum_search/utility/utility.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
@@ -27,6 +28,8 @@ class MapScreen extends ConsumerWidget {
   MapScreen({super.key, required this.facilityList});
 
   final List<Facility> facilityList;
+
+  Utility utility = Utility();
 
   Set<Marker> markers = {};
 
@@ -312,6 +315,16 @@ class MapScreen extends ConsumerWidget {
     final list = <Widget>[];
 
     for (var i = 0; i < facilityList.length; i++) {
+      var distance = '';
+      if (i < facilityList.length - 1) {
+        distance = utility.calcDistance(
+          originLat: facilityList[i].latitude.toDouble(),
+          originLng: facilityList[i].longitude.toDouble(),
+          destLat: facilityList[i + 1].latitude.toDouble(),
+          destLng: facilityList[i + 1].longitude.toDouble(),
+        );
+      }
+
       list.add(
         DefaultTextStyle(
           style: const TextStyle(fontSize: 12),
@@ -388,6 +401,11 @@ class MapScreen extends ConsumerWidget {
                             ),
                           ],
                         ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        '$distance Km',
+                        style: const TextStyle(fontSize: 14),
                       ),
                     ],
                   ),
