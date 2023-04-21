@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_catches_without_on_clauses, only_throw_errors, cascade_invocations
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 
@@ -33,7 +34,7 @@ class PrefectureNotifier extends StateNotifier<PrefectureState> {
       const url = 'https://opendata.resas-portal.go.jp/api/v1/prefectures';
 
       final response = await get(Uri.parse(url), headers: {
-        'X-API-KEY': 'Ts179qBc5oStoDfIwKobqnZBH4nobSSbDGVX7CJq',
+        'X-API-KEY': dotenv.get('RESAS_API_KEY'),
         'Content-Type': 'application/json',
       });
 

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_catches_without_on_clauses, only_throw_errors
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart';
 
@@ -53,7 +54,7 @@ class NavitimeShapeTransitNotifier
 //      'X-RapidAPI-Key': 'e7737991e9mshe2f9b08fce63cddp186074jsn686b1f74dc33'
 
         //toyoda20230418hideyuki@gmail.com
-        'X-RapidAPI-Key': '3a56f33739msh320321fb2cd5b3fp1150acjsn526de119c2e7'
+        'X-RapidAPI-Key': dotenv.get('NAVITIME_RAPID_API_KEY')
       };
 
       final response = await get(Uri.parse(url), headers: header);

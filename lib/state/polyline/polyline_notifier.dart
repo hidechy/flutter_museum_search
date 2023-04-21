@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -27,7 +28,7 @@ class PolylineNotifier extends StateNotifier<PolylineResponseState> {
       final queryParameters = <String, dynamic>{
         'mode': 'walking',
         'language': 'ja',
-        'key': 'AIzaSyD9PkTM1Pur3YzmO-v4VzS0r8ZZ0jRJTIU',
+        'key': dotenv.get('GOOGLE_MAP_API_KEY'),
         'origin': param.origin,
         'destination': param.destination,
       };
