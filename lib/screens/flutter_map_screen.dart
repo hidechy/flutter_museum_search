@@ -3,35 +3,56 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:mapbox_polyline_points/mapbox_polyline_points.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 
-class FlutterMapScreen extends ConsumerWidget {
-  FlutterMapScreen({super.key, required this.facilityList});
+class FlutterMapScreen extends ConsumerStatefulWidget {
+  const FlutterMapScreen({Key? key, required this.facilityList})
+      : super(key: key);
 
   final List<Facility> facilityList;
 
+  @override
+  ConsumerState<FlutterMapScreen> createState() => _FlutterMapScreenState();
+}
+
+class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   Map<String, double> boundsLatLngMap = {};
 
   late double boundsInner;
 
   List<Marker> markerList = [];
 
+  List<Polyline> polylineList = [];
+
+  MapboxpolylinePoints mapboxpolylinePoints = MapboxpolylinePoints();
+
   ///
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     makeBounds();
 
     makeMarker();
+
+    makePolyline();
+
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        makePolyline();
+      },
+    );
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -41,7 +62,7 @@ class FlutterMapScreen extends ConsumerWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => FlutterMapScreen(
-                          facilityList: facilityList,
+                          facilityList: widget.facilityList,
                         ),
                       ),
                     );
@@ -77,29 +98,7 @@ class FlutterMapScreen extends ConsumerWidget {
                         'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                   ),
                   MarkerLayer(markers: markerList),
-
-                  /*
-
-                  PolylineLayer(
-                    polylines: [
-                      Polyline(
-                        points: [
-                          LatLng(35.340914, 139.64079), //八景島
-                          LatLng(35.47804, 139.633466), //東神奈川
-
-                          LatLng(35.681391, 139.766103), //東京
-                          LatLng(35.729449, 140.827557), //銚子
-                        ],
-                        color: Colors.blue,
-                        strokeWidth: 5,
-                      ),
-                    ],
-                  ),
-
-                  const CircleLayer(),
-                  PolygonLayer(),
-
-                  */
+                  PolylineLayer(polylines: polylineList),
                 ],
               ),
             ),
@@ -114,7 +113,7 @@ class FlutterMapScreen extends ConsumerWidget {
     final latList = <double>[];
     final lngList = <double>[];
 
-    facilityList.forEach((element) {
+    widget.facilityList.forEach((element) {
       latList.add(element.latitude.toDouble());
       lngList.add(element.longitude.toDouble());
     });
@@ -139,12 +138,12 @@ class FlutterMapScreen extends ConsumerWidget {
 
   ///
   void makeMarker() {
-    for (var i = 0; i < facilityList.length; i++) {
+    for (var i = 0; i < widget.facilityList.length; i++) {
       markerList.add(
         Marker(
           point: LatLng(
-            facilityList[i].latitude.toDouble(),
-            facilityList[i].longitude.toDouble(),
+            widget.facilityList[i].latitude.toDouble(),
+            widget.facilityList[i].longitude.toDouble(),
           ),
           builder: (context) {
             return CircleAvatar(
@@ -163,5 +162,37 @@ class FlutterMapScreen extends ConsumerWidget {
         ),
       );
     }
+  }
+
+  ///
+  Future<void> makePolyline() async {
+    for (var i = 0; i < widget.facilityList.length - 1; i++) {
+      var result = await mapboxpolylinePoints.getRouteBetweenCoordinates(
+        dotenv.get('MAPBOX_ACCESS_TOKEN'),
+        PointLatLng(
+          latitude: widget.facilityList[i].latitude.toDouble(),
+          longitude: widget.facilityList[i].longitude.toDouble(),
+        ),
+        PointLatLng(
+          latitude: widget.facilityList[i + 1].latitude.toDouble(),
+          longitude: widget.facilityList[i + 1].longitude.toDouble(),
+        ),
+        TravelType.walking,
+      );
+
+      result.points.forEach((element) {
+        List<LatLng> points = [];
+
+        element.forEach((element2) {
+          points.add(LatLng(element2.latitude, element2.longitude));
+        });
+
+        polylineList.add(
+          Polyline(points: points, color: Colors.blue, strokeWidth: 5),
+        );
+      });
+    }
+
+    setState(() {});
   }
 }

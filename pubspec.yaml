@@ -37,6 +37,7 @@ dependencies:
   intl: ^0.17.0
   json_annotation: ^4.7.0
   location: ^4.4.0
+  mapbox_polyline_points: ^0.0.4
   permission_handler: ^10.2.0
   platform_maps_flutter: ^1.0.2
   url_launcher: ^6.1.10
