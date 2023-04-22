@@ -1,6 +1,7 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/screens/flutter_map_screen.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -79,12 +80,37 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           icon: const Icon(Icons.stacked_line_chart),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {},
+            child: const CircleAvatar(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.indigo,
+              child: Text('梅'),
+            ),
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () async {
+              await ref
+                  .watch(appParamProvider.notifier)
+                  .clearSelectedRouteNumber();
+
+              takeButtonClick();
+            },
+            child: const CircleAvatar(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.indigo,
+              child: Text('竹'),
+            ),
+          ),
+          const SizedBox(width: 10),
+          GestureDetector(
+            onTap: () {
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.close),
+            child: const Icon(Icons.close),
           ),
+          const SizedBox(width: 10),
         ],
       ),
       body: Column(
@@ -223,6 +249,43 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => MapScreen(facilityList: facilityList),
+      ),
+    );
+  }
+
+  ///
+  void takeButtonClick() {
+    final facilityMap =
+        ref.read(artFacilityProvider.select((value) => value.facilityMap));
+
+    final latLngState = ref.watch(latLngProvider);
+
+    final latLngAddressState = ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
+
+    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
+
+    final facilityList = <Facility>[
+      Facility(
+        id: 0,
+        name: '現在地点',
+        genre: '',
+        address: '${latLngAddressState.city}${latLngAddressState.town}',
+        latitude: latLngState.lat.toString(),
+        longitude: latLngState.lng.toString(),
+        dist: '0',
+      )
+    ];
+
+    idList.forEach((element) {
+      facilityList.add(facilityMap[element]!);
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FlutterMapScreen(facilityList: facilityList),
       ),
     );
   }

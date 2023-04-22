@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'screens/home_screen.dart';
 
 void main() async {
-  await dotenv.load(fileName: '.env');
+  await dotenv.load();
   runApp(const ProviderScope(child: MyApp()));
 }
 
