@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, must_be_immutable, inference_failure_on_collection_literal
+// ignore_for_file: depend_on_referenced_packages, must_be_immutable, inference_failure_on_collection_literal, use_build_context_synchronously
 
 import 'dart:math';
 
@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
+import '../state/app_param/app_param_notifier.dart';
 import '../utility/utility.dart';
 
 class FlutterMapScreen extends ConsumerStatefulWidget {
@@ -49,8 +50,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     makeMarker();
 
-    makePolyline();
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,8 +59,12 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
+                  onPressed: () async {
+                    await ref
+                        .watch(appParamProvider.notifier)
+                        .clearSelectedRouteNumber();
+
+                    await Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => FlutterMapScreen(
@@ -93,29 +96,28 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: AbsorbPointer(
-                child: FlutterMap(
-                  options: MapOptions(
-                    bounds: LatLngBounds(
-                      LatLng(
-                        boundsLatLngMap['minLat']! - boundsInner,
-                        boundsLatLngMap['minLng']! - boundsInner,
-                      ),
-                      LatLng(
-                        boundsLatLngMap['maxLat']! + boundsInner,
-                        boundsLatLngMap['maxLng']! + boundsInner,
-                      ),
+              child: FlutterMap(
+                options: MapOptions(
+                  bounds: LatLngBounds(
+                    LatLng(
+                      boundsLatLngMap['minLat']! - boundsInner,
+                      boundsLatLngMap['minLng']! - boundsInner,
+                    ),
+                    LatLng(
+                      boundsLatLngMap['maxLat']! + boundsInner,
+                      boundsLatLngMap['maxLng']! + boundsInner,
                     ),
                   ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    ),
-                    PolylineLayer(polylines: polylineList),
-                    MarkerLayer(markers: markerList),
-                  ],
+                  onMapReady: makePolyline,
                 ),
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  ),
+                  PolylineLayer(polylines: polylineList),
+                  MarkerLayer(markers: markerList),
+                ],
               ),
             ),
           ],
@@ -154,6 +156,11 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
   ///
   void makeMarker() {
+    markerList = [];
+
+    final selectedRouteNumber = ref
+        .watch(appParamProvider.select((value) => value.selectedRouteNumber));
+
     for (var i = 0; i < widget.facilityList.length; i++) {
       markerList.add(
         Marker(
@@ -163,10 +170,15 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           ),
           builder: (context) {
             return CircleAvatar(
-              radius: 5,
-              backgroundColor: Colors.black,
+              backgroundColor: (i == 0)
+                  ? (selectedRouteNumber == '0')
+                      ? Colors.redAccent
+                      : Colors.indigo
+                  : (i.toString() == selectedRouteNumber)
+                      ? Colors.redAccent
+                      : Colors.black,
               child: Text(
-                (i + 1).toString(),
+                (i == 0) ? 'Here' : i.toString(),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 12,
@@ -182,6 +194,11 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
   ///
   Future<void> makePolyline() async {
+    polylineList = [];
+
+    final selectedRouteNumber = ref
+        .watch(appParamProvider.select((value) => value.selectedRouteNumber));
+
     for (var i = 0; i < widget.facilityList.length - 1; i++) {
       final result = await mapboxpolylinePoints.getRouteBetweenCoordinates(
         dotenv.get('MAPBOX_ACCESS_TOKEN'),
@@ -206,7 +223,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
         polylineList.add(
           Polyline(
             points: points,
-            color: Colors.blueAccent,
+            color: (i.toString() == selectedRouteNumber)
+                ? Colors.redAccent
+                : Colors.blueAccent,
             strokeWidth: 5,
           ),
         );
@@ -287,7 +306,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   CircleAvatar(
                     backgroundColor: (i == 0)
                         ? Colors.blueAccent.withOpacity(0.6)
-                        : Colors.orangeAccent.withOpacity(0.4),
+                        : Colors.black.withOpacity(0.4),
                     foregroundColor: Colors.white,
                     child: (i == 0)
                         ? const Text('Here', style: TextStyle(fontSize: 10))
@@ -331,6 +350,18 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                             ),
                             child: Row(
                               children: [
+                                IconButton(
+                                  onPressed: () async {
+                                    await ref
+                                        .watch(appParamProvider.notifier)
+                                        .setSelectedRouteNumber(
+                                            selectedRouteNumber: i.toString());
+
+                                    await makePolyline();
+                                  },
+                                  icon: const Icon(Icons.stacked_line_chart,
+                                      size: 20),
+                                ),
                                 IconButton(
                                   onPressed: () => showGoogleTransit(index: i),
                                   icon: const Icon(FontAwesomeIcons.google,
