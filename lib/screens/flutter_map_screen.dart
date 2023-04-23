@@ -157,9 +157,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   void makeMarker() {
     markerList = [];
 
-    final selectedRouteNumber = ref
-        .watch(appParamProvider.select((value) => value.selectedRouteNumber));
-
     for (var i = 0; i < widget.facilityList.length; i++) {
       markerList.add(
         Marker(
@@ -169,15 +166,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           ),
           builder: (context) {
             return CircleAvatar(
-              backgroundColor: (i == 0)
-                  ? (selectedRouteNumber == '0')
-                      ? Colors.redAccent
-                      : Colors.indigo
-                  : (i.toString() == selectedRouteNumber)
-                      ? Colors.redAccent
-                      : Colors.black,
+              backgroundColor: getCircleAvatarBgColor(index: i),
               child: Text(
-                (i == 0) ? 'Here' : i.toString(),
+                getCircleAvatarText(index: i),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 12,
@@ -188,6 +179,61 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           },
         ),
       );
+    }
+  }
+
+  ///
+  Color getCircleAvatarBgColor({required int index}) {
+    final selectedRouteNumber = ref
+        .watch(appParamProvider.select((value) => value.selectedRouteNumber));
+
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
+    if (baseInclude == 1) {
+      if (index == 0) {
+        if (selectedRouteNumber == '0') {
+          return Colors.redAccent;
+        } else {
+          return Colors.indigo;
+        }
+      } else {
+        if (index.toString() == selectedRouteNumber) {
+          return Colors.redAccent;
+        } else {
+          return Colors.black;
+        }
+      }
+    } else {
+      if (index == 0) {
+        if (selectedRouteNumber == '0') {
+          return Colors.redAccent;
+        } else {
+          return Colors.black;
+        }
+      } else {
+        if (index.toString() == selectedRouteNumber) {
+          return Colors.redAccent;
+        } else {
+          return Colors.black;
+        }
+      }
+    }
+  }
+
+  ///
+  String getCircleAvatarText({required int index}) {
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
+    if (baseInclude == 1) {
+      if (index == 0) {
+        return 'Here';
+      } else {
+        return index.toString();
+      }
+    } else {
+      return (index + 1).toString();
     }
   }
 
@@ -304,13 +350,10 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: (i == 0)
-                        ? Colors.blueAccent.withOpacity(0.6)
-                        : Colors.black.withOpacity(0.4),
+                    backgroundColor:
+                        getBottomSheetCircleAvatarBgColor(index: i),
                     foregroundColor: Colors.white,
-                    child: (i == 0)
-                        ? const Text('Here', style: TextStyle(fontSize: 10))
-                        : Text(i.toString()),
+                    child: getBottomSheetCircleAvatarText(index: i),
                   ),
                   const SizedBox(width: 20),
                   Expanded(
@@ -391,6 +434,38 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     }
 
     return list;
+  }
+
+  ///
+  Color getBottomSheetCircleAvatarBgColor({required int index}) {
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
+    if (baseInclude == 1) {
+      if (index == 0) {
+        return Colors.blueAccent.withOpacity(0.6);
+      } else {
+        return Colors.black.withOpacity(0.4);
+      }
+    } else {
+      return Colors.black.withOpacity(0.4);
+    }
+  }
+
+  ///
+  Text getBottomSheetCircleAvatarText({required int index}) {
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
+    if (baseInclude == 1) {
+      if (index == 0) {
+        return const Text('Here', style: TextStyle(fontSize: 10));
+      } else {
+        return Text(index.toString());
+      }
+    } else {
+      return Text((index + 1).toString());
+    }
   }
 
   ///

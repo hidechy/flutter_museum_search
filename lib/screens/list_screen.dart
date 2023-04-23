@@ -67,6 +67,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       const LatLngAddressRequestState(),
     ));
 
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -139,11 +142,32 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                       Text('${latLngState.lat} / ${latLngState.lng}'),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      '${latLngAddressState.city}${latLngAddressState.town}',
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Text(
+                          '${latLngAddressState.city}${latLngAddressState.town}',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          ref.watch(appParamProvider.notifier).setBaseInclude(
+                              baseInclude: (baseInclude == 1) ? 0 : 1);
+                        },
+                        child: Text(
+                          '現在地点を含む',
+                          style: TextStyle(
+                            fontSize: 8,
+                            color: (baseInclude == 1)
+                                ? Colors.yellowAccent
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -231,10 +255,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       const LatLngAddressRequestState(),
     ));
 
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
     final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
 
-    final facilityList = <Facility>[
-      Facility(
+    final facilityList = <Facility>[];
+
+    if (baseInclude == 1) {
+      facilityList.add(Facility(
         id: 0,
         name: '現在地点',
         genre: '',
@@ -242,8 +271,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         latitude: latLngState.lat.toString(),
         longitude: latLngState.lng.toString(),
         dist: '0',
-      )
-    ];
+      ));
+    }
 
     idList.forEach((element) {
       facilityList.add(facilityMap[element]!);
@@ -268,10 +297,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       const LatLngAddressRequestState(),
     ));
 
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
     final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
 
-    final facilityList = <Facility>[
-      Facility(
+    final facilityList = <Facility>[];
+
+    if (baseInclude == 1) {
+      facilityList.add(Facility(
         id: 0,
         name: '現在地点',
         genre: '',
@@ -279,8 +313,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         latitude: latLngState.lat.toString(),
         longitude: latLngState.lng.toString(),
         dist: '0',
-      )
-    ];
+      ));
+    }
 
     idList.forEach((element) {
       facilityList.add(facilityMap[element]!);
@@ -305,10 +339,15 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       const LatLngAddressRequestState(),
     ));
 
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
     final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
 
-    final facilityList = <Facility>[
-      Facility(
+    final facilityList = <Facility>[];
+
+    if (baseInclude == 1) {
+      facilityList.add(Facility(
         id: 0,
         name: '現在地点',
         genre: '',
@@ -316,8 +355,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         latitude: latLngState.lat.toString(),
         longitude: latLngState.lng.toString(),
         dist: '0',
-      )
-    ];
+      ));
+    }
 
     idList.forEach((element) {
       facilityList.add(facilityMap[element]!);

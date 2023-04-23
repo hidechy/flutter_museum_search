@@ -20,7 +20,8 @@ mixin _$AppParamState {
   bool get searchDisp => throw _privateConstructorUsedError; //
   bool get searchErrorFlag => throw _privateConstructorUsedError;
   String get searchErrorMessage => throw _privateConstructorUsedError; //
-  String get selectedRouteNumber => throw _privateConstructorUsedError;
+  String get selectedRouteNumber => throw _privateConstructorUsedError; //
+  dynamic get baseInclude => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AppParamStateCopyWith<AppParamState> get copyWith =>
@@ -37,7 +38,8 @@ abstract class $AppParamStateCopyWith<$Res> {
       {bool searchDisp,
       bool searchErrorFlag,
       String searchErrorMessage,
-      String selectedRouteNumber});
+      String selectedRouteNumber,
+      dynamic baseInclude});
 }
 
 /// @nodoc
@@ -57,6 +59,7 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
     Object? searchErrorFlag = null,
     Object? searchErrorMessage = null,
     Object? selectedRouteNumber = null,
+    Object? baseInclude = freezed,
   }) {
     return _then(_value.copyWith(
       searchDisp: null == searchDisp
@@ -75,6 +78,10 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
           ? _value.selectedRouteNumber
           : selectedRouteNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      baseInclude: freezed == baseInclude
+          ? _value.baseInclude
+          : baseInclude // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ) as $Val);
   }
 }
@@ -91,7 +98,8 @@ abstract class _$$_AppParamStateCopyWith<$Res>
       {bool searchDisp,
       bool searchErrorFlag,
       String searchErrorMessage,
-      String selectedRouteNumber});
+      String selectedRouteNumber,
+      dynamic baseInclude});
 }
 
 /// @nodoc
@@ -109,6 +117,7 @@ class __$$_AppParamStateCopyWithImpl<$Res>
     Object? searchErrorFlag = null,
     Object? searchErrorMessage = null,
     Object? selectedRouteNumber = null,
+    Object? baseInclude = freezed,
   }) {
     return _then(_$_AppParamState(
       searchDisp: null == searchDisp
@@ -127,6 +136,7 @@ class __$$_AppParamStateCopyWithImpl<$Res>
           ? _value.selectedRouteNumber
           : selectedRouteNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      baseInclude: freezed == baseInclude ? _value.baseInclude! : baseInclude,
     ));
   }
 }
@@ -138,7 +148,8 @@ class _$_AppParamState implements _AppParamState {
       {this.searchDisp = false,
       this.searchErrorFlag = false,
       this.searchErrorMessage = '',
-      this.selectedRouteNumber = ''});
+      this.selectedRouteNumber = '',
+      this.baseInclude = 1});
 
 //
   @override
@@ -155,10 +166,14 @@ class _$_AppParamState implements _AppParamState {
   @override
   @JsonKey()
   final String selectedRouteNumber;
+//
+  @override
+  @JsonKey()
+  final dynamic baseInclude;
 
   @override
   String toString() {
-    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage, selectedRouteNumber: $selectedRouteNumber)';
+    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage, selectedRouteNumber: $selectedRouteNumber, baseInclude: $baseInclude)';
   }
 
   @override
@@ -173,12 +188,19 @@ class _$_AppParamState implements _AppParamState {
             (identical(other.searchErrorMessage, searchErrorMessage) ||
                 other.searchErrorMessage == searchErrorMessage) &&
             (identical(other.selectedRouteNumber, selectedRouteNumber) ||
-                other.selectedRouteNumber == selectedRouteNumber));
+                other.selectedRouteNumber == selectedRouteNumber) &&
+            const DeepCollectionEquality()
+                .equals(other.baseInclude, baseInclude));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, searchDisp, searchErrorFlag,
-      searchErrorMessage, selectedRouteNumber);
+  int get hashCode => Object.hash(
+      runtimeType,
+      searchDisp,
+      searchErrorFlag,
+      searchErrorMessage,
+      selectedRouteNumber,
+      const DeepCollectionEquality().hash(baseInclude));
 
   @JsonKey(ignore: true)
   @override
@@ -192,7 +214,8 @@ abstract class _AppParamState implements AppParamState {
       {final bool searchDisp,
       final bool searchErrorFlag,
       final String searchErrorMessage,
-      final String selectedRouteNumber}) = _$_AppParamState;
+      final String selectedRouteNumber,
+      final dynamic baseInclude}) = _$_AppParamState;
 
   @override //
   bool get searchDisp;
@@ -202,6 +225,8 @@ abstract class _AppParamState implements AppParamState {
   String get searchErrorMessage;
   @override //
   String get selectedRouteNumber;
+  @override //
+  dynamic get baseInclude;
   @override
   @JsonKey(ignore: true)
   _$$_AppParamStateCopyWith<_$_AppParamState> get copyWith =>

@@ -1,28 +1,25 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:museum_search/extensions/extensions.dart';
-import 'package:museum_search/utility/utility.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
-import '../state/app_param/app_param_notifier.dart';
+import '../utility/utility.dart';
 
 class RouteListScreen extends ConsumerWidget {
-  RouteListScreen({Key? key, required this.facilityList}) : super(key: key);
+  RouteListScreen({super.key, required this.facilityList});
 
   final List<Facility> facilityList;
 
   Utility utility = Utility();
 
-  late WidgetRef _ref;
-
   ///
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    _ref = ref;
-
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
