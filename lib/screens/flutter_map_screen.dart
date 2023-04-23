@@ -83,7 +83,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -199,9 +198,11 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     final selectedRouteNumber = ref
         .watch(appParamProvider.select((value) => value.selectedRouteNumber));
 
+    var accessToken = dotenv.get('MAPBOX_ACCESS_TOKEN');
+
     for (var i = 0; i < widget.facilityList.length - 1; i++) {
       final result = await mapboxpolylinePoints.getRouteBetweenCoordinates(
-        dotenv.get('MAPBOX_ACCESS_TOKEN'),
+        accessToken,
         PointLatLng(
           latitude: widget.facilityList[i].latitude.toDouble(),
           longitude: widget.facilityList[i].longitude.toDouble(),
@@ -280,20 +281,19 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     final list = <Widget>[];
 
     for (var i = 0; i < widget.facilityList.length; i++) {
+      var facility = widget.facilityList[i];
+
       var distance = '';
       if (i < widget.facilityList.length - 1) {
         distance = utility.calcDistance(
-          originLat: widget.facilityList[i].latitude.toDouble(),
-          originLng: widget.facilityList[i].longitude.toDouble(),
+          originLat: facility.latitude.toDouble(),
+          originLng: facility.longitude.toDouble(),
           destLat: widget.facilityList[i + 1].latitude.toDouble(),
           destLng: widget.facilityList[i + 1].longitude.toDouble(),
         );
       }
 
-      final ll = [
-        widget.facilityList[i].latitude,
-        widget.facilityList[i].longitude,
-      ];
+      final ll = [facility.latitude, facility.longitude];
 
       list.add(
         DefaultTextStyle(
@@ -317,13 +317,13 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.facilityList[i].name),
+                        Text(facility.name),
                         Container(
                           padding: const EdgeInsets.only(left: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(widget.facilityList[i].address),
+                              Text(facility.address),
                               Text(ll.join(' / ')),
                             ],
                           ),
