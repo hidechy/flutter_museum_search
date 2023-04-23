@@ -1,7 +1,9 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/screens/component/museum_search_dialog.dart';
 import 'package:museum_search/screens/flutter_map_screen.dart';
+import 'package:museum_search/screens/route_list_screen.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -81,7 +83,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         ),
         actions: [
           GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              umeButtonClick();
+            },
             child: const CircleAvatar(
               foregroundColor: Colors.white,
               backgroundColor: Colors.indigo,
@@ -287,6 +291,41 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       MaterialPageRoute(
         builder: (context) => FlutterMapScreen(facilityList: facilityList),
       ),
+    );
+  }
+
+  ///
+  void umeButtonClick() {
+    final facilityMap =
+        ref.read(artFacilityProvider.select((value) => value.facilityMap));
+
+    final latLngState = ref.watch(latLngProvider);
+
+    final latLngAddressState = ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
+
+    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
+
+    final facilityList = <Facility>[
+      Facility(
+        id: 0,
+        name: '現在地点',
+        genre: '',
+        address: '${latLngAddressState.city}${latLngAddressState.town}',
+        latitude: latLngState.lat.toString(),
+        longitude: latLngState.lng.toString(),
+        dist: '0',
+      )
+    ];
+
+    idList.forEach((element) {
+      facilityList.add(facilityMap[element]!);
+    });
+
+    MuseumSearchDialog(
+      context: context,
+      widget: RouteListScreen(facilityList: facilityList),
     );
   }
 }
