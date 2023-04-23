@@ -198,7 +198,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     final selectedRouteNumber = ref
         .watch(appParamProvider.select((value) => value.selectedRouteNumber));
 
-    var accessToken = dotenv.get('MAPBOX_ACCESS_TOKEN');
+    final accessToken = dotenv.get('MAPBOX_ACCESS_TOKEN');
 
     for (var i = 0; i < widget.facilityList.length - 1; i++) {
       final result = await mapboxpolylinePoints.getRouteBetweenCoordinates(
@@ -281,7 +281,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     final list = <Widget>[];
 
     for (var i = 0; i < widget.facilityList.length; i++) {
-      var facility = widget.facilityList[i];
+      final facility = widget.facilityList[i];
 
       var distance = '';
       if (i < widget.facilityList.length - 1) {
