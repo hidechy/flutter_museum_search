@@ -157,13 +157,22 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           ref.watch(appParamProvider.notifier).setBaseInclude(
                               baseInclude: (baseInclude == 1) ? 0 : 1);
                         },
-                        child: Text(
-                          (baseInclude == 1) ? '現在地点を含む' : '現在地点を含まない',
-                          style: TextStyle(
-                            fontSize: 8,
-                            color: (baseInclude == 1)
-                                ? Colors.yellowAccent
-                                : Colors.white,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent.withOpacity(0.1),
+                          ),
+                          child: Text(
+                            (baseInclude == 1) ? '現在地点を含む' : '現在地点を含まない',
+                            style: TextStyle(
+                              fontSize: 8,
+                              color: (baseInclude == 1)
+                                  ? Colors.yellowAccent
+                                  : Colors.white,
+                            ),
                           ),
                         ),
                       ),
