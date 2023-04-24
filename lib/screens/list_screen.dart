@@ -16,9 +16,7 @@ import 'map_screen.dart';
 import 'route_list_screen.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
-  const ListScreen({super.key, required this.list});
-
-  final List<Facility> list;
+  const ListScreen({super.key});
 
   @override
   ConsumerState<ListScreen> createState() => _ListScreenState();
@@ -33,33 +31,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   ///
   @override
-  void initState() {
-    super.initState();
-
-    widget.list.forEach((element) {
-      selectedArtFacilities.add(
-        DragAndDropItem(
-          child: FacilityCard(
-            key: Key(element.id.toString()),
-            dist: element.dist,
-            latitude: element.latitude,
-            longitude: element.longitude,
-            name: element.name,
-            genre: element.genre,
-            address: element.address,
-            displayDragIndicator: true,
-          ),
-        ),
-      );
-    });
-
-    ddList.add(DragAndDropList(children: selectedArtFacilities));
-
-    makeDefaultIdList();
-  }
-
-  ///
-  @override
   Widget build(BuildContext context) {
     final latLngState = ref.watch(latLngProvider);
 
@@ -69,6 +40,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
     final baseInclude =
         ref.watch(appParamProvider.select((value) => value.baseInclude));
+
+    makeDefault();
 
     return Scaffold(
       appBar: AppBar(
@@ -214,6 +187,40 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   ///
+  void makeDefault() {
+    final list = <Facility>[];
+
+    final artFacilityState = ref.watch(artFacilityProvider);
+
+    artFacilityState.selectIdList.forEach((element) {
+      list.add(artFacilityState.facilityMap[element]!);
+    });
+
+    final saf = <DragAndDropItem>[];
+
+    list.forEach((element) {
+      saf.add(
+        DragAndDropItem(
+          child: FacilityCard(
+            key: Key(element.id.toString()),
+            dist: element.dist,
+            latitude: element.latitude,
+            longitude: element.longitude,
+            name: element.name,
+            genre: element.genre,
+            address: element.address,
+            displayDragIndicator: true,
+          ),
+        ),
+      );
+
+      defaultIdList.add(element.id);
+    });
+
+    ddList.add(DragAndDropList(children: saf));
+  }
+
+  ///
   void itemReorder(
       int oldItemIndex, int oldListIndex, int newItemIndex, int newListIndex) {
     setState(() {
@@ -244,13 +251,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             .toInt());
       }
     }
-  }
-
-  ///
-  void makeDefaultIdList() {
-    widget.list.forEach((element) {
-      defaultIdList.add(element.id);
-    });
   }
 
   ///
