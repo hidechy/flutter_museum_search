@@ -44,9 +44,9 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
 
   ///
   Future<void> setSelectedStationId({required String ssi}) async {
-    var selectedStationId = state.selectedStationId;
+    final selectedStationId = state.selectedStationId;
 
-    var ssId = (ssi == selectedStationId) ? '' : ssi;
+    final ssId = (ssi == selectedStationId) ? '' : ssi;
 
     state = state.copyWith(selectedStationId: ssId);
   }

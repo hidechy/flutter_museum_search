@@ -1,6 +1,9 @@
+// ignore_for_file: cascade_invocations
+
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:museum_search/models/station.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
@@ -242,7 +245,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(),
-            Text(
+            const Text(
               '駅を選択した場合は現在地点よりも駅を優先します。',
               style: TextStyle(fontSize: 8),
             ),
@@ -358,21 +361,46 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   ///
   void makeMapParamFacility() {
-    final facilityMap =
-        ref.read(artFacilityProvider.select((value) => value.facilityMap));
-
-    final latLngState = ref.watch(latLngProvider);
-
-    final latLngAddressState = ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
     final baseInclude =
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
-    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
+    var appParamState = ref.watch(appParamProvider);
 
-    if (baseInclude == 1) {
+    if (appParamState.selectedStationId != '') {
+      var stationState = ref.watch(stationProvider);
+
+      var selectedStation = Station(
+        id: 0,
+        stationName: '',
+        address: '',
+        lat: '',
+        lng: '',
+      );
+
+      stationState.stationList.forEach((element) {
+        if (element.id.toString() == appParamState.selectedStationId) {
+          selectedStation = element;
+        }
+      });
+
+      mapParamFacility.add(
+        Facility(
+          id: 0,
+          name: '${selectedStation.stationName}駅',
+          genre: '',
+          address: selectedStation.address,
+          latitude: selectedStation.lat,
+          longitude: selectedStation.lng,
+          dist: '0',
+        ),
+      );
+    } else if (baseInclude == 1) {
+      final latLngState = ref.watch(latLngProvider);
+
+      final latLngAddressState = ref.watch(latLngAddressProvider(
+        const LatLngAddressRequestState(),
+      ));
+
       mapParamFacility.add(Facility(
         id: 0,
         name: '現在地点',
@@ -383,6 +411,13 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         dist: '0',
       ));
     }
+
+    //--------------------------------//
+
+    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
+
+    final facilityMap =
+        ref.read(artFacilityProvider.select((value) => value.facilityMap));
 
     idList.forEach((element) {
       mapParamFacility.add(facilityMap[element]!);

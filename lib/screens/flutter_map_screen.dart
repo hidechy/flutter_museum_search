@@ -221,6 +221,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   Future<void> makePolyline() async {
     polylineList = [];
 
+    /*
     final selectedRouteNumber = ref
         .watch(appParamProvider.select((value) => value.selectedRouteNumber));
 
@@ -258,6 +259,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
         );
       });
     }
+*/
 
     setState(() {});
   }
