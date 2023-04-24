@@ -33,20 +33,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   ///
   @override
   Widget build(BuildContext context) {
-    final latLngState = ref.watch(latLngProvider);
-
-    final latLngAddressState = ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
-    final baseInclude =
-        ref.watch(appParamProvider.select((value) => value.baseInclude));
-
     makeDefault();
-
-    final stationState = ref.watch(stationProvider);
-
-    print(stationState);
 
     return Scaffold(
       appBar: AppBar(
@@ -100,66 +87,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.blueAccent.withOpacity(0.1),
-            ),
-            child: DefaultTextStyle(
-              style: const TextStyle(fontSize: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        '現在地点',
-                        style: TextStyle(color: Colors.yellowAccent),
-                      ),
-                      Text('${latLngState.lat} / ${latLngState.lng}'),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Text(
-                          '${latLngAddressState.city}${latLngAddressState.town}',
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          ref.watch(appParamProvider.notifier).setBaseInclude(
-                              baseInclude: (baseInclude == 1) ? 0 : 1);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 5,
-                            horizontal: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.blueAccent.withOpacity(0.1),
-                          ),
-                          child: Text(
-                            (baseInclude == 1) ? '現在地点を含む' : '現在地点を含まない',
-                            style: TextStyle(
-                              fontSize: 8,
-                              color: (baseInclude == 1)
-                                  ? Colors.yellowAccent
-                                  : Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
+          getDefaultPointWidget(),
           const Divider(
             color: Colors.black,
             thickness: 2,
@@ -188,6 +116,123 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  ///
+  Widget getDefaultPointWidget() {
+    final latLngState = ref.watch(latLngProvider);
+
+    final latLngAddressState = ref.watch(latLngAddressProvider(
+      const LatLngAddressRequestState(),
+    ));
+
+    final baseInclude =
+        ref.watch(appParamProvider.select((value) => value.baseInclude));
+
+    makeDefault();
+
+    final stationState = ref.watch(stationProvider);
+
+    print(stationState);
+
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.blueAccent.withOpacity(0.1),
+          ),
+          child: DefaultTextStyle(
+            style: const TextStyle(fontSize: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      '現在地点',
+                      style: TextStyle(color: Colors.yellowAccent),
+                    ),
+                    Text('${latLngState.lat} / ${latLngState.lng}'),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Text(
+                        '${latLngAddressState.city}${latLngAddressState.town}',
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        ref.watch(appParamProvider.notifier).setBaseInclude(
+                            baseInclude: (baseInclude == 1) ? 0 : 1);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.1),
+                        ),
+                        child: Text(
+                          (baseInclude == 1) ? '現在地点を含む' : '現在地点を含まない',
+                          style: TextStyle(
+                            fontSize: 8,
+                            color: (baseInclude == 1)
+                                ? Colors.yellowAccent
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 5),
+        Container(
+          width: context.screenSize.width,
+          decoration: BoxDecoration(color: Colors.blueAccent.withOpacity(0.2)),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: stationState.stationList.map((e) {
+                return GestureDetector(
+                  onTap: () {
+                    print(e.id);
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(3),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(e.stationName),
+                        Text(
+                          '${e.lat} / ${e.lng}',
+                          style: const TextStyle(fontSize: 8),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

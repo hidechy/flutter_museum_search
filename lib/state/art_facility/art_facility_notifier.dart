@@ -113,13 +113,15 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
 
         facilityMap[val.id] = val;
 
-        final ll = <String>[
-          val.latitude.substring(0, 5),
-          val.longitude.substring(0, 6),
-        ];
+        if (val.id != 99999999) {
+          final ll = <String>[
+            val.latitude.substring(0, 4),
+            val.longitude.substring(0, 5),
+          ];
 
-        if (!facilityLatLng.contains(ll.join('|'))) {
-          facilityLatLng.add(ll.join('|'));
+          if (!facilityLatLng.contains(ll.join('|'))) {
+            facilityLatLng.add(ll.join('|'));
+          }
         }
       }
 
@@ -129,9 +131,13 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
         facilityMap: facilityMap,
         facilityLatLng: facilityLatLng,
       );
-    }).catchError((error, _) {
-      utility.showError('予期せぬエラーが発生しました');
     });
+
+    //
+    //
+    //     .catchError((error, _) {
+    //   utility.showError('予期せぬエラーが発生しました');
+    // });
   }
 
   ///
