@@ -42,88 +42,84 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     makeDefault();
 
     return Scaffold(
-      appBar: AppBar(
-//        centerTitle: true,
-        title: const Text('Routing Order'),
-        // leading: IconButton(
-        //   onPressed: () async {
-        //     await ref
-        //         .watch(appParamProvider.notifier)
-        //         .clearSelectedRouteNumber();
-        //
-        //     routesButtonTap();
-        //   },
-        //   icon: const Icon(Icons.stacked_line_chart),
-        // ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Routing Order'),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          umeButtonClick();
+                        },
+                        child: const CircleAvatar(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.indigo,
+                          child: Text('梅'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () async {
+                          await ref
+                              .watch(appParamProvider.notifier)
+                              .clearSelectedRouteNumber();
 
-        leading: const Icon(Icons.square, color: Colors.transparent),
-
-        actions: [
-          GestureDetector(
-            onTap: () async {
-              umeButtonClick();
-            },
-            child: const CircleAvatar(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.indigo,
-              child: Text('梅'),
-            ),
-          ),
-          const SizedBox(width: 10),
-          GestureDetector(
-            onTap: () async {
-              await ref
-                  .watch(appParamProvider.notifier)
-                  .clearSelectedRouteNumber();
-
-              takeButtonClick();
-            },
-            child: const CircleAvatar(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.indigo,
-              child: Text('竹'),
-            ),
-          ),
-          const SizedBox(width: 10),
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.close),
-          ),
-          const SizedBox(width: 10),
-        ],
-      ),
-      body: Column(
-        children: [
-          getDefaultPointWidget(),
-          const Divider(
-            color: Colors.black,
-            thickness: 2,
-          ),
-          Expanded(
-            child: MediaQuery.removePadding(
-              context: context,
-              removeTop: true,
-              child: DragAndDropLists(
-                children: ddList,
-                onItemReorder: itemReorder,
-                onListReorder: listReorder,
-
-                ///
-                itemDecorationWhileDragging: const BoxDecoration(
-                  color: Colors.black,
-                  boxShadow: [
-                    BoxShadow(color: Colors.white, blurRadius: 4),
-                  ],
-                ),
-
-                ///
-                lastListTargetSize: 0,
+                          takeButtonClick();
+                        },
+                        child: const CircleAvatar(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.indigo,
+                          child: Text('竹'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Icon(Icons.close),
+                      ),
+                      const SizedBox(width: 10),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+            getDefaultPointWidget(),
+            const Divider(
+              color: Colors.black,
+              thickness: 2,
+            ),
+            Expanded(
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: DragAndDropLists(
+                  children: ddList,
+                  onItemReorder: itemReorder,
+                  onListReorder: listReorder,
+
+                  ///
+                  itemDecorationWhileDragging: const BoxDecoration(
+                    color: Colors.black,
+                    boxShadow: [
+                      BoxShadow(color: Colors.white, blurRadius: 4),
+                    ],
+                  ),
+
+                  ///
+                  lastListTargetSize: 0,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
