@@ -42,18 +42,21 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
+//        centerTitle: true,
         title: const Text('Routing Order'),
-        leading: IconButton(
-          onPressed: () async {
-            await ref
-                .watch(appParamProvider.notifier)
-                .clearSelectedRouteNumber();
+        // leading: IconButton(
+        //   onPressed: () async {
+        //     await ref
+        //         .watch(appParamProvider.notifier)
+        //         .clearSelectedRouteNumber();
+        //
+        //     routesButtonTap();
+        //   },
+        //   icon: const Icon(Icons.stacked_line_chart),
+        // ),
 
-            routesButtonTap();
-          },
-          icon: const Icon(Icons.stacked_line_chart),
-        ),
+        leading: Icon(Icons.square, color: Colors.transparent),
+
         actions: [
           GestureDetector(
             onTap: () async {
@@ -325,17 +328,17 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     }
   }
 
-  ///
-  void routesButtonTap() {
-    makeMapParamFacility();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => MapScreen(facilityList: mapParamFacility),
-      ),
-    );
-  }
+  // ///
+  // void routesButtonTap() {
+  //   makeMapParamFacility();
+  //
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => MapScreen(facilityList: mapParamFacility),
+  //     ),
+  //   );
+  // }
 
   ///
   void takeButtonClick() {
