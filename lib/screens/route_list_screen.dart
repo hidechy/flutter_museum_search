@@ -61,7 +61,7 @@ class RouteListScreen extends ConsumerWidget {
   List<Widget> displayBottomSheetContent() {
     final list = <Widget>[];
 
-    var selectedStationId =
+    final selectedStationId =
         _ref.watch(appParamProvider.select((value) => value.selectedStationId));
 
     for (var i = 0; i < facilityList.length; i++) {
@@ -101,7 +101,7 @@ class RouteListScreen extends ConsumerWidget {
                     child: (i == 0)
                         ? Text(
                             (selectedStationId != '') ? 'Sta' : 'Here',
-                            style: TextStyle(fontSize: 10),
+                            style: const TextStyle(fontSize: 10),
                           )
                         : Text(i.toString()),
                   ),

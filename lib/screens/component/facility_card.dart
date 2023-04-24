@@ -71,7 +71,7 @@ class FacilityCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '現在地点から${dist}',
+                            '現在地点から$dist',
                             style: const TextStyle(
                               color: Colors.yellowAccent,
                               fontSize: 10,
@@ -79,7 +79,7 @@ class FacilityCard extends StatelessWidget {
                           ),
                           Text(
                             '$latitude / $longitude',
-                            style: TextStyle(fontSize: 8),
+                            style: const TextStyle(fontSize: 8),
                           ),
                         ],
                       ),
