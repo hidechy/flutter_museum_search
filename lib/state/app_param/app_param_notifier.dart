@@ -41,6 +41,15 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
   Future<void> setBaseInclude({required int baseInclude}) async {
     state = state.copyWith(baseInclude: baseInclude);
   }
+
+  ///
+  Future<void> setSelectedStationId({required String ssi}) async {
+    var selectedStationId = state.selectedStationId;
+
+    var ssId = (ssi == selectedStationId) ? '' : ssi;
+
+    state = state.copyWith(selectedStationId: ssId);
+  }
 }
 
 //////////////////////////////////////////////////////

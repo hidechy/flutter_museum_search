@@ -129,8 +129,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       const LatLngAddressRequestState(),
     ));
 
-    final baseInclude =
-        ref.watch(appParamProvider.select((value) => value.baseInclude));
+    final appParamState = ref.watch(appParamProvider);
 
     final stationState = ref.watch(stationProvider);
 
@@ -169,7 +168,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                     GestureDetector(
                       onTap: () {
                         ref.watch(appParamProvider.notifier).setBaseInclude(
-                            baseInclude: (baseInclude == 1) ? 0 : 1);
+                            baseInclude:
+                                (appParamState.baseInclude == 1) ? 0 : 1);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -180,10 +180,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                           color: Colors.blueAccent.withOpacity(0.1),
                         ),
                         child: Text(
-                          (baseInclude == 1) ? '現在地点を含む' : '現在地点を含まない',
+                          (appParamState.baseInclude == 1)
+                              ? '現在地点を含む'
+                              : '現在地点を含まない',
                           style: TextStyle(
                             fontSize: 8,
-                            color: (baseInclude == 1)
+                            color: (appParamState.baseInclude == 1)
                                 ? Colors.yellowAccent
                                 : Colors.white,
                           ),
@@ -206,7 +208,9 @@ class _ListScreenState extends ConsumerState<ListScreen> {
               children: stationState.stationList.map((e) {
                 return GestureDetector(
                   onTap: () {
-                    print(e.id);
+                    ref
+                        .watch(appParamProvider.notifier)
+                        .setSelectedStationId(ssi: e.id.toString());
                   },
                   child: Container(
                     margin: const EdgeInsets.all(3),
@@ -214,6 +218,10 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      color:
+                          (appParamState.selectedStationId == e.id.toString())
+                              ? Colors.yellowAccent.withOpacity(0.2)
+                              : Colors.transparent,
                     ),
                     child: Column(
                       children: [
@@ -230,12 +238,25 @@ class _ListScreenState extends ConsumerState<ListScreen> {
             ),
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(),
+            Text(
+              '駅を選択した場合は現在地点よりも駅を優先します。',
+              style: TextStyle(fontSize: 8),
+            ),
+          ],
+        ),
       ],
     );
   }
 
   ///
   void makeDefault() {
+    defaultIdList = [];
+    ddList = [];
+
     final list = <Facility>[];
 
     final artFacilityState = ref.watch(artFacilityProvider);

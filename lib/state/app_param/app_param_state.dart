@@ -17,5 +17,8 @@ class AppParamState with _$AppParamState {
 
     //
     @Default(1) baseInclude,
+
+    ///
+    @Default('') String selectedStationId,
   }) = _AppParamState;
 }
