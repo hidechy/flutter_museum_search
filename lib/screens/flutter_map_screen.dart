@@ -192,32 +192,16 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     if (baseInclude == 1) {
       if (index == 0) {
-        if (selectedRouteNumber == '0') {
-          return Colors.redAccent;
-        } else {
-          return Colors.indigo;
-        }
+        return (selectedRouteNumber == '0') ? Colors.redAccent : Colors.indigo;
       } else {
-        if (index.toString() == selectedRouteNumber) {
-          return Colors.redAccent;
-        } else {
-          return Colors.black;
-        }
+        return (index.toString() == selectedRouteNumber)
+            ? Colors.redAccent
+            : Colors.black;
       }
     } else {
-      if (index == 0) {
-        if (selectedRouteNumber == '0') {
-          return Colors.redAccent;
-        } else {
-          return Colors.black;
-        }
-      } else {
-        if (index.toString() == selectedRouteNumber) {
-          return Colors.redAccent;
-        } else {
-          return Colors.black;
-        }
-      }
+      return (index.toString() == selectedRouteNumber)
+          ? Colors.redAccent
+          : Colors.black;
     }
   }
 
@@ -227,11 +211,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
     if (baseInclude == 1) {
-      if (index == 0) {
-        return 'Here';
-      } else {
-        return index.toString();
-      }
+      return (index == 0) ? 'Here' : index.toString();
     } else {
       return (index + 1).toString();
     }
@@ -442,11 +422,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
     if (baseInclude == 1) {
-      if (index == 0) {
-        return Colors.blueAccent.withOpacity(0.6);
-      } else {
-        return Colors.black.withOpacity(0.4);
-      }
+      return (index == 0)
+          ? Colors.blueAccent.withOpacity(0.6)
+          : Colors.black.withOpacity(0.4);
     } else {
       return Colors.black.withOpacity(0.4);
     }
@@ -458,11 +436,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
     if (baseInclude == 1) {
-      if (index == 0) {
-        return const Text('Here', style: TextStyle(fontSize: 10));
-      } else {
-        return Text(index.toString());
-      }
+      return (index == 0)
+          ? const Text('Here', style: TextStyle(fontSize: 10))
+          : Text(index.toString());
     } else {
       return Text((index + 1).toString());
     }

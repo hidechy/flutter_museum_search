@@ -386,6 +386,8 @@ class HomeScreen extends ConsumerWidget {
         await _ref
             .watch(prefectureProvider.notifier)
             .selectPref(prefCode: value!);
+
+        await _ref.watch(cityProvider.notifier).clearCity();
       },
     );
 
