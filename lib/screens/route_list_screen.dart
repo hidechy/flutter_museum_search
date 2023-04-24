@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
+import '../state/app_param/app_param_notifier.dart';
 import '../utility/utility.dart';
 
 class RouteListScreen extends ConsumerWidget {
@@ -17,9 +18,13 @@ class RouteListScreen extends ConsumerWidget {
 
   Utility utility = Utility();
 
+  late WidgetRef _ref;
+
   ///
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    _ref = ref;
+
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
@@ -56,17 +61,26 @@ class RouteListScreen extends ConsumerWidget {
   List<Widget> displayBottomSheetContent() {
     final list = <Widget>[];
 
+    var selectedStationId =
+        _ref.watch(appParamProvider.select((value) => value.selectedStationId));
+
     for (var i = 0; i < facilityList.length; i++) {
       final facility = facilityList[i];
 
       var distance = '';
       if (i < facilityList.length - 1) {
-        distance = utility.calcDistance(
-          originLat: facility.latitude.toDouble(),
-          originLng: facility.longitude.toDouble(),
-          destLat: facilityList[i + 1].latitude.toDouble(),
-          destLng: facilityList[i + 1].longitude.toDouble(),
-        );
+        if ((facility.latitude == facilityList[i + 1].latitude) &&
+            (facility.longitude == facilityList[i + 1].longitude)) {
+          //TODO 緯度経度が同じ場合
+          distance = '0';
+        } else {
+          distance = utility.calcDistance(
+            originLat: facility.latitude.toDouble(),
+            originLng: facility.longitude.toDouble(),
+            destLat: facilityList[i + 1].latitude.toDouble(),
+            destLng: facilityList[i + 1].longitude.toDouble(),
+          );
+        }
       }
 
       final ll = [facility.latitude, facility.longitude];
@@ -85,7 +99,10 @@ class RouteListScreen extends ConsumerWidget {
                         : Colors.orangeAccent.withOpacity(0.4),
                     foregroundColor: Colors.white,
                     child: (i == 0)
-                        ? const Text('Here', style: TextStyle(fontSize: 10))
+                        ? Text(
+                            (selectedStationId != '') ? 'Sta' : 'Here',
+                            style: TextStyle(fontSize: 10),
+                          )
                         : Text(i.toString()),
                   ),
                   const SizedBox(width: 20),
