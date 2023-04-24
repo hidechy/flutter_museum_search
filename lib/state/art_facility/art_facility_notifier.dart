@@ -115,8 +115,10 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
 
         if (val.id != 99999999) {
           final ll = <String>[
-            val.latitude.substring(0, 4),
-            val.longitude.substring(0, 5),
+            // val.latitude.substring(0, 4),
+            // val.longitude.substring(0, 5),
+            val.latitude,
+            val.longitude
           ];
 
           if (!facilityLatLng.contains(ll.join('|'))) {
@@ -124,6 +126,8 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
           }
         }
       }
+
+      print(facilityLatLng);
 
       state = state.copyWith(
         allList: list,

@@ -184,8 +184,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
                         ),
                         child: Text(
                           (appParamState.baseInclude == 1)
-                              ? '現在地点を含む'
-                              : '現在地点を含まない',
+                              ? '駅または現在地点を含む'
+                              : '駅または現在地点を含まない',
                           style: TextStyle(
                             fontSize: 8,
                             color: (appParamState.baseInclude == 1)
@@ -361,13 +361,16 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   ///
   void makeMapParamFacility() {
+    mapParamFacility = [];
+
+    ///////////////////////////////////////////////////////////
+    final appParamState = ref.watch(appParamProvider);
+
     final baseInclude =
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
-    var appParamState = ref.watch(appParamProvider);
-
     if (appParamState.selectedStationId != '') {
-      var stationState = ref.watch(stationProvider);
+      final stationState = ref.watch(stationProvider);
 
       var selectedStation = Station(
         id: 0,
@@ -411,8 +414,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         dist: '0',
       ));
     }
-
-    //--------------------------------//
+    ///////////////////////////////////////////////////////////
 
     final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
 
