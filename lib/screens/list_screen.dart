@@ -16,7 +16,8 @@ import '../state/station/station_notifier.dart';
 import 'component/facility_card.dart';
 import 'component/museum_search_dialog.dart';
 import 'flutter_map_screen.dart';
-import 'map_screen.dart';
+
+//import 'map_screen.dart';
 import 'route_list_screen.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
@@ -55,7 +56,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         //   icon: const Icon(Icons.stacked_line_chart),
         // ),
 
-        leading: Icon(Icons.square, color: Colors.transparent),
+        leading: const Icon(Icons.square, color: Colors.transparent),
 
         actions: [
           GestureDetector(
