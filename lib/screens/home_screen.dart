@@ -174,6 +174,9 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                               );
 
+                          //
+                          //
+
                           //-------------//
                           final selectedArtFacilities = <Facility>[];
 
