@@ -321,12 +321,18 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
       var distance = '';
       if (i < widget.facilityList.length - 1) {
-        distance = utility.calcDistance(
-          originLat: facility.latitude.toDouble(),
-          originLng: facility.longitude.toDouble(),
-          destLat: widget.facilityList[i + 1].latitude.toDouble(),
-          destLng: widget.facilityList[i + 1].longitude.toDouble(),
-        );
+        if ((facility.latitude == widget.facilityList[i + 1].latitude) &&
+            (facility.longitude == widget.facilityList[i + 1].longitude)) {
+          //TODO 緯度経度が同じ場合
+          distance = '0';
+        } else {
+          distance = utility.calcDistance(
+            originLat: facility.latitude.toDouble(),
+            originLng: facility.longitude.toDouble(),
+            destLat: widget.facilityList[i + 1].latitude.toDouble(),
+            destLng: widget.facilityList[i + 1].longitude.toDouble(),
+          );
+        }
       }
 
       final ll = [facility.latitude, facility.longitude];
