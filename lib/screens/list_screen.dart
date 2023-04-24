@@ -9,6 +9,7 @@ import '../state/art_facility/art_facility_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
+import '../state/station/station_notifier.dart';
 import 'component/facility_card.dart';
 import 'component/museum_search_dialog.dart';
 import 'flutter_map_screen.dart';
@@ -42,6 +43,10 @@ class _ListScreenState extends ConsumerState<ListScreen> {
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
     makeDefault();
+
+    final stationState = ref.watch(stationProvider);
+
+    print(stationState);
 
     return Scaffold(
       appBar: AppBar(

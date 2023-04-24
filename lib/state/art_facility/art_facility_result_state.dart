@@ -18,5 +18,8 @@ class ArtFacilityResultState with _$ArtFacilityResultState {
 
     //
     @Default({}) Map<int, Facility> facilityMap,
+
+    ///
+    @Default([]) List<String> facilityLatLng,
   }) = _ArtFacilityResultState;
 }

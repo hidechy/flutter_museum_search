@@ -103,6 +103,8 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
 
       final facilityMap = <int, Facility>{};
 
+      final facilityLatLng = <String>[];
+
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
         final val = Facility.fromJson(value['data'][i] as Map<String, dynamic>);
 
@@ -110,12 +112,22 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
         allIdList.add(val.id);
 
         facilityMap[val.id] = val;
+
+        final ll = <String>[
+          val.latitude.substring(0, 5),
+          val.longitude.substring(0, 6),
+        ];
+
+        if (!facilityLatLng.contains(ll.join('|'))) {
+          facilityLatLng.add(ll.join('|'));
+        }
       }
 
       state = state.copyWith(
         allList: list,
         allIdList: allIdList,
         facilityMap: facilityMap,
+        facilityLatLng: facilityLatLng,
       );
     }).catchError((error, _) {
       utility.showError('予期せぬエラーが発生しました');

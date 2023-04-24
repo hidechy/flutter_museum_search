@@ -16,6 +16,8 @@ import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../state/map_marker/map_marker_notifier.dart';
 import '../state/prefecture/prefecture_notifier.dart';
+import '../state/station/station_notifier.dart';
+import '../state/station/station_request_state.dart';
 import '../utility/utility.dart';
 import 'component/facility_card.dart';
 import 'list_screen.dart';
@@ -196,6 +198,13 @@ class HomeScreen extends ConsumerWidget {
                               .watch(mapMarkerProvider.notifier)
                               .setNumbersList(numbersList: numbersList);
                           /////////////////////////////////
+
+                          await _ref.watch(stationProvider.notifier).getStation(
+                                param: StationRequestState(
+                                  facilityLatLng:
+                                      artFacilityState.facilityLatLng,
+                                ),
+                              );
 
                           await Navigator.push(
                             context,
