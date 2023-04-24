@@ -18,7 +18,7 @@ final stationProvider =
 
   final utility = Utility();
 
-  return StationNotifier(StationResponseState(), client, utility);
+  return StationNotifier(const StationResponseState(), client, utility);
 });
 
 class StationNotifier extends StateNotifier<StationResponseState> {
@@ -38,9 +38,7 @@ class StationNotifier extends StateNotifier<StationResponseState> {
       final list = <Station>[];
 
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
-        var val = Station.fromJson(value['data'][i] as Map<String, dynamic>);
-
-        list.add(val);
+        list.add(Station.fromJson(value['data'][i] as Map<String, dynamic>));
       }
 
       state = state.copyWith(stationList: list);

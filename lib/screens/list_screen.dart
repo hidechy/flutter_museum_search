@@ -130,11 +130,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     final baseInclude =
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
-    makeDefault();
-
     final stationState = ref.watch(stationProvider);
-
-    print(stationState);
 
     return Column(
       children: [
