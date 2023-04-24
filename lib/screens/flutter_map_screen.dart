@@ -211,8 +211,15 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     final baseInclude =
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
+    var selectedStationId =
+        ref.watch(appParamProvider.select((value) => value.selectedStationId));
+
     if (baseInclude == 1) {
-      return (index == 0) ? 'Here' : index.toString();
+      return (index == 0)
+          ? (selectedStationId != '')
+              ? 'Sta'
+              : 'Here'
+          : index.toString();
     } else {
       return (index + 1).toString();
     }
@@ -438,9 +445,13 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     final baseInclude =
         ref.watch(appParamProvider.select((value) => value.baseInclude));
 
+    var selectedStationId =
+        ref.watch(appParamProvider.select((value) => value.selectedStationId));
+
     if (baseInclude == 1) {
       return (index == 0)
-          ? const Text('Here', style: TextStyle(fontSize: 10))
+          ? Text((selectedStationId != '') ? 'Sta' : 'Here',
+              style: TextStyle(fontSize: 10))
           : Text(index.toString());
     } else {
       return Text((index + 1).toString());

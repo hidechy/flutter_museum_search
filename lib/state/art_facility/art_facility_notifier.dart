@@ -127,21 +127,15 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
         }
       }
 
-      print(facilityLatLng);
-
       state = state.copyWith(
         allList: list,
         allIdList: allIdList,
         facilityMap: facilityMap,
         facilityLatLng: facilityLatLng,
       );
+    }).catchError((error, _) {
+      utility.showError('予期せぬエラーが発生しました');
     });
-
-    //
-    //
-    //     .catchError((error, _) {
-    //   utility.showError('予期せぬエラーが発生しました');
-    // });
   }
 
   ///
