@@ -30,6 +30,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   List<int> defaultIdList = [];
   List<int> orderedIdList = [];
 
+  List<Facility> mapParamFacility = [];
+
   ///
   @override
   Widget build(BuildContext context) {
@@ -301,90 +303,40 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
   ///
   void routesButtonTap() {
-    final facilityMap =
-        ref.read(artFacilityProvider.select((value) => value.facilityMap));
-
-    final latLngState = ref.watch(latLngProvider);
-
-    final latLngAddressState = ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
-    final baseInclude =
-        ref.watch(appParamProvider.select((value) => value.baseInclude));
-
-    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
-
-    final facilityList = <Facility>[];
-
-    if (baseInclude == 1) {
-      facilityList.add(Facility(
-        id: 0,
-        name: '現在地点',
-        genre: '',
-        address: '${latLngAddressState.city}${latLngAddressState.town}',
-        latitude: latLngState.lat.toString(),
-        longitude: latLngState.lng.toString(),
-        dist: '0',
-      ));
-    }
-
-    idList.forEach((element) {
-      facilityList.add(facilityMap[element]!);
-    });
+    makeMapParamFacility();
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MapScreen(facilityList: facilityList),
+        builder: (context) => MapScreen(facilityList: mapParamFacility),
       ),
     );
   }
 
   ///
   void takeButtonClick() {
-    final facilityMap =
-        ref.read(artFacilityProvider.select((value) => value.facilityMap));
-
-    final latLngState = ref.watch(latLngProvider);
-
-    final latLngAddressState = ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
-    final baseInclude =
-        ref.watch(appParamProvider.select((value) => value.baseInclude));
-
-    final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
-
-    final facilityList = <Facility>[];
-
-    if (baseInclude == 1) {
-      facilityList.add(Facility(
-        id: 0,
-        name: '現在地点',
-        genre: '',
-        address: '${latLngAddressState.city}${latLngAddressState.town}',
-        latitude: latLngState.lat.toString(),
-        longitude: latLngState.lng.toString(),
-        dist: '0',
-      ));
-    }
-
-    idList.forEach((element) {
-      facilityList.add(facilityMap[element]!);
-    });
+    makeMapParamFacility();
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FlutterMapScreen(facilityList: facilityList),
+        builder: (context) => FlutterMapScreen(facilityList: mapParamFacility),
       ),
     );
   }
 
   ///
   void umeButtonClick() {
+    makeMapParamFacility();
+
+    MuseumSearchDialog(
+      context: context,
+      widget: RouteListScreen(facilityList: mapParamFacility),
+    );
+  }
+
+  ///
+  void makeMapParamFacility() {
     final facilityMap =
         ref.read(artFacilityProvider.select((value) => value.facilityMap));
 
@@ -399,10 +351,8 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
     final idList = (orderedIdList.isEmpty) ? defaultIdList : orderedIdList;
 
-    final facilityList = <Facility>[];
-
     if (baseInclude == 1) {
-      facilityList.add(Facility(
+      mapParamFacility.add(Facility(
         id: 0,
         name: '現在地点',
         genre: '',
@@ -414,12 +364,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
     }
 
     idList.forEach((element) {
-      facilityList.add(facilityMap[element]!);
+      mapParamFacility.add(facilityMap[element]!);
     });
-
-    MuseumSearchDialog(
-      context: context,
-      widget: RouteListScreen(facilityList: facilityList),
-    );
   }
 }
