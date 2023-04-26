@@ -194,16 +194,18 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     if (baseInclude == 1) {
       if (index == 0) {
-        return (selectedRouteNumber == '0') ? Colors.redAccent : Colors.indigo;
+        return (selectedRouteNumber == '0')
+            ? Colors.redAccent.withOpacity(0.6)
+            : Colors.indigo.withOpacity(0.6);
       } else {
         return (index.toString() == selectedRouteNumber)
-            ? Colors.redAccent
-            : Colors.black;
+            ? Colors.redAccent.withOpacity(0.6)
+            : Colors.black.withOpacity(0.6);
       }
     } else {
       return (index.toString() == selectedRouteNumber)
-          ? Colors.redAccent
-          : Colors.black;
+          ? Colors.redAccent.withOpacity(0.6)
+          : Colors.black.withOpacity(0.6);
     }
   }
 
@@ -297,10 +299,52 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: displayBottomSheetContent(),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(),
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                'ルート確認',
+                                style: TextStyle(fontSize: 8),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.4),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                'ルート消去',
+                                style: TextStyle(fontSize: 8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      color: Colors.black.withOpacity(0.2),
+                      thickness: 2,
+                    ),
+                    DefaultTextStyle(
+                      style: const TextStyle(fontSize: 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: displayBottomSheetContent(),
+                      ),
                     ),
                     const SizedBox(height: 30),
                   ],
@@ -339,93 +383,93 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
       final ll = [facility.latitude, facility.longitude];
 
       list.add(
-        DefaultTextStyle(
-          style: const TextStyle(fontSize: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor:
-                        getBottomSheetCircleAvatarBgColor(index: i),
-                    foregroundColor: Colors.white,
-                    child: getBottomSheetCircleAvatarText(index: i),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: getBottomSheetCircleAvatarBgColor(index: i),
+                  foregroundColor: Colors.white,
+                  child: getBottomSheetCircleAvatarText(index: i),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(facility.name),
+                      Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(facility.address),
+                            Text(ll.join(' / ')),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+              ],
+            ),
+            if (i < widget.facilityList.length - 1)
+              Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
                       children: [
-                        Text(facility.name),
-                        Container(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        const Icon(Icons.arrow_downward_outlined, size: 40),
+                        const SizedBox(width: 10),
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Row(
                             children: [
-                              Text(facility.address),
-                              Text(ll.join(' / ')),
+                              IconButton(
+                                onPressed: () async {
+                                  await ref
+                                      .watch(appParamProvider.notifier)
+                                      .setSelectedRouteNumber(
+                                          selectedRouteNumber: i.toString());
+
+                                  await makePolyline();
+                                },
+                                icon: const Icon(Icons.stacked_line_chart,
+                                    size: 20),
+                              ),
+                              IconButton(
+                                onPressed: () => showGoogleTransit(index: i),
+                                icon: const Icon(FontAwesomeIcons.google,
+                                    size: 20),
+                              ),
+                              IconButton(
+                                onPressed: () => showYahooTransit(index: i),
+                                icon: const Icon(FontAwesomeIcons.yahoo,
+                                    size: 20),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.check),
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              if (i < widget.facilityList.length - 1)
-                Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10, left: 40),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.arrow_downward_outlined, size: 40),
-                          const SizedBox(width: 10),
-                          DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                IconButton(
-                                  onPressed: () async {
-                                    await ref
-                                        .watch(appParamProvider.notifier)
-                                        .setSelectedRouteNumber(
-                                            selectedRouteNumber: i.toString());
-
-                                    await makePolyline();
-                                  },
-                                  icon: const Icon(Icons.stacked_line_chart,
-                                      size: 20),
-                                ),
-                                IconButton(
-                                  onPressed: () => showGoogleTransit(index: i),
-                                  icon: const Icon(FontAwesomeIcons.google,
-                                      size: 20),
-                                ),
-                                IconButton(
-                                  onPressed: () => showYahooTransit(index: i),
-                                  icon: const Icon(FontAwesomeIcons.yahoo,
-                                      size: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        '$distance Km',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
+                    Text(
+                      '$distance Km',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ],
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       );
     }
@@ -440,7 +484,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     if (baseInclude == 1) {
       return (index == 0)
-          ? Colors.blueAccent.withOpacity(0.6)
+          ? Colors.indigo.withOpacity(0.6)
           : Colors.black.withOpacity(0.4);
     } else {
       return Colors.black.withOpacity(0.4);
