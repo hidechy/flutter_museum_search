@@ -54,7 +54,26 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     makeMarker();
 
+    /*
+
+
+
+
+                */
+
+/*
+
+
     final selectRouteState = ref.watch(selectRouteProvider);
+
+*/
+
+    /*
+
+
+
+
+                */
 
     return Scaffold(
       body: SafeArea(
