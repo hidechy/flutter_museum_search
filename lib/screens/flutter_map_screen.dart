@@ -11,12 +11,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mapbox_polyline_points/mapbox_polyline_points.dart';
-import 'package:museum_search/state/select_route/select_route_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 import '../state/app_param/app_param_notifier.dart';
+import '../state/select_route/select_route_notifier.dart';
+
+//import '../state/station/station_notifier.dart';
 import '../utility/utility.dart';
 
 class FlutterMapScreen extends ConsumerStatefulWidget {
@@ -212,10 +214,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           ),
           builder: (context) {
             return CircleAvatar(
-              backgroundColor: getCircleAvatarBgColor(
-                index: i,
-                facility: widget.facilityList[i],
-              ),
+              backgroundColor: getCircleAvatarBgColor(index: i),
               child: Text(
                 getCircleAvatarText(index: i),
                 style: const TextStyle(
@@ -232,8 +231,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   }
 
   ///
-  Color getCircleAvatarBgColor(
-      {required int index, required Facility facility}) {
+  Color getCircleAvatarBgColor({required int index}) {
+    var color = Colors.transparent;
+
     final selectedRouteNumber = ref
         .watch(appParamProvider.select((value) => value.selectedRouteNumber));
 
@@ -242,26 +242,43 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     if (baseInclude == 1) {
       if (index == 0) {
-        return (selectedRouteNumber == '0')
+        color = (selectedRouteNumber == '0')
             ? Colors.redAccent.withOpacity(0.6)
             : Colors.indigo.withOpacity(0.6);
       } else {
-        return (index.toString() == selectedRouteNumber)
+        color = (index.toString() == selectedRouteNumber)
             ? Colors.redAccent.withOpacity(0.6)
             : Colors.black.withOpacity(0.6);
       }
     } else {
-      return (index.toString() == selectedRouteNumber)
+      color = (index.toString() == selectedRouteNumber)
           ? Colors.redAccent.withOpacity(0.6)
           : Colors.black.withOpacity(0.6);
     }
 
+    //-------------------------
+
+    final selectedIds =
+        ref.watch(selectRouteProvider.select((value) => value.selectedIds));
+
+    final ids = [];
+    selectedIds.forEach((element) {
+      ids.add(element.replaceAll('start_', '').replaceAll('goal_', ''));
+    });
+
+    if (ids.contains(widget.facilityList[index].id.toString())) {
+      color = Colors.deepOrangeAccent;
+    }
+
+    //-------------------------
+
+    return color;
+
     //
-    // //-------------------------
-    // final selectedIds =
-    //     ref.watch(selectRouteProvider.select((value) => value.selectedIds));
     //
-    // var ids = [];
+    //
+    // final selectedStationId =
+    //     ref.watch(appParamProvider.select((value) => value.selectedStationId));
     //
     //
     //
@@ -420,7 +437,8 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(facility.name),
+//                      Text(facility.name),
+                      Text('${facility.id} // ${facility.name}'),
                       Container(
                         padding: const EdgeInsets.only(left: 20),
                         child: Column(
@@ -508,14 +526,14 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                         await ref
                             .watch(selectRouteProvider.notifier)
                             .setSelectedId(
-                              id: 'start_${widget.facilityList[i].id}',
+                              id: 'start_${facility.id}',
                             );
+
+                        makeMarker();
                       } else {
                         await ref
                             .watch(selectRouteProvider.notifier)
-                            .setSelectedId(
-                              id: widget.facilityList[i].id.toString(),
-                            );
+                            .setSelectedId(id: facility.id.toString());
                       }
                     },
                     child: Container(
@@ -542,8 +560,10 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                           return;
                         }
 
-                        ref.watch(selectRouteProvider.notifier).setSelectedId(
-                              id: 'goal_${widget.facilityList[i].id}',
+                        await ref
+                            .watch(selectRouteProvider.notifier)
+                            .setSelectedId(
+                              id: 'goal_${facility.id}',
                             );
                       },
                       child: Container(

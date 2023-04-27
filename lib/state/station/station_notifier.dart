@@ -38,10 +38,10 @@ class StationNotifier extends StateNotifier<StationResponseState> {
         .then((value) {
       final list = <Station>[];
 
-      Map<int, Station> stationMap = {};
+      final stationMap = <int, Station>{};
 
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
-        var val = Station.fromJson(value['data'][i] as Map<String, dynamic>);
+        final val = Station.fromJson(value['data'][i] as Map<String, dynamic>);
 
         list.add(val);
 

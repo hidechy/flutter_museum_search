@@ -21,14 +21,11 @@ class SelectRouteNotifier extends StateNotifier<SelectRouteResponseState> {
   Future<void> setSelectedId({required String id}) async {
     final selectedIds = [...state.selectedIds];
 
-    //TODO これは使うので消さない
-    // if (selectedIds.contains(id)) {
-    //   selectedIds.remove(id);
-    // } else {
-    //   selectedIds.add(id);
-    // }
-
-    selectedIds.add(id);
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
+    } else {
+      selectedIds.add(id);
+    }
 
     state = state.copyWith(selectedIds: selectedIds);
   }
