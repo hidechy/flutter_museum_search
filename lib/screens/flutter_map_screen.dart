@@ -92,10 +92,33 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                /*
+
+
+
+
+                */
+
+                Container(),
+
+                /*
+
+
+
+
+                */
+
                 TextButton(
                   onPressed: showUnderMenu,
                   child: const Text('show detail'),
                 ),
+
+                /*
+
+
+
+
+
                 Row(
                   children: [
                     GestureDetector(
@@ -139,6 +162,14 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                     ),
                   ],
                 ),
+
+
+
+
+
+
+
+                */
               ],
             ),
             const SizedBox(height: 10),
@@ -273,16 +304,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     //-------------------------
 
     return color;
-
-    //
-    //
-    //
-    // final selectedStationId =
-    //     ref.watch(appParamProvider.select((value) => value.selectedStationId));
-    //
-    //
-    //
-    //
   }
 
   ///
@@ -398,8 +419,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   List<Widget> displayBottomSheetContent() {
     final list = <Widget>[];
 
-    final selectRouteState = ref.watch(selectRouteProvider);
-
     for (var i = 0; i < widget.facilityList.length; i++) {
       final facility = widget.facilityList[i];
 
@@ -437,8 +456,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-//                      Text(facility.name),
-                      Text('${facility.id} // ${facility.name}'),
+                      Text(facility.name),
                       Container(
                         padding: const EdgeInsets.only(left: 20),
                         child: Column(
@@ -505,6 +523,16 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   ],
                 ),
               ),
+
+            /*
+
+
+
+
+
+
+
+
             const SizedBox(height: 5),
             Container(
               padding: const EdgeInsets.only(left: 70),
@@ -513,16 +541,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   GestureDetector(
                     onTap: () async {
                       if (i == 0) {
-                        if (selectRouteState.selectedIds.isNotEmpty) {
-                          utility.showErrorMessage(
-                            context: context,
-                            message: 'すでに他の地点が追加されているため、スタート地点を追加することはできません。',
-                            ms: 3000,
-                          );
-
-                          return;
-                        }
-
                         await ref
                             .watch(selectRouteProvider.notifier)
                             .setSelectedId(
@@ -550,16 +568,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                     const SizedBox(width: 5),
                     GestureDetector(
                       onTap: () async {
-                        if (selectRouteState.selectedIds.isEmpty) {
-                          utility.showErrorMessage(
-                            context: context,
-                            message: '他の地点が追加されていないため、ゴール地点を追加することはできません。',
-                            ms: 3000,
-                          );
-
-                          return;
-                        }
-
                         await ref
                             .watch(selectRouteProvider.notifier)
                             .setSelectedId(
@@ -580,6 +588,15 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                 ],
               ),
             ),
+
+
+
+
+
+
+
+            */
+
             const SizedBox(height: 30),
           ],
         ),
