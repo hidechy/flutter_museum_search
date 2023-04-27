@@ -27,6 +27,7 @@ class StationNotifier extends StateNotifier<StationResponseState> {
   final HttpClient client;
   final Utility utility;
 
+  ///
   Future<void> getStation({required StationRequestState param}) async {
     final uploadData = <String, dynamic>{};
 
@@ -37,11 +38,17 @@ class StationNotifier extends StateNotifier<StationResponseState> {
         .then((value) {
       final list = <Station>[];
 
+      Map<int, Station> stationMap = {};
+
       for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
-        list.add(Station.fromJson(value['data'][i] as Map<String, dynamic>));
+        var val = Station.fromJson(value['data'][i] as Map<String, dynamic>);
+
+        list.add(val);
+
+        stationMap[val.id] = val;
       }
 
-      state = state.copyWith(stationList: list);
+      state = state.copyWith(stationList: list, stationMap: stationMap);
     }).catchError((error, _) {
       utility.showError('予期せぬエラーが発生しました');
     });

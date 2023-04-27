@@ -19,6 +19,24 @@ class Utility {
   }
 
   ///
+  void showErrorMessage({
+    required BuildContext context,
+    required String message,
+    required int ms,
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: Duration(milliseconds: ms),
+        backgroundColor: Colors.black,
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.white, fontSize: 10),
+        ),
+      ),
+    );
+  }
+
+  ///
   List<Color> getTwelveColor() {
     return [
       const Color(0xffdb2f20),

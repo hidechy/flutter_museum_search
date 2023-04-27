@@ -8,5 +8,8 @@ class StationResponseState with _$StationResponseState {
   const factory StationResponseState({
     //
     @Default([]) List<Station> stationList,
+
+    ///
+    @Default({}) Map<int, Station> stationMap,
   }) = _StationResponseState;
 }

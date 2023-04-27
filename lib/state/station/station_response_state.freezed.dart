@@ -19,6 +19,9 @@ mixin _$StationResponseState {
 //
   List<Station> get stationList => throw _privateConstructorUsedError;
 
+  ///
+  Map<int, Station> get stationMap => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $StationResponseStateCopyWith<StationResponseState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -30,7 +33,7 @@ abstract class $StationResponseStateCopyWith<$Res> {
           $Res Function(StationResponseState) then) =
       _$StationResponseStateCopyWithImpl<$Res, StationResponseState>;
   @useResult
-  $Res call({List<Station> stationList});
+  $Res call({List<Station> stationList, Map<int, Station> stationMap});
 }
 
 /// @nodoc
@@ -48,12 +51,17 @@ class _$StationResponseStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? stationList = null,
+    Object? stationMap = null,
   }) {
     return _then(_value.copyWith(
       stationList: null == stationList
           ? _value.stationList
           : stationList // ignore: cast_nullable_to_non_nullable
               as List<Station>,
+      stationMap: null == stationMap
+          ? _value.stationMap
+          : stationMap // ignore: cast_nullable_to_non_nullable
+              as Map<int, Station>,
     ) as $Val);
   }
 }
@@ -66,7 +74,7 @@ abstract class _$$_StationResponseStateCopyWith<$Res>
       __$$_StationResponseStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<Station> stationList});
+  $Res call({List<Station> stationList, Map<int, Station> stationMap});
 }
 
 /// @nodoc
@@ -81,12 +89,17 @@ class __$$_StationResponseStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? stationList = null,
+    Object? stationMap = null,
   }) {
     return _then(_$_StationResponseState(
       stationList: null == stationList
           ? _value._stationList
           : stationList // ignore: cast_nullable_to_non_nullable
               as List<Station>,
+      stationMap: null == stationMap
+          ? _value._stationMap
+          : stationMap // ignore: cast_nullable_to_non_nullable
+              as Map<int, Station>,
     ));
   }
 }
@@ -94,8 +107,11 @@ class __$$_StationResponseStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_StationResponseState implements _StationResponseState {
-  const _$_StationResponseState({final List<Station> stationList = const []})
-      : _stationList = stationList;
+  const _$_StationResponseState(
+      {final List<Station> stationList = const [],
+      final Map<int, Station> stationMap = const {}})
+      : _stationList = stationList,
+        _stationMap = stationMap;
 
 //
   final List<Station> _stationList;
@@ -108,9 +124,21 @@ class _$_StationResponseState implements _StationResponseState {
     return EqualUnmodifiableListView(_stationList);
   }
 
+  ///
+  final Map<int, Station> _stationMap;
+
+  ///
+  @override
+  @JsonKey()
+  Map<int, Station> get stationMap {
+    if (_stationMap is EqualUnmodifiableMapView) return _stationMap;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_stationMap);
+  }
+
   @override
   String toString() {
-    return 'StationResponseState(stationList: $stationList)';
+    return 'StationResponseState(stationList: $stationList, stationMap: $stationMap)';
   }
 
   @override
@@ -119,12 +147,16 @@ class _$_StationResponseState implements _StationResponseState {
         (other.runtimeType == runtimeType &&
             other is _$_StationResponseState &&
             const DeepCollectionEquality()
-                .equals(other._stationList, _stationList));
+                .equals(other._stationList, _stationList) &&
+            const DeepCollectionEquality()
+                .equals(other._stationMap, _stationMap));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_stationList));
+      runtimeType,
+      const DeepCollectionEquality().hash(_stationList),
+      const DeepCollectionEquality().hash(_stationMap));
 
   @JsonKey(ignore: true)
   @override
@@ -135,11 +167,16 @@ class _$_StationResponseState implements _StationResponseState {
 }
 
 abstract class _StationResponseState implements StationResponseState {
-  const factory _StationResponseState({final List<Station> stationList}) =
-      _$_StationResponseState;
+  const factory _StationResponseState(
+      {final List<Station> stationList,
+      final Map<int, Station> stationMap}) = _$_StationResponseState;
 
   @override //
   List<Station> get stationList;
+  @override
+
+  ///
+  Map<int, Station> get stationMap;
   @override
   @JsonKey(ignore: true)
   _$$_StationResponseStateCopyWith<_$_StationResponseState> get copyWith =>

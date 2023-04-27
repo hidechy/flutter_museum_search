@@ -160,8 +160,10 @@ class HomeScreen extends ConsumerWidget {
                     onPressed: () async {
                       if (latLngSettingCheck() == true) {
                         if (artFacilityState.selectIdList.length < 2) {
-                          showErrorMessage(
+                          utility.showErrorMessage(
+                            context: _context,
                             message: '並び替えるために2つ以上の施設を選択してください。',
+                            ms: 500,
                           );
                         } else {
                           await ref
@@ -482,25 +484,15 @@ class HomeScreen extends ConsumerWidget {
     final latLngState = _ref.watch(latLngProvider);
 
     if (latLngState.lat == 0 || latLngState.lng == 0) {
-      showErrorMessage(message: '現在位置の座標が設定されていません。');
+      utility.showErrorMessage(
+        context: _context,
+        message: '現在位置の座標が設定されていません。',
+        ms: 500,
+      );
 
       return false;
     }
 
     return true;
-  }
-
-  ///
-  void showErrorMessage({required String message}) {
-    ScaffoldMessenger.of(_context).showSnackBar(
-      SnackBar(
-        duration: const Duration(milliseconds: 500),
-        backgroundColor: Colors.black,
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.white, fontSize: 10),
-        ),
-      ),
-    );
   }
 }

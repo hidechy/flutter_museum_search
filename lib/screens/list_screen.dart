@@ -388,7 +388,7 @@ class _ListScreenState extends ConsumerState<ListScreen> {
 
       mapParamFacility.add(
         Facility(
-          id: 0,
+          id: selectedStation.id,
           name: '${selectedStation.stationName}駅',
           genre: '',
           address: selectedStation.address,

@@ -11,6 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mapbox_polyline_points/mapbox_polyline_points.dart';
+import 'package:museum_search/state/select_route/select_route_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
@@ -51,6 +52,8 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     makeMarker();
 
+    final selectRouteState = ref.watch(selectRouteProvider);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -87,10 +90,52 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(),
                 TextButton(
                   onPressed: showUnderMenu,
                   child: const Text('show detail'),
+                ),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        print('eeeee');
+                        print(selectRouteState.selectedIds);
+                        print('eeeeee');
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          '選択ルート確認',
+                          style: TextStyle(fontSize: 8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () {
+                        ref
+                            .watch(selectRouteProvider.notifier)
+                            .clearSelectedId();
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          '選択ルート消去',
+                          style: TextStyle(fontSize: 8),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -167,7 +212,10 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           ),
           builder: (context) {
             return CircleAvatar(
-              backgroundColor: getCircleAvatarBgColor(index: i),
+              backgroundColor: getCircleAvatarBgColor(
+                index: i,
+                facility: widget.facilityList[i],
+              ),
               child: Text(
                 getCircleAvatarText(index: i),
                 style: const TextStyle(
@@ -184,7 +232,8 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   }
 
   ///
-  Color getCircleAvatarBgColor({required int index}) {
+  Color getCircleAvatarBgColor(
+      {required int index, required Facility facility}) {
     final selectedRouteNumber = ref
         .watch(appParamProvider.select((value) => value.selectedRouteNumber));
 
@@ -206,6 +255,17 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           ? Colors.redAccent.withOpacity(0.6)
           : Colors.black.withOpacity(0.6);
     }
+
+    //
+    // //-------------------------
+    // final selectedIds =
+    //     ref.watch(selectRouteProvider.select((value) => value.selectedIds));
+    //
+    // var ids = [];
+    //
+    //
+    //
+    //
   }
 
   ///
@@ -298,46 +358,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 5),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(),
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: const Text(
-                                'ルート確認',
-                                style: TextStyle(fontSize: 8),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 10),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: const Text(
-                                'ルート消去',
-                                style: TextStyle(fontSize: 8),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Divider(
-                      color: Colors.black.withOpacity(0.2),
-                      thickness: 2,
-                    ),
+                    const SizedBox(height: 20),
                     DefaultTextStyle(
                       style: const TextStyle(fontSize: 12),
                       child: Column(
@@ -359,6 +380,8 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   ///
   List<Widget> displayBottomSheetContent() {
     final list = <Widget>[];
+
+    final selectRouteState = ref.watch(selectRouteProvider);
 
     for (var i = 0; i < widget.facilityList.length; i++) {
       final facility = widget.facilityList[i];
@@ -415,7 +438,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
             ),
             if (i < widget.facilityList.length - 1)
               Container(
-                padding: const EdgeInsets.only(top: 10, bottom: 10, left: 20),
+                padding: const EdgeInsets.only(top: 10, left: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -452,10 +475,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                                 icon: const Icon(FontAwesomeIcons.yahoo,
                                     size: 20),
                               ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.check),
-                              ),
                             ],
                           ),
                         ),
@@ -468,6 +487,80 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   ],
                 ),
               ),
+            const SizedBox(height: 5),
+            Container(
+              padding: const EdgeInsets.only(left: 70),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      if (i == 0) {
+                        if (selectRouteState.selectedIds.isNotEmpty) {
+                          utility.showErrorMessage(
+                            context: context,
+                            message: 'すでに他の地点が追加されているため、スタート地点を追加することはできません。',
+                            ms: 3000,
+                          );
+
+                          return;
+                        }
+
+                        await ref
+                            .watch(selectRouteProvider.notifier)
+                            .setSelectedId(
+                              id: 'start_${widget.facilityList[i].id}',
+                            );
+                      } else {
+                        await ref
+                            .watch(selectRouteProvider.notifier)
+                            .setSelectedId(
+                              id: widget.facilityList[i].id.toString(),
+                            );
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text((i == 0) ? 'start' : 'select'),
+                    ),
+                  ),
+                  if (i == 0) ...[
+                    const SizedBox(width: 5),
+                    GestureDetector(
+                      onTap: () async {
+                        if (selectRouteState.selectedIds.isEmpty) {
+                          utility.showErrorMessage(
+                            context: context,
+                            message: '他の地点が追加されていないため、ゴール地点を追加することはできません。',
+                            ms: 3000,
+                          );
+
+                          return;
+                        }
+
+                        ref.watch(selectRouteProvider.notifier).setSelectedId(
+                              id: 'goal_${widget.facilityList[i].id}',
+                            );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.4),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text('goal'),
+                      ),
+                    ),
+                  ]
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       );
