@@ -34,6 +34,30 @@ class SelectRouteNotifier extends StateNotifier<SelectRouteResponseState> {
   Future<void> clearSelectedId() async {
     state = state.copyWith(selectedIds: []);
   }
+
+  ///
+  Future<void> setSelectDate({required String date}) async =>
+      state = state.copyWith(startNow: false, startTime: date);
+
+  ///
+  Future<void> setWalkSpeed({required int speed}) async =>
+      state = state.copyWith(walkSpeed: speed);
+
+  ///
+  Future<void> setStartGoalBothSelect() async =>
+      state = state.copyWith(startGoalBothSelect: true);
+
+  ///
+  Future<void> clearStartGoalBothSelect() async =>
+      state = state.copyWith(startGoalBothSelect: false);
+
+  ///
+  Future<void> setSpotStayTime({required int time}) async =>
+      state = state.copyWith(spotStayTime: time);
+
+  ///
+  Future<void> setAdjustPercent({required int adjust}) async =>
+      state = state.copyWith(adjustPercent: adjust);
 }
 
 //////////////////////////////////////////////////////

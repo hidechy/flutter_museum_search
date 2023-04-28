@@ -11,6 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mapbox_polyline_points/mapbox_polyline_points.dart';
+import 'package:museum_search/screens/component/museum_search_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
@@ -20,6 +21,7 @@ import '../state/select_route/select_route_notifier.dart';
 
 //import '../state/station/station_notifier.dart';
 import '../utility/utility.dart';
+import 'component/route_display_setting_alert.dart';
 
 class FlutterMapScreen extends ConsumerStatefulWidget {
   const FlutterMapScreen({super.key, required this.facilityList});
@@ -54,26 +56,7 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
 
     makeMarker();
 
-    /*
-
-
-
-
-                */
-
-/*
-
-
     final selectRouteState = ref.watch(selectRouteProvider);
-
-*/
-
-    /*
-
-
-
-
-                */
 
     return Scaffold(
       body: SafeArea(
@@ -111,51 +94,65 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                /*
-
-
-
-
-                */
-
-                Container(),
-
-                /*
-
-
-
-
-                */
-
                 TextButton(
                   onPressed: showUnderMenu,
                   child: const Text('show detail'),
                 ),
-
-                /*
-
-
-
-
-
                 Row(
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print('eeeee');
-                        print(selectRouteState.selectedIds);
-                        print('eeeeee');
+                        if (selectRouteState.selectedIds.length <= 2) {
+                          return;
+                        }
+
+                        //-----------------------------------------
+                        final reg = RegExp('start_(.+)');
+                        final reg2 = RegExp('goal_(.+)');
+
+                        var flag1 = 0;
+                        var flag2 = 0;
+                        selectRouteState.selectedIds.forEach((element) {
+                          final match = reg.firstMatch(element);
+                          if (match != null) {
+                            flag1 = 1;
+                          }
+
+                          final match2 = reg2.firstMatch(element);
+                          if (match2 != null) {
+                            flag2 = 1;
+                          }
+                        });
+
+                        if (flag1 == 1 && flag2 == 1) {
+                          ref
+                              .watch(selectRouteProvider.notifier)
+                              .setStartGoalBothSelect();
+                        }
+                        //-----------------------------------------
+
+                        MuseumSearchDialog(
+                          context: context,
+                          widget: RouteDisplaySettingAlert(),
+                        );
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Colors.blueAccent.withOpacity(0.4),
+                          color: (selectRouteState.selectedIds.length > 2)
+                              ? Colors.blueAccent.withOpacity(0.4)
+                              : Colors.grey.withOpacity(0.4),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text(
+                        child: Text(
                           '選択ルート確認',
-                          style: TextStyle(fontSize: 8),
+                          style: TextStyle(
+                            fontSize: 8,
+                            color: (selectRouteState.selectedIds.length > 2)
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
                         ),
                       ),
                     ),
@@ -170,25 +167,24 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Colors.blueAccent.withOpacity(0.4),
+                          color: (selectRouteState.selectedIds.length > 2)
+                              ? Colors.blueAccent.withOpacity(0.4)
+                              : Colors.grey.withOpacity(0.4),
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        child: const Text(
+                        child: Text(
                           '選択ルート消去',
-                          style: TextStyle(fontSize: 8),
+                          style: TextStyle(
+                            fontSize: 8,
+                            color: (selectRouteState.selectedIds.length > 2)
+                                ? Colors.white
+                                : Colors.grey,
+                          ),
                         ),
                       ),
                     ),
                   ],
                 ),
-
-
-
-
-
-
-
-                */
               ],
             ),
             const SizedBox(height: 10),
@@ -321,6 +317,26 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     }
 
     //-------------------------
+
+    final reg = RegExp('start_(.+)');
+    final reg2 = RegExp('goal_(.+)');
+
+    // TODO start、goal両方が選ばれた場合は緑色にする
+    if (index == 0) {
+      selectedIds.forEach((element2) {
+        final match2 = reg2.firstMatch(element2);
+
+        if (match2 != null) {
+          selectedIds.forEach((element) {
+            final match = reg.firstMatch(element);
+
+            if (match != null) {
+              color = Colors.green.withOpacity(0.6);
+            }
+          });
+        }
+      });
+    }
 
     return color;
   }
@@ -508,18 +524,18 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                           ),
                           child: Row(
                             children: [
-                              IconButton(
-                                onPressed: () async {
-                                  await ref
-                                      .watch(appParamProvider.notifier)
-                                      .setSelectedRouteNumber(
-                                          selectedRouteNumber: i.toString());
-
-                                  await makePolyline();
-                                },
-                                icon: const Icon(Icons.stacked_line_chart,
-                                    size: 20),
-                              ),
+                              // IconButton(
+                              //   onPressed: () async {
+                              //     await ref
+                              //         .watch(appParamProvider.notifier)
+                              //         .setSelectedRouteNumber(
+                              //             selectedRouteNumber: i.toString());
+                              //
+                              //     await makePolyline();
+                              //   },
+                              //   icon: const Icon(Icons.stacked_line_chart,
+                              //       size: 20),
+                              // ),
                               IconButton(
                                 onPressed: () => showGoogleTransit(index: i),
                                 icon: const Icon(FontAwesomeIcons.google,
@@ -542,16 +558,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   ],
                 ),
               ),
-
-            /*
-
-
-
-
-
-
-
-
             const SizedBox(height: 5),
             Container(
               padding: const EdgeInsets.only(left: 70),
@@ -607,15 +613,6 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                 ],
               ),
             ),
-
-
-
-
-
-
-
-            */
-
             const SizedBox(height: 30),
           ],
         ),

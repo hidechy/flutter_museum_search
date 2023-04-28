@@ -17,7 +17,13 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SelectRouteResponseState {
   ///
-  List<String> get selectedIds => throw _privateConstructorUsedError;
+  List<String> get selectedIds => throw _privateConstructorUsedError; //
+  bool get startNow => throw _privateConstructorUsedError;
+  String get startTime => throw _privateConstructorUsedError; //
+  int get walkSpeed => throw _privateConstructorUsedError; //
+  bool get startGoalBothSelect => throw _privateConstructorUsedError; //
+  int get spotStayTime => throw _privateConstructorUsedError; //
+  int get adjustPercent => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SelectRouteResponseStateCopyWith<SelectRouteResponseState> get copyWith =>
@@ -30,7 +36,14 @@ abstract class $SelectRouteResponseStateCopyWith<$Res> {
           $Res Function(SelectRouteResponseState) then) =
       _$SelectRouteResponseStateCopyWithImpl<$Res, SelectRouteResponseState>;
   @useResult
-  $Res call({List<String> selectedIds});
+  $Res call(
+      {List<String> selectedIds,
+      bool startNow,
+      String startTime,
+      int walkSpeed,
+      bool startGoalBothSelect,
+      int spotStayTime,
+      int adjustPercent});
 }
 
 /// @nodoc
@@ -48,12 +61,42 @@ class _$SelectRouteResponseStateCopyWithImpl<$Res,
   @override
   $Res call({
     Object? selectedIds = null,
+    Object? startNow = null,
+    Object? startTime = null,
+    Object? walkSpeed = null,
+    Object? startGoalBothSelect = null,
+    Object? spotStayTime = null,
+    Object? adjustPercent = null,
   }) {
     return _then(_value.copyWith(
       selectedIds: null == selectedIds
           ? _value.selectedIds
           : selectedIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      startNow: null == startNow
+          ? _value.startNow
+          : startNow // ignore: cast_nullable_to_non_nullable
+              as bool,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      walkSpeed: null == walkSpeed
+          ? _value.walkSpeed
+          : walkSpeed // ignore: cast_nullable_to_non_nullable
+              as int,
+      startGoalBothSelect: null == startGoalBothSelect
+          ? _value.startGoalBothSelect
+          : startGoalBothSelect // ignore: cast_nullable_to_non_nullable
+              as bool,
+      spotStayTime: null == spotStayTime
+          ? _value.spotStayTime
+          : spotStayTime // ignore: cast_nullable_to_non_nullable
+              as int,
+      adjustPercent: null == adjustPercent
+          ? _value.adjustPercent
+          : adjustPercent // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -67,7 +110,14 @@ abstract class _$$_SelectRouteResponseStateCopyWith<$Res>
       __$$_SelectRouteResponseStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> selectedIds});
+  $Res call(
+      {List<String> selectedIds,
+      bool startNow,
+      String startTime,
+      int walkSpeed,
+      bool startGoalBothSelect,
+      int spotStayTime,
+      int adjustPercent});
 }
 
 /// @nodoc
@@ -83,12 +133,42 @@ class __$$_SelectRouteResponseStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedIds = null,
+    Object? startNow = null,
+    Object? startTime = null,
+    Object? walkSpeed = null,
+    Object? startGoalBothSelect = null,
+    Object? spotStayTime = null,
+    Object? adjustPercent = null,
   }) {
     return _then(_$_SelectRouteResponseState(
       selectedIds: null == selectedIds
           ? _value._selectedIds
           : selectedIds // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      startNow: null == startNow
+          ? _value.startNow
+          : startNow // ignore: cast_nullable_to_non_nullable
+              as bool,
+      startTime: null == startTime
+          ? _value.startTime
+          : startTime // ignore: cast_nullable_to_non_nullable
+              as String,
+      walkSpeed: null == walkSpeed
+          ? _value.walkSpeed
+          : walkSpeed // ignore: cast_nullable_to_non_nullable
+              as int,
+      startGoalBothSelect: null == startGoalBothSelect
+          ? _value.startGoalBothSelect
+          : startGoalBothSelect // ignore: cast_nullable_to_non_nullable
+              as bool,
+      spotStayTime: null == spotStayTime
+          ? _value.spotStayTime
+          : spotStayTime // ignore: cast_nullable_to_non_nullable
+              as int,
+      adjustPercent: null == adjustPercent
+          ? _value.adjustPercent
+          : adjustPercent // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -96,7 +176,14 @@ class __$$_SelectRouteResponseStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SelectRouteResponseState implements _SelectRouteResponseState {
-  const _$_SelectRouteResponseState({final List<String> selectedIds = const []})
+  const _$_SelectRouteResponseState(
+      {final List<String> selectedIds = const [],
+      this.startNow = true,
+      this.startTime = '',
+      this.walkSpeed = 5,
+      this.startGoalBothSelect = false,
+      this.spotStayTime = 20,
+      this.adjustPercent = 20})
       : _selectedIds = selectedIds;
 
   ///
@@ -111,9 +198,33 @@ class _$_SelectRouteResponseState implements _SelectRouteResponseState {
     return EqualUnmodifiableListView(_selectedIds);
   }
 
+//
+  @override
+  @JsonKey()
+  final bool startNow;
+  @override
+  @JsonKey()
+  final String startTime;
+//
+  @override
+  @JsonKey()
+  final int walkSpeed;
+//
+  @override
+  @JsonKey()
+  final bool startGoalBothSelect;
+//
+  @override
+  @JsonKey()
+  final int spotStayTime;
+//
+  @override
+  @JsonKey()
+  final int adjustPercent;
+
   @override
   String toString() {
-    return 'SelectRouteResponseState(selectedIds: $selectedIds)';
+    return 'SelectRouteResponseState(selectedIds: $selectedIds, startNow: $startNow, startTime: $startTime, walkSpeed: $walkSpeed, startGoalBothSelect: $startGoalBothSelect, spotStayTime: $spotStayTime, adjustPercent: $adjustPercent)';
   }
 
   @override
@@ -122,12 +233,31 @@ class _$_SelectRouteResponseState implements _SelectRouteResponseState {
         (other.runtimeType == runtimeType &&
             other is _$_SelectRouteResponseState &&
             const DeepCollectionEquality()
-                .equals(other._selectedIds, _selectedIds));
+                .equals(other._selectedIds, _selectedIds) &&
+            (identical(other.startNow, startNow) ||
+                other.startNow == startNow) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.walkSpeed, walkSpeed) ||
+                other.walkSpeed == walkSpeed) &&
+            (identical(other.startGoalBothSelect, startGoalBothSelect) ||
+                other.startGoalBothSelect == startGoalBothSelect) &&
+            (identical(other.spotStayTime, spotStayTime) ||
+                other.spotStayTime == spotStayTime) &&
+            (identical(other.adjustPercent, adjustPercent) ||
+                other.adjustPercent == adjustPercent));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_selectedIds));
+      runtimeType,
+      const DeepCollectionEquality().hash(_selectedIds),
+      startNow,
+      startTime,
+      walkSpeed,
+      startGoalBothSelect,
+      spotStayTime,
+      adjustPercent);
 
   @JsonKey(ignore: true)
   @override
@@ -138,13 +268,31 @@ class _$_SelectRouteResponseState implements _SelectRouteResponseState {
 }
 
 abstract class _SelectRouteResponseState implements SelectRouteResponseState {
-  const factory _SelectRouteResponseState({final List<String> selectedIds}) =
-      _$_SelectRouteResponseState;
+  const factory _SelectRouteResponseState(
+      {final List<String> selectedIds,
+      final bool startNow,
+      final String startTime,
+      final int walkSpeed,
+      final bool startGoalBothSelect,
+      final int spotStayTime,
+      final int adjustPercent}) = _$_SelectRouteResponseState;
 
   @override
 
   ///
   List<String> get selectedIds;
+  @override //
+  bool get startNow;
+  @override
+  String get startTime;
+  @override //
+  int get walkSpeed;
+  @override //
+  bool get startGoalBothSelect;
+  @override //
+  int get spotStayTime;
+  @override //
+  int get adjustPercent;
   @override
   @JsonKey(ignore: true)
   _$$_SelectRouteResponseStateCopyWith<_$_SelectRouteResponseState>

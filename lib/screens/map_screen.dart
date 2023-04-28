@@ -379,16 +379,16 @@ class MapScreen extends ConsumerWidget {
                         ),
                         child: Row(
                           children: [
-                            IconButton(
-                              onPressed: () async {
-                                await _ref
-                                    .watch(appParamProvider.notifier)
-                                    .setSelectedRouteNumber(
-                                        selectedRouteNumber: i.toString());
-                              },
-                              icon: const Icon(Icons.stacked_line_chart,
-                                  size: 20),
-                            ),
+                            // IconButton(
+                            //   onPressed: () async {
+                            //     await _ref
+                            //         .watch(appParamProvider.notifier)
+                            //         .setSelectedRouteNumber(
+                            //             selectedRouteNumber: i.toString());
+                            //   },
+                            //   icon: const Icon(Icons.stacked_line_chart,
+                            //       size: 20),
+                            // ),
                             IconButton(
                               onPressed: () => showGoogleTransit(index: i),
                               icon:
