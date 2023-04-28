@@ -14,7 +14,9 @@ import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
-import '../state/map_marker/map_marker_notifier.dart';
+
+//import '../state/map_marker/map_marker_notifier.dart';
+
 import '../state/prefecture/prefecture_notifier.dart';
 import '../state/station/station_notifier.dart';
 import '../state/station/station_request_state.dart';

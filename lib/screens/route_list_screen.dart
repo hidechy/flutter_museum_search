@@ -174,7 +174,7 @@ class RouteListScreen extends ConsumerWidget {
                             '$distance Km',
                             style: const TextStyle(fontSize: 12),
                           ),
-                          Text('徒歩${walkMinutes.toString()}分'),
+                          Text('徒歩${walkMinutes}分'),
                         ],
                       ),
                     ],
