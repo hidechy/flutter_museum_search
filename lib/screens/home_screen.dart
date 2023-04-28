@@ -179,27 +179,27 @@ class HomeScreen extends ConsumerWidget {
 
                           //-------------//
 
-                          /////////////////////////////////
-                          numbersList = [];
-
-                          for (var i = 1;
-                              i <= artFacilityState.selectIdList.length;
-                              i++) {
-                            final uintData = await utility.imageChangeUint8List(
-                              'assets/images/numbers/number_${i.toString().padLeft(2, '0')}.png',
-                              70,
-                              70,
-                            );
-
-                            numbersList.add(
-                              BitmapDescriptor.fromBytes(uintData),
-                            );
-                          }
-
-                          await _ref
-                              .watch(mapMarkerProvider.notifier)
-                              .setNumbersList(numbersList: numbersList);
-                          /////////////////////////////////
+                          // /////////////////////////////////
+                          // numbersList = [];
+                          //
+                          // for (var i = 1;
+                          //     i <= artFacilityState.selectIdList.length;
+                          //     i++) {
+                          //   final uintData = await utility.imageChangeUint8List(
+                          //     'assets/images/numbers/number_${i.toString().padLeft(2, '0')}.png',
+                          //     70,
+                          //     70,
+                          //   );
+                          //
+                          //   numbersList.add(
+                          //     BitmapDescriptor.fromBytes(uintData),
+                          //   );
+                          // }
+                          //
+                          // await _ref
+                          //     .watch(mapMarkerProvider.notifier)
+                          //     .setNumbersList(numbersList: numbersList);
+                          // /////////////////////////////////
 
                           await _ref.watch(stationProvider.notifier).getStation(
                                 param: StationRequestState(

@@ -188,12 +188,18 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
       var distance = '';
       var walkMinutes = 0;
       if (i < facilityList.length - 1) {
-        distance = utility.calcDistance(
-          originLat: facilityList[i].latitude.toDouble(),
-          originLng: facilityList[i].longitude.toDouble(),
-          destLat: facilityList[i + 1].latitude.toDouble(),
-          destLng: facilityList[i + 1].longitude.toDouble(),
-        );
+        if ((facilityList[i].latitude == facilityList[i + 1].latitude) &&
+            (facilityList[i].longitude == facilityList[i + 1].longitude)) {
+          //TODO 緯度経度が同じ場合
+          distance = '0';
+        } else {
+          distance = utility.calcDistance(
+            originLat: facilityList[i].latitude.toDouble(),
+            originLng: facilityList[i].longitude.toDouble(),
+            destLat: facilityList[i + 1].latitude.toDouble(),
+            destLng: facilityList[i + 1].longitude.toDouble(),
+          );
+        }
 
         final dist1000 =
             int.parse((double.parse(distance) * 1000).toString().split('.')[0]);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:museum_search/state/select_route/select_route_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
@@ -64,10 +65,13 @@ class RouteListScreen extends ConsumerWidget {
     final selectedStationId =
         _ref.watch(appParamProvider.select((value) => value.selectedStationId));
 
+    final selectRouteState = _ref.watch(selectRouteProvider);
+
     for (var i = 0; i < facilityList.length; i++) {
       final facility = facilityList[i];
 
       var distance = '';
+      var walkMinutes = 0;
       if (i < facilityList.length - 1) {
         if ((facility.latitude == facilityList[i + 1].latitude) &&
             (facility.longitude == facilityList[i + 1].longitude)) {
@@ -81,6 +85,12 @@ class RouteListScreen extends ConsumerWidget {
             destLng: facilityList[i + 1].longitude.toDouble(),
           );
         }
+
+        final dist1000 =
+            int.parse((double.parse(distance) * 1000).toString().split('.')[0]);
+        final ws = selectRouteState.walkSpeed * 1000;
+        final percent = (100 + selectRouteState.adjustPercent) / 100;
+        walkMinutes = ((dist1000 / ws * 60) * percent).round();
       }
 
       final ll = [facility.latitude, facility.longitude];
@@ -158,9 +168,14 @@ class RouteListScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      Text(
-                        '$distance Km',
-                        style: const TextStyle(fontSize: 12),
+                      Column(
+                        children: [
+                          Text(
+                            '$distance Km',
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          Text('徒歩${walkMinutes.toString()}分'),
+                        ],
                       ),
                     ],
                   ),
