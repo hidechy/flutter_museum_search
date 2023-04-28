@@ -35,10 +35,6 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     _ref = ref;
 
-    final selectRouteState = _ref.watch(selectRouteProvider);
-
-    final currentLatLngState = _ref.watch(latLngProvider);
-
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.zero,
