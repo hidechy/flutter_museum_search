@@ -21,5 +21,8 @@ class ArtFacilityResultState with _$ArtFacilityResultState {
 
     ///
     @Default([]) List<String> facilityLatLng,
+
+    ///
+    @Default(3) int selectedRadius,
   }) = _ArtFacilityResultState;
 }

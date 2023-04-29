@@ -54,6 +54,35 @@ class HomeScreen extends ConsumerWidget {
 
     final artFacilityState = ref.watch(artFacilityProvider);
 
+    ///
+    final radiusNumbers = <int>[];
+    for (var i = 1; i <= 10; i++) {
+      radiusNumbers.add(i);
+    }
+
+    ///
+    final radiusDropDown = DropdownButton(
+      dropdownColor: Colors.pinkAccent.withOpacity(0.1),
+      iconEnabledColor: Colors.white,
+      items: radiusNumbers.map((e) {
+        return DropdownMenuItem(
+          value: e,
+          child: Text(
+            e.toString(),
+            style: const TextStyle(fontSize: 12),
+          ),
+        );
+      }).toList(),
+      value: artFacilityState.selectedRadius,
+      onChanged: (value) async {
+        await ref.watch(artFacilityProvider.notifier).clearSelectIdList();
+
+        await ref
+            .watch(artFacilityProvider.notifier)
+            .setSelectedRadius(radius: value!);
+      },
+    );
+
     return Scaffold(
       body: Column(
         children: [
@@ -71,6 +100,10 @@ class HomeScreen extends ConsumerWidget {
                   await ref
                       .watch(genreProvider.notifier)
                       .getGenre(prefName: '', cityName: '');
+
+                  await ref
+                      .watch(artFacilityProvider.notifier)
+                      .clearSelectIdList();
 
                   await clearSearchArea();
                 },
@@ -93,6 +126,10 @@ class HomeScreen extends ConsumerWidget {
                     (latLngState.lat == 0 || latLngState.lng == 0)
                         ? IconButton(
                             onPressed: () async {
+                              await ref
+                                  .watch(artFacilityProvider.notifier)
+                                  .clearSelectIdList();
+
                               await getLocation();
                             },
                             icon: const Icon(Icons.location_on),
@@ -102,6 +139,10 @@ class HomeScreen extends ConsumerWidget {
                               await _ref
                                   .watch(latLngProvider.notifier)
                                   .clearLatLng();
+
+                              await ref
+                                  .watch(artFacilityProvider.notifier)
+                                  .clearSelectIdList();
                             },
                             icon: const Icon(Icons.location_off),
                           ),
@@ -126,8 +167,28 @@ class HomeScreen extends ConsumerWidget {
 
               Row(
                 children: [
+                  Row(
+                    children: [
+                      const Text(
+                        '検索\n範囲',
+                        style: TextStyle(fontSize: 8),
+                      ),
+                      SizedBox(width: 5),
+                      radiusDropDown,
+                      SizedBox(width: 5),
+                      const Text(
+                        'Km',
+                        style: TextStyle(fontSize: 8),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 10),
                   IconButton(
                     onPressed: () async {
+                      await ref
+                          .watch(artFacilityProvider.notifier)
+                          .clearSelectIdList();
+
                       if (latLngSettingCheck() == true) {
                         //都道府県選択時
                         if (selectPrefCode > 0) {
@@ -161,6 +222,17 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   IconButton(
                     onPressed: () async {
+                      if (artFacilityState.facilityMap.length == 1 &&
+                          artFacilityState.facilityMap[88888888] != null) {
+                        utility.showErrorMessage(
+                          context: _context,
+                          message: '検索結果が存在しないため次画面に遷移できません。',
+                          ms: 500,
+                        );
+
+                        return;
+                      }
+
                       if (latLngSettingCheck() == true) {
                         if (artFacilityState.selectIdList.length < 2) {
                           utility.showErrorMessage(
@@ -284,11 +356,11 @@ class HomeScreen extends ConsumerWidget {
 
     final list = <Widget>[];
 
-    var tooManyFlag = false;
+    var noHitFlag = false;
 
     artFacilityState.allList.forEach((element) {
-      if (element.id == 99999999) {
-        tooManyFlag = true;
+      if (element.id == 88888888) {
+        noHitFlag = true;
       }
 
       list.add(
@@ -310,12 +382,12 @@ class HomeScreen extends ConsumerWidget {
       );
     });
 
-    if (tooManyFlag) {
+    if (noHitFlag) {
       return Container(
         width: _context.screenSize.width,
         padding: const EdgeInsets.only(left: 20),
         child: const Text(
-          '結果が多すぎるため表示できません。',
+          '検索結果が存在しません。',
           style: TextStyle(color: Colors.yellowAccent, fontSize: 12),
         ),
       );

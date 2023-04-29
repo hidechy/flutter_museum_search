@@ -25,6 +25,9 @@ mixin _$ArtFacilityResultState {
   ///
   List<String> get facilityLatLng => throw _privateConstructorUsedError;
 
+  ///
+  int get selectedRadius => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $ArtFacilityResultStateCopyWith<ArtFacilityResultState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -41,7 +44,8 @@ abstract class $ArtFacilityResultStateCopyWith<$Res> {
       List<int> allIdList,
       List<int> selectIdList,
       Map<int, Facility> facilityMap,
-      List<String> facilityLatLng});
+      List<String> facilityLatLng,
+      int selectedRadius});
 }
 
 /// @nodoc
@@ -63,6 +67,7 @@ class _$ArtFacilityResultStateCopyWithImpl<$Res,
     Object? selectIdList = null,
     Object? facilityMap = null,
     Object? facilityLatLng = null,
+    Object? selectedRadius = null,
   }) {
     return _then(_value.copyWith(
       allList: null == allList
@@ -85,6 +90,10 @@ class _$ArtFacilityResultStateCopyWithImpl<$Res,
           ? _value.facilityLatLng
           : facilityLatLng // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedRadius: null == selectedRadius
+          ? _value.selectedRadius
+          : selectedRadius // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -102,7 +111,8 @@ abstract class _$$_ArtFacilityResultStateCopyWith<$Res>
       List<int> allIdList,
       List<int> selectIdList,
       Map<int, Facility> facilityMap,
-      List<String> facilityLatLng});
+      List<String> facilityLatLng,
+      int selectedRadius});
 }
 
 /// @nodoc
@@ -122,6 +132,7 @@ class __$$_ArtFacilityResultStateCopyWithImpl<$Res>
     Object? selectIdList = null,
     Object? facilityMap = null,
     Object? facilityLatLng = null,
+    Object? selectedRadius = null,
   }) {
     return _then(_$_ArtFacilityResultState(
       allList: null == allList
@@ -144,6 +155,10 @@ class __$$_ArtFacilityResultStateCopyWithImpl<$Res>
           ? _value._facilityLatLng
           : facilityLatLng // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      selectedRadius: null == selectedRadius
+          ? _value.selectedRadius
+          : selectedRadius // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -156,7 +171,8 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
       final List<int> allIdList = const [],
       final List<int> selectIdList = const [],
       final Map<int, Facility> facilityMap = const {},
-      final List<String> facilityLatLng = const []})
+      final List<String> facilityLatLng = const [],
+      this.selectedRadius = 3})
       : _allList = allList,
         _allIdList = allIdList,
         _selectIdList = selectIdList,
@@ -219,9 +235,14 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
     return EqualUnmodifiableListView(_facilityLatLng);
   }
 
+  ///
+  @override
+  @JsonKey()
+  final int selectedRadius;
+
   @override
   String toString() {
-    return 'ArtFacilityResultState(allList: $allList, allIdList: $allIdList, selectIdList: $selectIdList, facilityMap: $facilityMap, facilityLatLng: $facilityLatLng)';
+    return 'ArtFacilityResultState(allList: $allList, allIdList: $allIdList, selectIdList: $selectIdList, facilityMap: $facilityMap, facilityLatLng: $facilityLatLng, selectedRadius: $selectedRadius)';
   }
 
   @override
@@ -237,7 +258,9 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
             const DeepCollectionEquality()
                 .equals(other._facilityMap, _facilityMap) &&
             const DeepCollectionEquality()
-                .equals(other._facilityLatLng, _facilityLatLng));
+                .equals(other._facilityLatLng, _facilityLatLng) &&
+            (identical(other.selectedRadius, selectedRadius) ||
+                other.selectedRadius == selectedRadius));
   }
 
   @override
@@ -247,7 +270,8 @@ class _$_ArtFacilityResultState implements _ArtFacilityResultState {
       const DeepCollectionEquality().hash(_allIdList),
       const DeepCollectionEquality().hash(_selectIdList),
       const DeepCollectionEquality().hash(_facilityMap),
-      const DeepCollectionEquality().hash(_facilityLatLng));
+      const DeepCollectionEquality().hash(_facilityLatLng),
+      selectedRadius);
 
   @JsonKey(ignore: true)
   @override
@@ -263,7 +287,8 @@ abstract class _ArtFacilityResultState implements ArtFacilityResultState {
       final List<int> allIdList,
       final List<int> selectIdList,
       final Map<int, Facility> facilityMap,
-      final List<String> facilityLatLng}) = _$_ArtFacilityResultState;
+      final List<String> facilityLatLng,
+      final int selectedRadius}) = _$_ArtFacilityResultState;
 
   @override //
   List<Facility> get allList;
@@ -277,6 +302,10 @@ abstract class _ArtFacilityResultState implements ArtFacilityResultState {
 
   ///
   List<String> get facilityLatLng;
+  @override
+
+  ///
+  int get selectedRadius;
   @override
   @JsonKey(ignore: true)
   _$$_ArtFacilityResultStateCopyWith<_$_ArtFacilityResultState> get copyWith =>

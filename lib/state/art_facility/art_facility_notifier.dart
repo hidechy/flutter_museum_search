@@ -94,6 +94,8 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
     uploadData['latitude'] = latLngState.lat;
     uploadData['longitude'] = latLngState.lng;
 
+    uploadData['radius'] = state.selectedRadius;
+
     await client
         .post(path: APIPath.getNearArtFacilities, body: uploadData)
         .then((value) {
@@ -113,7 +115,7 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
 
         facilityMap[val.id] = val;
 
-        if (val.id != 99999999) {
+        if (val.id != 88888888) {
           final ll = <String>[
             // val.latitude.substring(0, 4),
             // val.longitude.substring(0, 5),
@@ -159,6 +161,14 @@ class ArtFacilityNotifier extends StateNotifier<ArtFacilityResultState> {
       selectIdList: (selectIdList.isEmpty) ? state.allIdList : [],
     );
   }
+
+  ///
+  Future<void> clearSelectIdList() async =>
+      state = state.copyWith(selectIdList: []);
+
+  ///
+  Future<void> setSelectedRadius({required int radius}) async =>
+      state = state.copyWith(selectedRadius: radius);
 }
 
 ////////////////////////////////////////////////
