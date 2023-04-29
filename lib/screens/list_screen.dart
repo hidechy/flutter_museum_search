@@ -3,10 +3,10 @@
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/models/station.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
+import '../models/station.dart';
 import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 import '../state/lat_lng/lat_lng_notifier.dart';
@@ -21,7 +21,9 @@ import 'flutter_map_screen.dart';
 import 'route_list_screen.dart';
 
 class ListScreen extends ConsumerStatefulWidget {
-  const ListScreen({super.key});
+  const ListScreen({super.key, required this.list});
+
+  final List<Facility> list;
 
   @override
   ConsumerState<ListScreen> createState() => _ListScreenState();
@@ -39,8 +41,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   ///
   @override
   Widget build(BuildContext context) {
-    makeDefault();
-
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -256,22 +256,12 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   }
 
   ///
-  void makeDefault() {
-    defaultIdList = [];
-    ddList = [];
+  @override
+  void initState() {
+    super.initState();
 
-    final list = <Facility>[];
-
-    final artFacilityState = ref.watch(artFacilityProvider);
-
-    artFacilityState.selectIdList.forEach((element) {
-      list.add(artFacilityState.facilityMap[element]!);
-    });
-
-    final saf = <DragAndDropItem>[];
-
-    list.forEach((element) {
-      saf.add(
+    widget.list.forEach((element) {
+      selectedArtFacilities.add(
         DragAndDropItem(
           child: FacilityCard(
             key: Key(element.id.toString()),
@@ -285,11 +275,18 @@ class _ListScreenState extends ConsumerState<ListScreen> {
           ),
         ),
       );
-
-      defaultIdList.add(element.id);
     });
 
-    ddList.add(DragAndDropList(children: saf));
+    ddList.add(DragAndDropList(children: selectedArtFacilities));
+
+    makeDefaultIdList();
+  }
+
+  ///
+  void makeDefaultIdList() {
+    widget.list.forEach((element) {
+      defaultIdList.add(element.id);
+    });
   }
 
   ///

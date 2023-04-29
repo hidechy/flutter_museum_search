@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../extensions/extensions.dart';
+import '../models/art_facility.dart';
 import '../state/app_param/app_param_notifier.dart';
 import '../state/art_facility/art_facility_notifier.dart';
 import '../state/city/city_notifier.dart';
@@ -210,10 +211,19 @@ class HomeScreen extends ConsumerWidget {
                                 ),
                               );
 
+                          final selectedArtFacilities = <Facility>[];
+
+                          artFacilityState.selectIdList.forEach((element) {
+                            selectedArtFacilities.add(
+                              artFacilityState.facilityMap[element]!,
+                            );
+                          });
+
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ListScreen(),
+                              builder: (context) =>
+                                  ListScreen(list: selectedArtFacilities),
                             ),
                           );
                           //-------------//
