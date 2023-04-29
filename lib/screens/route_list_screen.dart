@@ -19,12 +19,23 @@ class RouteListScreen extends ConsumerWidget {
 
   Utility utility = Utility();
 
+  final TextEditingController speedTextController = TextEditingController();
+
+  final TextEditingController adjustPercentTextController =
+      TextEditingController();
+
   late WidgetRef _ref;
 
   ///
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     _ref = ref;
+    final selectRouteState = ref.watch(selectRouteProvider);
+
+    speedTextController.text = selectRouteState.walkSpeed.toString();
+
+    adjustPercentTextController.text =
+        selectRouteState.adjustPercent.toString();
 
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
@@ -35,24 +46,157 @@ class RouteListScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Container(width: context.screenSize.width),
-            Expanded(
-              child: SingleChildScrollView(
-                child: DefaultTextStyle(
-                  style: const TextStyle(fontSize: 12),
+        child: DefaultTextStyle(
+          style: const TextStyle(fontSize: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              Container(width: context.screenSize.width),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.blueAccent.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Theme(
+                  data: ThemeData(
+                      visualDensity: const VisualDensity(vertical: -4)),
+                  child: ListTileTheme(
+                    contentPadding: EdgeInsets.zero,
+                    horizontalTitleGap: 0,
+                    minLeadingWidth: 0,
+                    dense: true,
+                    child: ExpansionTile(
+                      title: const Text(
+                        '設定変更',
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                      trailing: const Icon(Icons.keyboard_arrow_down,
+                          color: Colors.white),
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const Expanded(
+                                    flex: 7,
+                                    child: Text('歩く速度（時速）：'),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextField(
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          vertical: 2,
+                                          horizontal: 2,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color:
+                                                Colors.white.withOpacity(0.2),
+                                            width: 2,
+                                          ),
+                                        ),
+                                      ),
+                                      controller: speedTextController,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  const Text('Km'),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  const Expanded(
+                                    flex: 7,
+                                    child: Text('調整率：'),
+                                  ),
+                                  Expanded(
+                                    flex: 3,
+                                    child: TextField(
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          vertical: 2,
+                                          horizontal: 2,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                            color:
+                                                Colors.white.withOpacity(0.2),
+                                            width: 2,
+                                          ),
+                                        ),
+                                      ),
+                                      controller: adjustPercentTextController,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  const Text('%'),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    await ref
+                                        .watch(selectRouteProvider.notifier)
+                                        .setWalkSpeed(
+                                            speed: speedTextController.text
+                                                .toInt());
+
+                                    await ref
+                                        .watch(selectRouteProvider.notifier)
+                                        .setAdjustPercent(
+                                            adjust: adjustPercentTextController
+                                                .text
+                                                .toInt());
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blueAccent.withOpacity(0.4),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Text(
+                                      '変更する',
+                                      style: TextStyle(
+                                          fontSize: 8, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: displayBottomSheetContent(),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );

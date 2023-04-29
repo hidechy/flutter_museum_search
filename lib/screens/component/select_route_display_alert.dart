@@ -242,14 +242,14 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(facilityList[i].name),
-                    Row(
-                      children: [
-                        const SizedBox(width: 20),
-                        Column(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(facilityList[i].name),
+                      Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             if (facilityList[i].address != '')
@@ -262,9 +262,9 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
                               Text('滞在時間：$spotStayTime 分'),
                           ],
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
