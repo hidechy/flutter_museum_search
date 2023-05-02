@@ -50,6 +50,19 @@ class AppParamNotifier extends StateNotifier<AppParamState> {
 
     state = state.copyWith(selectedStationId: ssId);
   }
+
+  ///
+  Future<void> setSelectedCompanyTrainStation({
+    required int trainCompanyId,
+    required String companyTrainId,
+    required int trainStationId,
+  }) async {
+    state = state.copyWith(
+      selectedTrainCompanyId: trainCompanyId,
+      selectedCompanyTrainId: companyTrainId,
+      selectedTrainStationId: trainStationId,
+    );
+  }
 }
 
 //////////////////////////////////////////////////////

@@ -3,6 +3,8 @@ enum APIPath {
   getArtCity,
   getArtGenre,
   getNearStation,
+  getTrainCompany,
+  getTrainStation,
 }
 
 extension APIPathExtension on APIPath {
@@ -16,6 +18,10 @@ extension APIPathExtension on APIPath {
         return 'getArtGenre';
       case APIPath.getNearStation:
         return 'getNearStation';
+      case APIPath.getTrainCompany:
+        return 'getTrainCompany';
+      case APIPath.getTrainStation:
+        return 'getTrainStation';
     }
   }
 }

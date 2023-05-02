@@ -19,8 +19,8 @@ import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 //import '../state/map_marker/map_marker_notifier.dart';
 
 import '../state/prefecture/prefecture_notifier.dart';
-import '../state/station/station_notifier.dart';
-import '../state/station/station_request_state.dart';
+import '../state/station/nearly/station_notifier.dart';
+import '../state/station/nearly/station_request_state.dart';
 import '../utility/utility.dart';
 import 'component/facility_card.dart';
 import 'list_screen.dart';
@@ -173,16 +173,16 @@ class HomeScreen extends ConsumerWidget {
                         '検索\n範囲',
                         style: TextStyle(fontSize: 8),
                       ),
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       radiusDropDown,
-                      SizedBox(width: 5),
+                      const SizedBox(width: 5),
                       const Text(
                         'Km',
                         style: TextStyle(fontSize: 8),
                       ),
                     ],
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   IconButton(
                     onPressed: () async {
                       await ref

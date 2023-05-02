@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, inference_failure_on_collection_literal, unrelated_type_equality_checks, avoid_dynamic_calls
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,17 +16,21 @@ import '../../extensions/extensions.dart';
 //
 // // import '../../state/temple_all/temple_all_notifier.dart';
 // // import '../../state/tokyo_train/tokyo_train_notifier.dart';
+import '../../state/app_param/app_param_notifier.dart';
 import '../../state/lat_lng/lat_lng_notifier.dart';
 import '../../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../../state/select_route/select_route_notifier.dart';
-import '../../state/station/station_notifier.dart';
+import '../../state/station/nearly/station_notifier.dart';
+import '../../state/station/train_station/train_station_notifier.dart';
 import '../../utility/utility.dart';
 
 class SelectRouteDisplayAlert extends ConsumerWidget {
   SelectRouteDisplayAlert({super.key});
 
   Utility utility = Utility();
+
+  bool facilityStart = true;
 
   late WidgetRef _ref;
 
@@ -76,6 +80,18 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
     final facilityMap =
         _ref.watch(artFacilityProvider.select((value) => value.facilityMap));
 
+    /////////
+
+    var trainStationMap = {};
+    final appParamState = _ref.watch(appParamProvider);
+    if (appParamState != '') {
+      trainStationMap = _ref.watch(
+        trainStationProvider(appParamState.selectedCompanyTrainId).select(
+          (value) => value.trainStationMap,
+        ),
+      );
+    }
+
     //--------------------------------------------------- first
     final firstId = selectedIds.first;
     final fId = firstId.replaceAll('start_', '');
@@ -100,6 +116,8 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
         longitude: currentLatLngState.lng.toString(),
         dist: '',
       );
+
+      facilityStart = false;
     } else if (stationMap[fId.toInt()] != null) {
       firstItem = Facility(
         id: stationMap[fId.toInt()]!.id,
@@ -110,9 +128,10 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
         longitude: stationMap[fId.toInt()]!.lng,
         dist: '',
       );
+
+      facilityStart = false;
     } else if (facilityMap[fId.toInt()] != null) {
-      //TODO 開始位置には現在位置か駅が入るのでここには入らない
-//      firstItem = latLngTempleMap[fId.toInt()]!;
+      firstItem = facilityMap[fId.toInt()]!;
     }
     //--------------------------------------------------- first
 
@@ -150,10 +169,20 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
         longitude: stationMap[lId.toInt()]!.lng,
         dist: '',
       );
+    } else if (trainStationMap[lId.toInt()] != null) {
+      lastItem = Facility(
+        id: trainStationMap[lId.toInt()].id.toString().toInt(),
+        name: trainStationMap[lId.toInt()].stationName.toString(),
+        genre: '',
+        address: trainStationMap[lId.toInt()].address.toString(),
+        latitude: trainStationMap[lId.toInt()].lat.toString(),
+        longitude: trainStationMap[lId.toInt()].lng.toString(),
+        dist: '',
+      );
     } else if (facilityMap[lId.toInt()] != null) {
-      //TODO 終了位置はミュージアムで終わることがプログラム的にはありえる
       lastItem = facilityMap[lId.toInt()]!;
     }
+
     //--------------------------------------------------- last
 
     final facilityList = <Facility>[firstItem];
@@ -233,7 +262,7 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
                           : Colors.black.withOpacity(0.4)
 
                       //TODO そうじゃない時は始点のみインディゴにする
-                      : (i == 0)
+                      : (facilityStart == false && i == 0)
                           ? Colors.indigo.withOpacity(0.4)
                           : Colors.black.withOpacity(0.4),
                   child: Text(

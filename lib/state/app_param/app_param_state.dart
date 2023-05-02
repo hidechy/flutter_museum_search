@@ -20,5 +20,14 @@ class AppParamState with _$AppParamState {
 
     ///
     @Default('') String selectedStationId,
+
+    ///
+    @Default(0) int selectedTrainCompanyId,
+
+    ///
+    @Default('') String selectedCompanyTrainId,
+
+    ///
+    @Default(0) int selectedTrainStationId,
   }) = _AppParamState;
 }

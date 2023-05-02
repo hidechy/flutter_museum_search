@@ -26,6 +26,15 @@ mixin _$AppParamState {
   ///
   String get selectedStationId => throw _privateConstructorUsedError;
 
+  ///
+  int get selectedTrainCompanyId => throw _privateConstructorUsedError;
+
+  ///
+  String get selectedCompanyTrainId => throw _privateConstructorUsedError;
+
+  ///
+  int get selectedTrainStationId => throw _privateConstructorUsedError;
+
   @JsonKey(ignore: true)
   $AppParamStateCopyWith<AppParamState> get copyWith =>
       throw _privateConstructorUsedError;
@@ -43,7 +52,10 @@ abstract class $AppParamStateCopyWith<$Res> {
       String searchErrorMessage,
       String selectedRouteNumber,
       dynamic baseInclude,
-      String selectedStationId});
+      String selectedStationId,
+      int selectedTrainCompanyId,
+      String selectedCompanyTrainId,
+      int selectedTrainStationId});
 }
 
 /// @nodoc
@@ -65,6 +77,9 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
     Object? selectedRouteNumber = null,
     Object? baseInclude = freezed,
     Object? selectedStationId = null,
+    Object? selectedTrainCompanyId = null,
+    Object? selectedCompanyTrainId = null,
+    Object? selectedTrainStationId = null,
   }) {
     return _then(_value.copyWith(
       searchDisp: null == searchDisp
@@ -91,6 +106,18 @@ class _$AppParamStateCopyWithImpl<$Res, $Val extends AppParamState>
           ? _value.selectedStationId
           : selectedStationId // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedTrainCompanyId: null == selectedTrainCompanyId
+          ? _value.selectedTrainCompanyId
+          : selectedTrainCompanyId // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedCompanyTrainId: null == selectedCompanyTrainId
+          ? _value.selectedCompanyTrainId
+          : selectedCompanyTrainId // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedTrainStationId: null == selectedTrainStationId
+          ? _value.selectedTrainStationId
+          : selectedTrainStationId // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -109,7 +136,10 @@ abstract class _$$_AppParamStateCopyWith<$Res>
       String searchErrorMessage,
       String selectedRouteNumber,
       dynamic baseInclude,
-      String selectedStationId});
+      String selectedStationId,
+      int selectedTrainCompanyId,
+      String selectedCompanyTrainId,
+      int selectedTrainStationId});
 }
 
 /// @nodoc
@@ -129,6 +159,9 @@ class __$$_AppParamStateCopyWithImpl<$Res>
     Object? selectedRouteNumber = null,
     Object? baseInclude = freezed,
     Object? selectedStationId = null,
+    Object? selectedTrainCompanyId = null,
+    Object? selectedCompanyTrainId = null,
+    Object? selectedTrainStationId = null,
   }) {
     return _then(_$_AppParamState(
       searchDisp: null == searchDisp
@@ -152,6 +185,18 @@ class __$$_AppParamStateCopyWithImpl<$Res>
           ? _value.selectedStationId
           : selectedStationId // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedTrainCompanyId: null == selectedTrainCompanyId
+          ? _value.selectedTrainCompanyId
+          : selectedTrainCompanyId // ignore: cast_nullable_to_non_nullable
+              as int,
+      selectedCompanyTrainId: null == selectedCompanyTrainId
+          ? _value.selectedCompanyTrainId
+          : selectedCompanyTrainId // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedTrainStationId: null == selectedTrainStationId
+          ? _value.selectedTrainStationId
+          : selectedTrainStationId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -165,7 +210,10 @@ class _$_AppParamState implements _AppParamState {
       this.searchErrorMessage = '',
       this.selectedRouteNumber = '',
       this.baseInclude = 1,
-      this.selectedStationId = ''});
+      this.selectedStationId = '',
+      this.selectedTrainCompanyId = 0,
+      this.selectedCompanyTrainId = '',
+      this.selectedTrainStationId = 0});
 
 //
   @override
@@ -192,9 +240,24 @@ class _$_AppParamState implements _AppParamState {
   @JsonKey()
   final String selectedStationId;
 
+  ///
+  @override
+  @JsonKey()
+  final int selectedTrainCompanyId;
+
+  ///
+  @override
+  @JsonKey()
+  final String selectedCompanyTrainId;
+
+  ///
+  @override
+  @JsonKey()
+  final int selectedTrainStationId;
+
   @override
   String toString() {
-    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage, selectedRouteNumber: $selectedRouteNumber, baseInclude: $baseInclude, selectedStationId: $selectedStationId)';
+    return 'AppParamState(searchDisp: $searchDisp, searchErrorFlag: $searchErrorFlag, searchErrorMessage: $searchErrorMessage, selectedRouteNumber: $selectedRouteNumber, baseInclude: $baseInclude, selectedStationId: $selectedStationId, selectedTrainCompanyId: $selectedTrainCompanyId, selectedCompanyTrainId: $selectedCompanyTrainId, selectedTrainStationId: $selectedTrainStationId)';
   }
 
   @override
@@ -213,7 +276,13 @@ class _$_AppParamState implements _AppParamState {
             const DeepCollectionEquality()
                 .equals(other.baseInclude, baseInclude) &&
             (identical(other.selectedStationId, selectedStationId) ||
-                other.selectedStationId == selectedStationId));
+                other.selectedStationId == selectedStationId) &&
+            (identical(other.selectedTrainCompanyId, selectedTrainCompanyId) ||
+                other.selectedTrainCompanyId == selectedTrainCompanyId) &&
+            (identical(other.selectedCompanyTrainId, selectedCompanyTrainId) ||
+                other.selectedCompanyTrainId == selectedCompanyTrainId) &&
+            (identical(other.selectedTrainStationId, selectedTrainStationId) ||
+                other.selectedTrainStationId == selectedTrainStationId));
   }
 
   @override
@@ -224,7 +293,10 @@ class _$_AppParamState implements _AppParamState {
       searchErrorMessage,
       selectedRouteNumber,
       const DeepCollectionEquality().hash(baseInclude),
-      selectedStationId);
+      selectedStationId,
+      selectedTrainCompanyId,
+      selectedCompanyTrainId,
+      selectedTrainStationId);
 
   @JsonKey(ignore: true)
   @override
@@ -240,7 +312,10 @@ abstract class _AppParamState implements AppParamState {
       final String searchErrorMessage,
       final String selectedRouteNumber,
       final dynamic baseInclude,
-      final String selectedStationId}) = _$_AppParamState;
+      final String selectedStationId,
+      final int selectedTrainCompanyId,
+      final String selectedCompanyTrainId,
+      final int selectedTrainStationId}) = _$_AppParamState;
 
   @override //
   bool get searchDisp;
@@ -256,6 +331,18 @@ abstract class _AppParamState implements AppParamState {
 
   ///
   String get selectedStationId;
+  @override
+
+  ///
+  int get selectedTrainCompanyId;
+  @override
+
+  ///
+  String get selectedCompanyTrainId;
+  @override
+
+  ///
+  int get selectedTrainStationId;
   @override
   @JsonKey(ignore: true)
   _$$_AppParamStateCopyWith<_$_AppParamState> get copyWith =>

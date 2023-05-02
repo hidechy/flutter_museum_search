@@ -1,13 +1,13 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/station/station_response_state.dart';
+import 'package:museum_search/state/station/nearly/station_response_state.dart';
 
-import '../../data/http/client.dart';
-import '../../data/http/path.dart';
-import '../../extensions/extensions.dart';
-import '../../models/station.dart';
-import '../../utility/utility.dart';
+import '../../../data/http/client.dart';
+import '../../../data/http/path.dart';
+import '../../../extensions/extensions.dart';
+import '../../../models/station.dart';
+import '../../../utility/utility.dart';
 import 'station_request_state.dart';
 
 ////////////////////////////////////////////////
