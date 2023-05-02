@@ -19,7 +19,7 @@ import '../state/app_param/app_param_notifier.dart';
 import '../state/select_route/select_route_notifier.dart';
 
 //import '../state/station/station_notifier.dart';
-import '../utility/fanctions.dart';
+import '../utility/functions/get_start_goal_data.dart';
 import '../utility/utility.dart';
 import 'component/company_train_alert.dart';
 import 'component/museum_search_dialog.dart';
@@ -351,6 +351,46 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
           },
         ),
       );
+    }
+
+    //----------------------------------------
+
+    final trainStationId = ref.watch(
+      appParamProvider.select(
+        (value) => value.selectedTrainStationId,
+      ),
+    );
+
+    if (trainStationId != '') {
+      final selectRouteState = ref.watch(selectRouteProvider);
+
+      if (selectRouteState.selectedIds.length > 2) {
+        final lastId = selectRouteState.selectedIds.last;
+        final lId = lastId.replaceAll('goal_', '');
+        final lastItem = getStartGoalData(ref: ref, id: lId.toInt());
+
+        markerList.add(
+          Marker(
+            point: LatLng(
+              lastItem.latitude.toDouble(),
+              lastItem.longitude.toDouble(),
+            ),
+            builder: (context) {
+              return CircleAvatar(
+                backgroundColor: Colors.green.withOpacity(0.6),
+                child: const Text(
+                  'Goal',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      }
     }
   }
 

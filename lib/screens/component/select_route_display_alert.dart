@@ -18,7 +18,7 @@ import '../../models/art_facility.dart';
 import '../../state/app_param/app_param_notifier.dart';
 import '../../state/art_facility/art_facility_notifier.dart';
 import '../../state/select_route/select_route_notifier.dart';
-import '../../utility/fanctions.dart';
+import '../../utility/functions/get_start_goal_data.dart';
 import '../../utility/utility.dart';
 
 class SelectRouteDisplayAlert extends ConsumerWidget {
