@@ -87,9 +87,7 @@ class TrainStationAlert extends ConsumerWidget {
             child: Text(
               element.stationName,
               style: TextStyle(
-                color: (appParamState.selectedTrainStationId == element.id)
-                    ? Colors.yellowAccent
-                    : Colors.white,
+                color: Colors.white,
               ),
             ),
           ),

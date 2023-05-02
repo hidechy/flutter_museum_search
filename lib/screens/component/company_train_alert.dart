@@ -59,12 +59,7 @@ class CompanyTrainAlert extends ConsumerWidget {
           backgroundColor: Colors.white.withOpacity(0.1),
           title: Text(
             element.companyName,
-            style: TextStyle(
-                color:
-                    (appParamState.selectedTrainCompanyId == element.companyId)
-                        ? Colors.yellowAccent
-                        : Colors.white,
-                fontSize: 12),
+            style: TextStyle(color: Colors.white, fontSize: 12),
           ),
           children: element.train.map((e) {
             return Container(
@@ -74,12 +69,7 @@ class CompanyTrainAlert extends ConsumerWidget {
                 children: [
                   Text(
                     e.trainName,
-                    style: TextStyle(
-                        color: (appParamState.selectedCompanyTrainId ==
-                                e.trainNumber)
-                            ? Colors.yellowAccent
-                            : Colors.white,
-                        fontSize: 10),
+                    style: TextStyle(color: Colors.white, fontSize: 10),
                   ),
                   IconButton(
                     onPressed: () {
