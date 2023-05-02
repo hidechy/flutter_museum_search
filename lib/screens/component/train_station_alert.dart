@@ -52,8 +52,6 @@ class TrainStationAlert extends ConsumerWidget {
   Widget displayStationSelectList() {
     final list = <Widget>[];
 
-    final appParamState = _ref.watch(appParamProvider);
-
     final trainStationState = _ref.watch(trainStationProvider(trainNumber));
 
     trainStationState.trainStationList.forEach((element) {
@@ -86,9 +84,7 @@ class TrainStationAlert extends ConsumerWidget {
             ),
             child: Text(
               element.stationName,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         ),

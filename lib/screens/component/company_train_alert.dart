@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:museum_search/state/app_param/app_param_notifier.dart';
 
 import '../../extensions/extensions.dart';
 import '../../state/station/company_train/company_train_notifier.dart';
@@ -49,8 +48,6 @@ class CompanyTrainAlert extends ConsumerWidget {
   Widget displayCompanyTrainList() {
     final list = <Widget>[];
 
-    final appParamState = _ref.watch(appParamProvider);
-
     final companyTrainState = _ref.watch(companyTrainProvider);
 
     companyTrainState.companyTrainList.forEach((element) {
@@ -59,7 +56,7 @@ class CompanyTrainAlert extends ConsumerWidget {
           backgroundColor: Colors.white.withOpacity(0.1),
           title: Text(
             element.companyName,
-            style: TextStyle(color: Colors.white, fontSize: 12),
+            style: const TextStyle(color: Colors.white, fontSize: 12),
           ),
           children: element.train.map((e) {
             return Container(
@@ -69,7 +66,7 @@ class CompanyTrainAlert extends ConsumerWidget {
                 children: [
                   Text(
                     e.trainName,
-                    style: TextStyle(color: Colors.white, fontSize: 10),
+                    style: const TextStyle(color: Colors.white, fontSize: 10),
                   ),
                   IconButton(
                     onPressed: () {
