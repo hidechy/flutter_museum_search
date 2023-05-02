@@ -11,20 +11,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mapbox_polyline_points/mapbox_polyline_points.dart';
-import 'package:museum_search/state/station/train_station/train_station_notifier.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../extensions/extensions.dart';
 import '../models/art_facility.dart';
 import '../state/app_param/app_param_notifier.dart';
-import '../state/art_facility/art_facility_notifier.dart';
-import '../state/lat_lng/lat_lng_notifier.dart';
-import '../state/lat_lng_address/lat_lng_address_notifier.dart';
-import '../state/lat_lng_address/lat_lng_address_request_state.dart';
 import '../state/select_route/select_route_notifier.dart';
 
 //import '../state/station/station_notifier.dart';
-import '../state/station/nearly/station_notifier.dart';
+import '../utility/fanctions.dart';
 import '../utility/utility.dart';
 import 'component/company_train_alert.dart';
 import 'component/museum_search_dialog.dart';
@@ -235,29 +230,10 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
   Widget displayStartGoal() {
     final selectRouteState = ref.watch(selectRouteProvider);
 
-    final latLngAddressState = ref.watch(latLngAddressProvider(
-      const LatLngAddressRequestState(),
-    ));
-
-    final currentLatLngState = ref.watch(latLngProvider);
-
-    final stationMap =
-        ref.watch(stationProvider.select((value) => value.stationMap));
-
-    final facilityMap =
-        ref.watch(artFacilityProvider.select((value) => value.facilityMap));
-
     /////////
 
-    var trainStationMap = {};
     final appParamState = ref.watch(appParamProvider);
-    if (appParamState != '') {
-      trainStationMap = ref.watch(
-        trainStationProvider(appParamState.selectedCompanyTrainId).select(
-          (value) => value.trainStationMap,
-        ),
-      );
-    }
+    if (appParamState != '') {}
 
     //--------------------------//
     var startInclude = false;
@@ -279,53 +255,18 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     });
 
     //----------------------------------------------------//
-
     Widget startParts = Container();
 
     if (startInclude) {
       final firstId = selectRouteState.selectedIds.first;
       final fId = firstId.replaceAll('start_', '');
-
-      var firstItem = Facility(
-        id: 0,
-        name: '',
-        genre: '',
-        address: '',
-        latitude: '',
-        longitude: '',
-        dist: '',
-      );
-
-      if (fId == '0') {
-        firstItem = Facility(
-          id: 0,
-          name: '現在位置',
-          genre: '',
-          address: '${latLngAddressState.city}${latLngAddressState.town}',
-          latitude: currentLatLngState.lat.toString(),
-          longitude: currentLatLngState.lng.toString(),
-          dist: '',
-        );
-      } else if (stationMap[fId.toInt()] != null) {
-        firstItem = Facility(
-          id: stationMap[fId.toInt()]!.id,
-          name: stationMap[fId.toInt()]!.stationName,
-          genre: '',
-          address: stationMap[fId.toInt()]!.address,
-          latitude: stationMap[fId.toInt()]!.lat,
-          longitude: stationMap[fId.toInt()]!.lng,
-          dist: '',
-        );
-      } else if (facilityMap[fId.toInt()] != null) {
-        firstItem = facilityMap[fId.toInt()]!;
-      }
+      final firstItem = getStartGoalData(ref: ref, id: fId.toInt());
 
       startParts = Text(
         '開始位置：${firstItem.name}',
         style: const TextStyle(fontSize: 8),
       );
     }
-
     //----------------------------------------------------//
 
     //----------------------------------------------------//
@@ -334,57 +275,13 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     if (goalInclude) {
       final lastId = selectRouteState.selectedIds.last;
       final lId = lastId.replaceAll('goal_', '');
-
-      var lastItem = Facility(
-        id: 0,
-        name: '',
-        genre: '',
-        address: '',
-        latitude: '',
-        longitude: '',
-        dist: '',
-      );
-
-      if (lId == '0') {
-        lastItem = Facility(
-          id: 0,
-          name: '現在位置',
-          genre: '',
-          address: '${latLngAddressState.city}${latLngAddressState.town}',
-          latitude: currentLatLngState.lat.toString(),
-          longitude: currentLatLngState.lng.toString(),
-          dist: '',
-        );
-      } else if (stationMap[lId.toInt()] != null) {
-        lastItem = Facility(
-          id: stationMap[lId.toInt()]!.id,
-          name: stationMap[lId.toInt()]!.stationName,
-          genre: '',
-          address: stationMap[lId.toInt()]!.address,
-          latitude: stationMap[lId.toInt()]!.lat,
-          longitude: stationMap[lId.toInt()]!.lng,
-          dist: '',
-        );
-      } else if (trainStationMap[lId.toInt()] != null) {
-        lastItem = Facility(
-          id: trainStationMap[lId.toInt()].id.toString().toInt(),
-          name: trainStationMap[lId.toInt()].stationName.toString(),
-          genre: '',
-          address: trainStationMap[lId.toInt()].address.toString(),
-          latitude: trainStationMap[lId.toInt()].lat.toString(),
-          longitude: trainStationMap[lId.toInt()].lng.toString(),
-          dist: '',
-        );
-      } else if (facilityMap[lId.toInt()] != null) {
-        lastItem = facilityMap[lId.toInt()]!;
-      }
+      final lastItem = getStartGoalData(ref: ref, id: lId.toInt());
 
       goalParts = Text(
         '終了位置：${lastItem.name}',
         style: const TextStyle(fontSize: 8),
       );
     }
-
     //----------------------------------------------------//
 
     return Container(
