@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 
 //import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
@@ -575,21 +576,21 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
     for (var i = 0; i < widget.facilityList.length; i++) {
       final facility = widget.facilityList[i];
 
-      var distance = '';
-      if (i < widget.facilityList.length - 1) {
-        if ((facility.latitude == widget.facilityList[i + 1].latitude) &&
-            (facility.longitude == widget.facilityList[i + 1].longitude)) {
-          //TODO 緯度経度が同じ場合
-          distance = '0';
-        } else {
-          distance = utility.calcDistance(
-            originLat: facility.latitude.toDouble(),
-            originLng: facility.longitude.toDouble(),
-            destLat: widget.facilityList[i + 1].latitude.toDouble(),
-            destLng: widget.facilityList[i + 1].longitude.toDouble(),
-          );
-        }
-      }
+      // var distance = '';
+      // if (i < widget.facilityList.length - 1) {
+      //   if ((facility.latitude == widget.facilityList[i + 1].latitude) &&
+      //       (facility.longitude == widget.facilityList[i + 1].longitude)) {
+      //     //TODO 緯度経度が同じ場合
+      //     distance = '0';
+      //   } else {
+      //     distance = utility.calcDistance(
+      //       originLat: facility.latitude.toDouble(),
+      //       originLng: facility.longitude.toDouble(),
+      //       destLat: widget.facilityList[i + 1].latitude.toDouble(),
+      //       destLng: widget.facilityList[i + 1].longitude.toDouble(),
+      //     );
+      //   }
+      // }
 
       final ll = [facility.latitude, facility.longitude];
 
@@ -625,6 +626,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                 ),
               ],
             ),
+
+            /*
+
             if (i < widget.facilityList.length - 1)
               Container(
                 padding: const EdgeInsets.only(top: 10, left: 20),
@@ -676,6 +680,9 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
                   ],
                 ),
               ),
+
+            */
+
             const SizedBox(height: 5),
             Container(
               padding: const EdgeInsets.only(left: 70),

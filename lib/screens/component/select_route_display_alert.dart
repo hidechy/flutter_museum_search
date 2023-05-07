@@ -1,8 +1,10 @@
 // ignore_for_file: must_be_immutable, inference_failure_on_collection_literal, unrelated_type_equality_checks, avoid_dynamic_calls
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../extensions/extensions.dart';
 import '../../models/art_facility.dart';
@@ -23,6 +25,8 @@ import '../../utility/utility.dart';
 
 class SelectRouteDisplayAlert extends ConsumerWidget {
   SelectRouteDisplayAlert({super.key});
+
+  List<Facility> selectRouteFacilityList = [];
 
   Utility utility = Utility();
 
@@ -96,6 +100,8 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
       }
     }
     facilityList.add(lastItem);
+
+    selectRouteFacilityList = facilityList;
 
     return facilityList;
   }
@@ -210,19 +216,31 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
                     color: Colors.white.withOpacity(0.4),
                   ),
                   const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(st),
-                      Row(
-                        children: [
-                          Text('$distance Km'),
-                          const Text(' / '),
-                          Text('$walkMinutes 分'),
-                        ],
-                      ),
-                      Text(endTime),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(st),
+                        Row(
+                          children: [
+                            Text('$distance Km'),
+                            const Text(' / '),
+                            Text('$walkMinutes 分'),
+                          ],
+                        ),
+                        Text(endTime),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showGoogleTransit(index: i);
+                    },
+                    child: Icon(
+                      FontAwesomeIcons.google,
+                      size: 20,
+                      color: Colors.white.withOpacity(0.4),
+                    ),
                   ),
                 ],
               ),
@@ -237,6 +255,28 @@ class SelectRouteDisplayAlert extends ConsumerWidget {
     return SingleChildScrollView(
       child: Column(children: list),
     );
+  }
+
+  ///
+  Future<void> showGoogleTransit({required int index}) async {
+    final ll = [
+      selectRouteFacilityList[index].latitude,
+      selectRouteFacilityList[index].longitude,
+    ];
+
+    final queryParameters = <String>[
+      'https://www.google.co.jp/maps/dir',
+      ll.join(','),
+      (selectRouteFacilityList[index + 1].address),
+      '@${ll.join(',')}'
+    ];
+
+    final url = queryParameters.join('/');
+
+    final mapUrl = Uri.parse(url);
+    if (!await launchUrl(mapUrl, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   ///
