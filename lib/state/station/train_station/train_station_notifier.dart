@@ -63,3 +63,45 @@ class TrainStationNotifier extends StateNotifier<TrainStationResponseState> {
 }
 
 ////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+final allStationProvider = StateNotifierProvider.autoDispose<AllStationNotifier,
+    TrainStationResponseState>((ref) {
+  final client = ref.watch(httpClientProvider);
+
+  final utility = Utility();
+
+  return AllStationNotifier(
+    const TrainStationResponseState(),
+    client,
+    utility,
+  )..getAllStation();
+});
+
+class AllStationNotifier extends StateNotifier<TrainStationResponseState> {
+  AllStationNotifier(
+    super.state,
+    this.client,
+    this.utility,
+  );
+
+  final HttpClient client;
+  final Utility utility;
+
+  Future<void> getAllStation() async {
+    await client.post(path: APIPath.getAllStation).then((value) {
+      final list = <Station>[];
+
+      for (var i = 0; i < value['data'].length.toString().toInt(); i++) {
+        final val = Station.fromJson(value['data'][i] as Map<String, dynamic>);
+        list.add(val);
+      }
+
+      state = state.copyWith(trainStationList: list);
+    }).catchError((error, _) {
+      utility.showError('予期せぬエラーが発生しました');
+    });
+  }
+}
+
+////////////////////////////////////////////////

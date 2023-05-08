@@ -4,6 +4,23 @@
 
 // ignore_for_file: inference_failure_on_untyped_parameter, avoid_dynamic_calls
 
+/*
+http://toyohide.work/BrainLog/api/getArtGenre
+
+{
+    "data": [
+        "",
+        "アート系",
+        "人文・歴史系",
+        "自然・科学系",
+        "ギャラリー",
+        "ミュージアム",
+        "その他"
+    ]
+}
+
+*/
+
 import 'dart:convert';
 
 Genre genreFromJson(String str) =>

@@ -5,6 +5,7 @@ enum APIPath {
   getNearStation,
   getTrainCompany,
   getTrainStation,
+  getAllStation,
 }
 
 extension APIPathExtension on APIPath {
@@ -22,6 +23,8 @@ extension APIPathExtension on APIPath {
         return 'getTrainCompany';
       case APIPath.getTrainStation:
         return 'getTrainStation';
+      case APIPath.getAllStation:
+        return 'getAllStation';
     }
   }
 }

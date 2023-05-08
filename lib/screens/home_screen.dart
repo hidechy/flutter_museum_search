@@ -15,15 +15,16 @@ import '../state/lat_lng/lat_lng_notifier.dart';
 import '../state/lat_lng/lat_lng_request_state.dart';
 import '../state/lat_lng_address/lat_lng_address_notifier.dart';
 import '../state/lat_lng_address/lat_lng_address_request_state.dart';
-
 //import '../state/map_marker/map_marker_notifier.dart';
 
 import '../state/prefecture/prefecture_notifier.dart';
 import '../state/station/nearly/station_notifier.dart';
 import '../state/station/nearly/station_request_state.dart';
+import '../state/station/train_station/train_station_notifier.dart';
 import '../utility/utility.dart';
 import 'component/facility_card.dart';
 import 'list_screen.dart';
+import 'station_name_search_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   HomeScreen({super.key});
@@ -82,6 +83,9 @@ class HomeScreen extends ConsumerWidget {
             .setSelectedRadius(radius: value!);
       },
     );
+
+    final trainStationList =
+        ref.watch(allStationProvider.select((value) => value.trainStationList));
 
     return Scaffold(
       body: Column(
@@ -316,6 +320,41 @@ class HomeScreen extends ConsumerWidget {
             const Divider(color: Colors.black, thickness: 2),
           ],
           Expanded(child: dispArtFacilities()),
+
+          //
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StationNameSearchScreen(
+                        trainStationList: trainStationList,
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    '駅名で検索する',
+                    style: TextStyle(fontSize: 8, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          //
         ],
       ),
     );

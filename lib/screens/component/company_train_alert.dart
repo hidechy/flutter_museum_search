@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../extensions/extensions.dart';
 import '../../state/station/company_train/company_train_notifier.dart';
+import '../../state/station/train_station/train_station_notifier.dart';
+import '../station_name_search_screen.dart';
 import 'museum_search_dialog.dart';
 import 'train_station_alert.dart';
 
@@ -19,6 +21,9 @@ class CompanyTrainAlert extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     _context = context;
     _ref = ref;
+
+    final trainStationList =
+        ref.watch(allStationProvider.select((value) => value.trainStationList));
 
     return AlertDialog(
       titlePadding: EdgeInsets.zero,
@@ -36,6 +41,43 @@ class CompanyTrainAlert extends ConsumerWidget {
             children: [
               const SizedBox(height: 20),
               Container(width: context.screenSize.width),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(),
+                  GestureDetector(
+                    onTap: () {
+                      // MuseumSearchDialog(
+                      //   context: context,
+                      //   widget: StationNameSearchAlert(
+                      //     trainStationList: trainStationList,
+                      //   ),
+                      // );
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StationNameSearchScreen(
+                            trainStationList: trainStationList,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        '駅名で検索する',
+                        style: TextStyle(fontSize: 8, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Expanded(child: displayCompanyTrainList()),
             ],
           ),
