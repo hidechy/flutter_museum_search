@@ -370,27 +370,29 @@ class _FlutterMapScreenState extends ConsumerState<FlutterMapScreen> {
         final lId = lastId.replaceAll('goal_', '');
         final lastItem = getStartGoalData(ref: ref, id: lId.toInt());
 
-        markerList.add(
-          Marker(
-            point: LatLng(
-              lastItem.latitude.toDouble(),
-              lastItem.longitude.toDouble(),
-            ),
-            builder: (context) {
-              return CircleAvatar(
-                backgroundColor: Colors.green.withOpacity(0.6),
-                child: const Text(
-                  'Goal',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+        if (lastItem.latitude != '' && lastItem.longitude != '') {
+          markerList.add(
+            Marker(
+              point: LatLng(
+                lastItem.latitude.toDouble(),
+                lastItem.longitude.toDouble(),
+              ),
+              builder: (context) {
+                return CircleAvatar(
+                  backgroundColor: Colors.green.withOpacity(0.6),
+                  child: const Text(
+                    'Goal',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        );
+                );
+              },
+            ),
+          );
+        }
       }
     }
   }

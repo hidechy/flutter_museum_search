@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -46,15 +46,9 @@ class CompanyTrainAlert extends ConsumerWidget {
                 children: [
                   Container(),
                   GestureDetector(
-                    onTap: () {
-                      // MuseumSearchDialog(
-                      //   context: context,
-                      //   widget: StationNameSearchAlert(
-                      //     trainStationList: trainStationList,
-                      //   ),
-                      // );
-
-                      Navigator.push(
+                    onTap: () async {
+                      //
+                      final result = await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => StationNameSearchScreen(
@@ -62,6 +56,12 @@ class CompanyTrainAlert extends ConsumerWidget {
                           ),
                         ),
                       );
+
+                      if (result == 'station_set') {
+                        Navigator.pop(context);
+                      }
+
+                      //
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
